@@ -80,7 +80,7 @@ public class Dialogs.Preferences.Pages.SourceView : Dialogs.Preferences.Pages.Ba
         sync_server_row.title = _("Sync Server");
         sync_server_row.subtitle =
             _(
-                "Activate this setting so that Planify automatically synchronizes with your account account every 15 minutes");
+                "Activate this setting so that BluPlan automatically synchronizes with your account account every 15 minutes");
         sync_server_row.active = source.sync_server;
 
         var last_sync_label = new Gtk.Label (
@@ -192,7 +192,7 @@ public class Dialogs.Preferences.Pages.SourceView : Dialogs.Preferences.Pages.Ba
             dialog.add_response ("delete", _("Delete"));
             dialog.close_response = "cancel";
             dialog.set_response_appearance ("delete", Adw.ResponseAppearance.DESTRUCTIVE);
-            dialog.present (Planify._instance.main_window);
+            dialog.present (BluPlan._instance.main_window);
 
             dialog.response.connect ((response) => {
                 if (response == "delete") {
@@ -223,7 +223,7 @@ public class Dialogs.Preferences.Pages.SourceView : Dialogs.Preferences.Pages.Ba
         dialog.set_default_response ("change");
         dialog.set_close_response ("cancel");
 
-        dialog.choose.begin (Planify._instance.main_window, null, (obj, res) => {
+        dialog.choose.begin (BluPlan._instance.main_window, null, (obj, res) => {
             string response = dialog.choose.end (res);
             if (response == "change") {
                 preferences_dialog.push_subpage (new Dialogs.Preferences.Pages.InboxPage (preferences_dialog));

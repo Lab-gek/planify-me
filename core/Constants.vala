@@ -20,7 +20,7 @@
  */
 
 namespace Constants {
-    public const string SOUP_USER_AGENT = "Planify";
+    public const string SOUP_USER_AGENT = "BluPlan";
     public const string TODOIST_CLIENT_ID = "b0dd7d3714314b1dbbdab9ee03b6b432";
     public const string TODOIST_CLIENT_SECRET = "a86dfeb12139459da3e5e2a8c197c678";
     public const string TODOIST_SCOPE = "data:read_write,data:delete,project:delete";
@@ -44,7 +44,7 @@ namespace Constants {
     public const string DISCORD_URL = "https://discord.com/invite/dxxyumrTJW";
     public const string ISSUE_URL = "https://github.com/alainm23/planify/issues";
     public const string WEBLATE_URL = "https://hosted.weblate.org/engage/planner/";
-    public const string FLATHUB_URL = "https://flathub.org/apps/io.github.alainm23.planify";
+    public const string FLATHUB_URL = "https://flathub.org/apps/io.github.lab_gek.bluplan";
     public const string PRIVACY_POLICY_URL = "https://useplanify.com/privacy-policy/";
     public const bool BLOCK_PAST_DAYS = false;
     public const int COMPLETED_PAGE_SIZE = 15;

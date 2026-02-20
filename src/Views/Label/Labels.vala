@@ -135,7 +135,7 @@ public class Views.Labels : Adw.Bin {
     public void prepare_new_item (string content = "") {
         var dialog = new Dialogs.QuickAdd ();
         dialog.update_content (content);
-        dialog.present (Planify._instance.main_window);
+        dialog.present (BluPlan._instance.main_window);
     }
 
     public void clean_up () {

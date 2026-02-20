@@ -3,14 +3,14 @@
   <id>@appid@</id>
   <metadata_license>CC0</metadata_license>
   <project_license>GPL-3.0+</project_license>
-  <name translate="no">Planify</name>
+  <name translate="no">BluPlan</name>
   <summary>Forget about forgetting things</summary>
   <branding>
     <color type="primary" scheme_preference="light">#f9f06b</color>
     <color type="primary" scheme_preference="dark">#9141ac</color>
   </branding>
   <description>
-    <p>Planify is your modern and powerful task manager that helps you keep your life organized. With a clean and intuitive interface, cloud synchronization, and advanced features, you'll never forget what matters again.</p>
+    <p>BluPlan is your modern and powerful task manager that helps you keep your life organized. With a clean and intuitive interface, cloud synchronization, and advanced features, you'll never forget what matters again.</p>
     <p>✨ Core Features:</p>
     <ul>
       <li>Modern and clean interface designed with GTK4 and libadwaita</li>
@@ -31,7 +31,7 @@
       <li>Offline mode: work without internet and sync when you're back online</li>
       <li>Cross-platform synchronization to access from any device</li>
     </ul>
-    <p>* Planify is not created by, affiliated with, or supported by Doist</p>
+    <p>* BluPlan is not created by, affiliated with, or supported by Doist</p>
   </description>
   <screenshots>
     <screenshot type="default">
@@ -64,7 +64,7 @@
   <description translate="no">
     <p>
       This release focuses on performance improvements, stability, and bug fixes across the app.
-      While there are no major visual changes, Planify should feel noticeably faster and more reliable,
+      While there are no major visual changes, BluPlan should feel noticeably faster and more reliable,
       especially when working with large task lists and synced accounts.
     </p>
       <ul>
@@ -86,7 +86,7 @@
 
     <release version="4.17.0" date="2025-12-26">
       <description translate="no">
-        <p>🚀 Planify 4.17.0 introduces deadlines, better scheduling, and calendar integration, along with multiple bug fixes and UX improvements.</p>
+        <p>🚀 BluPlan 4.17.0 introduces deadlines, better scheduling, and calendar integration, along with multiple bug fixes and UX improvements.</p>
         <ul>
           <li>Added deadline support, separate from due dates, with visual indicators for overdue tasks.</li>
           <li>Overdue tasks are now shown in the Scheduled view with quick reschedule actions.</li>
@@ -101,7 +101,7 @@
 
     <release version="4.16.1" date="2025-11-27">
       <description translate="no">
-        <p>✨ Planify 4.16.1 is a maintenance release focused on fixing reported bugs and polishing the overall user experience.</p>
+        <p>✨ BluPlan 4.16.1 is a maintenance release focused on fixing reported bugs and polishing the overall user experience.</p>
         <ul>
           <li>Fixed an issue where opening the Quick Add dialog while the window was maximized caused the main window to resize.</li>
           <li>Resolved a UX problem where selecting the Inbox project by clicking directly on the radio button did not trigger the project change.</li>
@@ -114,7 +114,7 @@
 
     <release version="4.16.0" date="2025-11-21">
       <description translate="no">
-        <p>✨ Planify 4.16.0 introduces natural language date parsing, improved backend consistency, better keyboard control, and several quality-of-life UI fixes.</p>
+        <p>✨ BluPlan 4.16.0 introduces natural language date parsing, improved backend consistency, better keyboard control, and several quality-of-life UI fixes.</p>
         <ul>
           <li>Fixed tasks disappearing from the Today view when moving them to another project.</li>
           <li>Resolved subtask duplication when moving tasks between different backends (e.g., LOCAL ↔ Todoist), ensuring subtasks are added only to their parent instead of both parent and project.</li>
@@ -133,15 +133,15 @@
 
     <release version="4.15.2" date="2025-11-07">
       <description translate="no">
-        <p>✨ Planify 4.15.2 brings improved keyboard flows, smarter Quick Add, spell-check options, and a smoother backup experience.</p>
+        <p>✨ BluPlan 4.15.2 brings improved keyboard flows, smarter Quick Add, spell-check options, and a smoother backup experience.</p>
         <ul>
           <li>Enhanced keyboard shortcut flow for project selection in both Quick Add and the Project Picker when moving tasks between projects.</li>
           <li>Fixed project completion percentage for archived projects — now correctly includes all items instead of showing 0% when all tasks are archived.</li>
           <li>Added spell-check support for task titles, improving writing accuracy and user experience.</li>
           <li>Introduced new selection widgets for the Task Completion Mode and Automatic Reminders preferences, replacing the old Adw.ComboRow for better clarity and usability.</li>
-          <li>Improved backup handling — Planify now shows the location of your generated backup files and automatically restarts itself after a restore, eliminating the need for manual restarts.</li>
+          <li>Improved backup handling — BluPlan now shows the location of your generated backup files and automatically restarts itself after a restore, eliminating the need for manual restarts.</li>
           <li>Quick Add: Keeps task attributes (due date, pinned state, and labels) when using "Keep adding" mode, streamlining consecutive task creation.</li>
-          <li>Improved focus restoration — Planify now restores the focus to the previously active input (title or description) after closing popups or clicking buttons in Quick Add.</li>
+          <li>Improved focus restoration — BluPlan now restores the focus to the previously active input (title or description) after closing popups or clicking buttons in Quick Add.</li>
           <li>Added in-line label selection in Quick Add using the @ symbol.</li>
           <li>Added optional spell-check setting for task descriptions and notes — now configurable in Preferences.</li>
           <li>Fixed auto-scroll issue in Quick Add’s description field, ensuring the cursor remains visible when typing long text.</li>
@@ -152,27 +152,27 @@
 
     <release version="4.15.1" date="2025-10-11">
       <description translate="no">
-        <p>✨ Planify 4.15.1 is here! Enjoy a new Markdown editor, smoother animations, Focus Mode, and smarter ways to organize your tasks.</p>
+        <p>✨ BluPlan 4.15.1 is here! Enjoy a new Markdown editor, smoother animations, Focus Mode, and smarter ways to organize your tasks.</p>
         <ul>
-          <li>Added a new lightweight Markdown editor, optimized for Planify. It features a cleaner design and a contextual popover for formatting when selecting text.</li>
+          <li>Added a new lightweight Markdown editor, optimized for BluPlan. It features a cleaner design and a contextual popover for formatting when selecting text.</li>
           <li>Added animations to circular progress bars for tasks and projects. Project completion now includes a smooth, satisfying animation.</li>
-          <li>Planify now uses Weblate to manage translations. You can help make Planify available in more languages by contributing directly through Weblate. A new translation progress bar and link were added in Preferences.</li>
+          <li>BluPlan now uses Weblate to manage translations. You can help make BluPlan available in more languages by contributing directly through Weblate. A new translation progress bar and link were added in Preferences.</li>
           <li>Introduced Focus Mode — simply click anywhere outside the focused task to close it. This long-requested feature improves the UX when working with focused tasks and is enabled by default for new installations.</li>
           <li>Improved ESC key behavior. It now closes a focused task or exits multi-selection mode, making it more intuitive to navigate with the keyboard.</li>
           <li>Improved keyboard navigation when selecting projects or labels in Quick Add, making the flow more intuitive and seamless.</li>
           <li>Added multi-selection shortcut: hold Ctrl and click on tasks to perform batch operations such as completing, setting due dates, or priorities more easily.</li>
           <li>Added new context menus in the sidebar and project views. You can now quickly create tasks, projects, or sections with a right-click.</li>
-          <li>Added the ability to select your default Inbox project — one of the most requested features. Planify now ensures that at least one source remains visible and prevents hiding the source linked to the default Inbox project.</li>
+          <li>Added the ability to select your default Inbox project — one of the most requested features. BluPlan now ensures that at least one source remains visible and prevents hiding the source linked to the default Inbox project.</li>
           <li>Improved the behavior and validation of hidden sources across the app, ensuring consistency in Quick Add, Labels, and Project Picker views.</li>
           <li>Enhanced smoothness and responsiveness when dragging tasks to the end of long project lists. The scroll speed now dynamically adjusts based on cursor position.</li>
         </ul>
         <p>🐞 Fixes:</p>
         <ul>
           <li>Fixed a crash that occurred when reordering views in the sidebar.</li>
-          <li>Fixed an issue where Planify didn’t correctly read multiple CalDAV tasks.</li>
+          <li>Fixed an issue where BluPlan didn’t correctly read multiple CalDAV tasks.</li>
           <li>Fixed a bug where labels from a source were not removed after deleting that source.</li>
           <li>Fixed an issue with sidebar filters when using spaces in their names.</li>
-          <li>Fixed an issue where Planify didn’t update event data correctly when changes occurred.</li>
+          <li>Fixed an issue where BluPlan didn’t update event data correctly when changes occurred.</li>
         </ul>
       </description>
     </release>
@@ -201,7 +201,7 @@
           <li>Fixed memory leaks when completing or deleting tasks, and during CalDAV sync — thanks to @markochk.</li>
           <li>Introduced a new view cache system to automatically free unused memory.</li>
           <li>Added new customizable sidebar filters: Tomorrow, Someday, Recurring, No label, and All tasks.</li>
-          <li>Improved synchronization: Planify now respects task order from Nextcloud and Todoist, with a new reordering algorithm.</li>
+          <li>Improved synchronization: BluPlan now respects task order from Nextcloud and Todoist, with a new reordering algorithm.</li>
           <li>Work in progress to make WebKit and Evolution dependencies optional, paving the way for Windows and macOS support — thanks to @byquanton.</li>
           <li>Spell checker support in task descriptions.</li>
           <li>Fixed bug when moving tasks with subtasks in Nextcloud/CalDAV projects.</li>
@@ -338,7 +338,7 @@
           <li>Added preference to keep the task detail pane open, making navigation faster.</li>
           <li>The option to repeat a task has been moved to the date and time selection widget, allowing you to create recurring tasks more quickly.</li>
           <li>Fixed several bugs with Nextcloud synchronisation.</li>
-          <li>Several design and optimisation improvements, Planify now feels faster and consumes less resources.</li>
+          <li>Several design and optimisation improvements, BluPlan now feels faster and consumes less resources.</li>
         </ul>
       </description>
     </release>
@@ -420,7 +420,7 @@
     <release version="4.8.4" date="2024-06-23">
       <description translate="no">
         <ul>
-          <li>Planify now sends reminder notifications when you create a task with a specific time.</li>
+          <li>BluPlan now sends reminder notifications when you create a task with a specific time.</li>
           <li>Fixed bug that removed the description of a task when changing a value in the side view.</li>
           <li>Fixed bug when selecting weekly repeat changes the selected date and time.</li>
           <li>Fixed bug when sorting completed tasks.</li>
@@ -591,7 +591,7 @@
     </release>
     <release version="4.5" date="2024-02-20">
       <description translate="no">
-        <p>Planify 4.5 is here, design improvements and new features available.</p>
+        <p>BluPlan 4.5 is here, design improvements and new features available.</p>
         <p>What’s New</p>
         <ul>
           <li>Nextcloud integration is available.</li>
@@ -613,7 +613,7 @@
     </release>
     <release version="4.4" date="2024-01-10">
       <description translate="no">
-        <p>Planify 4.4 is here, design improvements and new features available.</p>
+        <p>BluPlan 4.4 is here, design improvements and new features available.</p>
         <p>What’s New</p>
         <ul>
           <li>Improved drag-and-drop sorting: Added a new animation and a new way of sorting making it cleaner and easier.</li>
@@ -655,13 +655,13 @@
     </release>
     <release version="4.3" date="2023-12-18">
       <description translate="no">
-        <p>Planify 4.3 is here, design improvements and new features available.</p>
+        <p>BluPlan 4.3 is here, design improvements and new features available.</p>
         <p>What’s New</p>
         <ul>
           <li>Quick Add Improvements: Now supports project selection, due date, priority, labels and pinned.</li>
           <li>Sidebar filter settings: It is now possible to re-order, hide filters and the task cutter.</li>
-          <li>Backup support: It is now possible to create a backup copy and import it from somewhere else. Planify will import all your tasks and settings.</li>
-          <li>Offline support for Todoist: You were without internet, keep using Planify with Todoist, the tasks will be saved locally and synchronized when the connection returns.</li>
+          <li>Backup support: It is now possible to create a backup copy and import it from somewhere else. BluPlan will import all your tasks and settings.</li>
+          <li>Offline support for Todoist: You were without internet, keep using BluPlan with Todoist, the tasks will be saved locally and synchronized when the connection returns.</li>
         </ul>
         <p>Bug Fixed and Translations</p>
         <ul>
@@ -716,9 +716,9 @@
     </release>
     <release version="4.1" date="2023-06-23">
       <description translate="no">
-        <p>Planify 4.1 here it is!</p>
+        <p>BluPlan 4.1 here it is!</p>
         <ul>
-          <li>Planify has a new icon thanks to Tobias Bernard.</li>
+          <li>BluPlan has a new icon thanks to Tobias Bernard.</li>
           <li>Quick Add is available, quickly add tasks from anywhere on your desktop with a simple keyboard shortcut, set it from Preferences → Quick Add</li>
           <li>Preferences page redesigned.</li>
           <li>The preferences to run in the background and run at startup are available.</li>

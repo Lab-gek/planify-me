@@ -63,7 +63,7 @@ public class Widgets.NewVersionPopup : Adw.Bin {
         header_grid.attach (title_label, 1, 0, 1, 1);
         header_grid.attach (version_label, 1, 1, 1, 1);
 
-        description_label = new Gtk.Label (_("Update now to enjoy the latest improvements, bug fixes, and new features that make Planify even better")) {
+        description_label = new Gtk.Label (_("Update now to enjoy the latest improvements, bug fixes, and new features that make BluPlan even better")) {
             wrap = true,
             margin_top = 12,
             margin_bottom = 12,
@@ -78,7 +78,7 @@ public class Widgets.NewVersionPopup : Adw.Bin {
 
         update_button.clicked.connect (() => {
             try {
-                AppInfo.launch_default_for_uri ("appstream://io.github.alainm23.planify", null);
+                AppInfo.launch_default_for_uri ("appstream://io.github.lab_gek.bluplan", null);
             } catch (Error e) {
                 warning ("Error opening GNOME Software: %s", e.message);
             }

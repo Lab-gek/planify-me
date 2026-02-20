@@ -661,7 +661,7 @@ public class Views.Today : Adw.Bin {
         var dialog = new Dialogs.QuickAdd ();
         dialog.update_content (content);
         dialog.set_due (Utils.Datetime.get_date_only (date));
-        dialog.present (Planify._instance.main_window);
+        dialog.present (BluPlan._instance.main_window);
     }
 
     private void update_headers () {
@@ -843,7 +843,7 @@ public class Views.Today : Adw.Bin {
                 }
             })] = dialog;
 
-            dialog.present (Planify._instance.main_window);
+            dialog.present (BluPlan._instance.main_window);
         })] = labels_filter;
 
         signal_map[assignment_filter.filter_change.connect ((filter, active) => {

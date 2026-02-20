@@ -833,7 +833,7 @@ public class Layouts.ItemBoard : Layouts.ItemBase {
             }
 
             dialog.project = item.project;
-            dialog.present (Planify._instance.main_window);
+            dialog.present (BluPlan._instance.main_window);
 
             dialog.changed.connect ((type, id) => {
                 if (type == "project") {
@@ -856,7 +856,7 @@ public class Layouts.ItemBoard : Layouts.ItemBase {
                 item.update_labels (labels);
             });
 
-            dialog.present (Planify._instance.main_window);
+            dialog.present (BluPlan._instance.main_window);
         });
 
         today_item.activate_item.connect (() => {
@@ -891,7 +891,7 @@ public class Layouts.ItemBoard : Layouts.ItemBase {
         add_item.activate_item.connect (() => {
             var dialog = new Dialogs.QuickAdd ();
             dialog.for_base_object (item);
-            dialog.present (Planify._instance.main_window);
+            dialog.present (BluPlan._instance.main_window);
         });
 
         duplicate_item.clicked.connect (() => {
@@ -1049,7 +1049,7 @@ public class Layouts.ItemBoard : Layouts.ItemBase {
         signals_map[drop_magic_button_target.drop.connect ((value, x, y) => {
             var dialog = new Dialogs.QuickAdd ();
             dialog.for_base_object (item);
-            dialog.present (Planify._instance.main_window);
+            dialog.present (BluPlan._instance.main_window);
 
             return true;
         })] = drop_magic_button_target;
@@ -1067,7 +1067,7 @@ public class Layouts.ItemBoard : Layouts.ItemBase {
                 dialog.for_base_object (item.project);
             }
 
-            dialog.present (Planify._instance.main_window);
+            dialog.present (BluPlan._instance.main_window);
 
             return true;
         })] = drop_order_magic_button_target;

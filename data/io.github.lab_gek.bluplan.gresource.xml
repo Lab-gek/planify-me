@@ -1,7 +1,7 @@
 
 <?xml version="1.0" encoding="UTF-8"?>
 <gresources>
-  <gresource prefix="/io/github/alainm23/planify/stylesheet">
+  <gresource prefix="/io/github/lab_gek/bluplan/stylesheet">
     <file alias="animations.css" compressed="true">resources/stylesheet/animations.css</file>
     <file alias="calendar.css" compressed="true">resources/stylesheet/calendar.css</file>
     <file alias="stylesheet.css" compressed="true">resources/stylesheet/stylesheet.css</file>
@@ -10,10 +10,10 @@
     <file alias="typography.css" compressed="true">resources/stylesheet/typography.css</file>
   </gresource>
   
-  <gresource prefix="/io/github/alainm23/planify">
+  <gresource prefix="/io/github/lab_gek/bluplan">
     <file alias="index.css" compressed="true">resources/stylesheet/index.css</file>
     <file alias="shortcuts.ui" compressed="true">resources/ui/shortcuts.ui</file>
-    <file preprocess="xml-stripblanks">io.github.alainm23.planify.appdata.xml.in.in</file>
+    <file preprocess="xml-stripblanks">io.github.lab_gek.bluplan.appdata.xml.in.in</file>
 
     <!-- Audios -->
     <file alias="success.ogg" compressed="true">resources/sounds/success.ogg</file>
@@ -28,7 +28,7 @@
     <file alias="blue-mode.svg">resources/images/blue-mode.svg</file>
   </gresource>
 
-  <gresource prefix="/io/github/alainm23/planify/icons/scalable/actions">
+  <gresource prefix="/io/github/lab_gek/bluplan/icons/scalable/actions">
     <file alias="edit-find-symbolic.svg">resources/icons/edit-find-symbolic.svg</file>
     <file alias="menu-large-symbolic.svg">resources/icons/menu-large-symbolic.svg</file>
     <file alias="plus-large-symbolic.svg">resources/icons/plus-large-symbolic.svg</file>
@@ -121,7 +121,7 @@
     <file alias="tab-new-symbolic.svg">resources/icons/tab-new-symbolic.svg</file>
   </gresource>
 
-  <gresource prefix="/io/github/alainm23/planify/Devel/icons/scalable/actions">
+  <gresource prefix="/io/github/lab_gek/bluplan/Devel/icons/scalable/actions">
     <file alias="edit-find-symbolic.svg">resources/icons/edit-find-symbolic.svg</file>
     <file alias="menu-large-symbolic.svg">resources/icons/menu-large-symbolic.svg</file>
     <file alias="plus-large-symbolic.svg">resources/icons/plus-large-symbolic.svg</file>
@@ -214,7 +214,7 @@
     <file alias="tab-new-symbolic.svg">resources/icons/tab-new-symbolic.svg</file>
   </gresource>
 
-  <gresource prefix="/io/github/alainm23/planify/quick-add/icons/scalable/actions">
+  <gresource prefix="/io/github/lab_gek/bluplan/quick-add/icons/scalable/actions">
     <file alias="edit-find-symbolic.svg">resources/icons/edit-find-symbolic.svg</file>
     <file alias="menu-large-symbolic.svg">resources/icons/menu-large-symbolic.svg</file>
     <file alias="plus-large-symbolic.svg">resources/icons/plus-large-symbolic.svg</file>

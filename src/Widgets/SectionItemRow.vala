@@ -222,7 +222,7 @@ public class Widgets.SectionItemRow : Gtk.ListBoxRow {
 
         signal_map[delete_item.clicked.connect (() => {
             menu_popover.popdown ();
-            section.delete_section ((Gtk.Window) Planify.instance.main_window);
+            section.delete_section ((Gtk.Window) BluPlan.instance.main_window);
         })] = delete_item;
 
         signal_map[unarchive_item.clicked.connect (() => {

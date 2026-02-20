@@ -310,7 +310,7 @@ public class Views.List : Adw.Bin {
         var dialog = new Dialogs.QuickAdd ();
         dialog.for_base_object (project);
         dialog.update_content (content);
-        dialog.present (Planify._instance.main_window);
+        dialog.present (BluPlan._instance.main_window);
     }
 
     public bool validate_children () {
@@ -413,7 +413,7 @@ public class Views.List : Adw.Bin {
                 project.update_local ();
             })] = dialog;
 
-            dialog.present (Planify._instance.main_window);
+            dialog.present (BluPlan._instance.main_window);
         })] = gesture;
 
         return due_revealer;

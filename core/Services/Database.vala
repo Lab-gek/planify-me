@@ -176,7 +176,7 @@ public class Services.Database : GLib.Object {
     }
 
     public void init_database () {
-        db_path = Environment.get_user_data_dir () + "/io.github.alainm23.planify/database.db";
+        db_path = Environment.get_user_data_dir () + "/io.github.lab_gek.bluplan/database.db";
         Sqlite.Database.open (db_path, out db);
 
         create_tables ();
@@ -589,7 +589,7 @@ public class Services.Database : GLib.Object {
         add_text_column ("Projects", "description", "");
 
         /*
-         * Planify 4.4
+         * BluPlan 4.4
          * - Add labels column to Items
          * - Add color column to Section
          * - Add description column to Section
@@ -600,7 +600,7 @@ public class Services.Database : GLib.Object {
         add_text_column ("Sections", "description", "");
 
         /*
-         * Planify 4.5
+         * BluPlan 4.5
          * - Add extra data column to Items
          */
 
@@ -609,21 +609,21 @@ public class Services.Database : GLib.Object {
         add_int_column ("Projects", "inbox_section_hidded", 0);
 
         /*
-         * Planify 4.5.2
+         * BluPlan 4.5.2
          * - Add sync_id column to Projects
          */
 
         add_text_column ("Projects", "sync_id", "");
 
         /*
-         * Planify 4.8
+         * BluPlan 4.8
          * - Add item_type column to Items
          */
 
         add_text_column ("Items", "item_type", ItemType.TASK.to_string ());
 
         /*
-         * Planify 4.10
+         * BluPlan 4.10
          * - Add source_id column to Projects
          */
 
@@ -631,7 +631,7 @@ public class Services.Database : GLib.Object {
 
 
         /*
-         * Planify 4.14
+         * BluPlan 4.14
          * - Add sorted_by column to Projects
          */
 
@@ -639,7 +639,7 @@ public class Services.Database : GLib.Object {
         add_text_column ("Projects", "sorted_by", SortedByType.MANUAL.to_string ());
 
         /*
-         * Planify 4.16
+         * BluPlan 4.16
          * - Add calendar_source_uid column to Projects
          * - Add calendar_event_uid column to Items
          * - Add deadline_date column to Items
@@ -651,7 +651,7 @@ public class Services.Database : GLib.Object {
     }
 
     public void clear_database () {
-        string db_path = Environment.get_user_data_dir () + "/io.github.alainm23.planify/database.db";
+        string db_path = Environment.get_user_data_dir () + "/io.github.lab_gek.bluplan/database.db";
         File db_file = File.new_for_path (db_path);
 
         if (db_file.query_exists ()) {

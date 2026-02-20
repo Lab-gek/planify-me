@@ -59,7 +59,7 @@ public class Widgets.IgnoreSSLSwitchRow : Adw.ActionRow {
                         }
                 });
 
-                dialog.present (Planify._instance.main_window);
+                dialog.present (BluPlan._instance.main_window);
                 return true; // prevent immediate state change
             }
             return false;

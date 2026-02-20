@@ -119,7 +119,7 @@ public class Widgets.TranslationRow : Adw.PreferencesRow {
 
                 if (user_lang == "en") {
                     title = _ ("Translations");
-                    subtitle = _ ("Help make Planify available worldwide");
+                    subtitle = _ ("Help make BluPlan available worldwide");
                     hide_level_bar ();
                     return;
                 }
@@ -140,11 +140,11 @@ public class Widgets.TranslationRow : Adw.PreferencesRow {
             }
 
             title = _ ("Translations");
-            subtitle = _ ("Help make Planify available worldwide");
+            subtitle = _ ("Help make BluPlan available worldwide");
             hide_level_bar ();
         } catch (Error e) {
             title = _ ("Translations");
-            subtitle = _ ("Help make Planify available worldwide");
+            subtitle = _ ("Help make BluPlan available worldwide");
             hide_level_bar ();
         }
     }

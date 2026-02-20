@@ -140,7 +140,7 @@ public class Layouts.Sidebar : Adw.Bin {
             var default_source = Services.Store.instance ().get_default_source ();
             var source_id = default_source != null ? default_source.id : SourceType.LOCAL.to_string ();
             var dialog = new Dialogs.Project.new (source_id, true);
-            dialog.present (Planify._instance.main_window);
+            dialog.present (BluPlan._instance.main_window);
 
             context_menu.popdown ();
         });
@@ -148,13 +148,13 @@ public class Layouts.Sidebar : Adw.Bin {
         add_source_item.clicked.connect (() => {
             var preferences_dialog = new Dialogs.Preferences.PreferencesWindow ();
             preferences_dialog.show_page ("accounts");
-            preferences_dialog.present (Planify._instance.main_window);
+            preferences_dialog.present (BluPlan._instance.main_window);
         });
         
         customize_item.clicked.connect (() => {
             var preferences_dialog = new Dialogs.Preferences.PreferencesWindow ();
             preferences_dialog.show_page ("sidebar-page");
-            preferences_dialog.present (Planify._instance.main_window);
+            preferences_dialog.present (BluPlan._instance.main_window);
         });
     }
     

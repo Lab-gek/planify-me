@@ -50,12 +50,12 @@ public class Dialogs.Preferences.Pages.Donate : Dialogs.Preferences.Pages.BasePa
             css_classes = { "title-1" }
         };
 
-        var hero_title = new Gtk.Label (_("Support Planify Development")) {
+        var hero_title = new Gtk.Label (_("Support BluPlan Development")) {
             css_classes = { "title-2" },
             halign = Gtk.Align.CENTER
         };
 
-        var hero_description = new Gtk.Label (_("Help keep Planify free and open source! Your donations directly support development, new features, and maintenance. Every contribution, no matter the size, makes a difference.")) {
+        var hero_description = new Gtk.Label (_("Help keep BluPlan free and open source! Your donations directly support development, new features, and maintenance. Every contribution, no matter the size, makes a difference.")) {
             wrap = true,
             justify = Gtk.Justification.CENTER,
             css_classes = { "body" },
@@ -146,7 +146,7 @@ public class Dialogs.Preferences.Pages.Donate : Dialogs.Preferences.Pages.BasePa
             margin_bottom = 6
         };
 
-        var thanks_description = new Gtk.Label (_("Your contribution helps keep Planify alive and growing.")) {
+        var thanks_description = new Gtk.Label (_("Your contribution helps keep BluPlan alive and growing.")) {
             css_classes = { "caption" },
             halign = Gtk.Align.CENTER,
             margin_bottom = 12

@@ -164,7 +164,7 @@ public class Widgets.MultiSelectToolbar : Adw.Bin {
                 move (Services.Store.instance ().get_project (id));
             });
 
-            dialog.present (Planify._instance.main_window);
+            dialog.present (BluPlan._instance.main_window);
         });
 
         label_button.labels_changed.connect ((labels) => {
@@ -287,7 +287,7 @@ public class Widgets.MultiSelectToolbar : Adw.Bin {
             dialog.add_response ("cancel", _ ("Cancel"));
             dialog.add_response ("delete", _ ("Delete"));
             dialog.set_response_appearance ("delete", Adw.ResponseAppearance.DESTRUCTIVE);
-            dialog.present (Planify._instance.main_window);
+            dialog.present (BluPlan._instance.main_window);
 
             dialog.response.connect ((response) => {
                 if (response == "delete") {

@@ -1,7 +1,7 @@
 // This file is part of Highscore. License: GPL-3.0+.
 
 [DBus (name = "org.gnome.Shell.SearchProvider2")]
-public class Planify.SearchProvider : Gtk.Application {
+public class BluPlan.SearchProvider : Gtk.Application {
     internal SearchProvider () {
         Object (
             application_id: Build.APPLICATION_ID + ".SearchProvider",

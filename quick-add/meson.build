@@ -5,7 +5,7 @@ quick_find_sources = files(
 )
 
 executable(
-  'io.github.alainm23.planify.quick-add',
+  'io.github.lab_gek.bluplan.quick-add',
   quick_find_sources,
   asresources,
   config_file,

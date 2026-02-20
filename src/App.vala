@@ -19,14 +19,14 @@
  * Authored by: Alain M. <alainmh23@gmail.com>
  */
 
-public class Planify : Adw.Application {
+public class BluPlan : Adw.Application {
     public MainWindow main_window;
 
-    public static Planify _instance = null;
-    public static Planify instance {
+    public static BluPlan _instance = null;
+    public static BluPlan instance {
         get {
             if (_instance == null) {
-                _instance = new Planify ();
+                _instance = new BluPlan ();
             }
             return _instance;
         }
@@ -44,21 +44,21 @@ public class Planify : Adw.Application {
 
     private const OptionEntry[] OPTIONS = {
         { "version", 'v', 0, OptionArg.NONE, ref n_version, "Display version number", null },
-        { "reset", 'r', 0, OptionArg.NONE, ref clear_database, "Reset Planify", null },
+        { "reset", 'r', 0, OptionArg.NONE, ref clear_database, "Reset BluPlan", null },
         { "background", 'b', 0, OptionArg.NONE, out run_in_background, "Run the Application in background", null },
-        { "lang", 'l', 0, OptionArg.STRING, ref lang, "Open Planify in a specific language", "LANG" },
+        { "lang", 'l', 0, OptionArg.STRING, ref lang, "Open BluPlan in a specific language", "LANG" },
         { null }
     };
 
-    public Planify () {
+    public BluPlan () {
         Object (
             application_id : Build.APPLICATION_ID,
             flags: ApplicationFlags.HANDLES_OPEN
         );
     }
 
-    ~Planify () {
-        debug ("Destroying Planify\n");
+    ~BluPlan () {
+        debug ("Destroying BluPlan\n");
     }
 
     construct {
@@ -69,8 +69,8 @@ public class Planify : Adw.Application {
         Intl.textdomain (Build.GETTEXT_PACKAGE);
 
         add_main_option_entries (OPTIONS);
-        create_dir_with_parents ("/io.github.alainm23.planify");
-        create_dir_with_parents ("/io.github.alainm23.planify/backups");
+        create_dir_with_parents ("/io.github.lab_gek.bluplan");
+        create_dir_with_parents ("/io.github.lab_gek.bluplan/backups");
     }
 
     protected override void activate () {
@@ -115,7 +115,7 @@ public class Planify : Adw.Application {
         Services.Settings.get_default ().settings.bind ("window-maximized", main_window, "maximized", SettingsBindFlags.SET);
 
         var provider = new Gtk.CssProvider ();
-        provider.load_from_resource ("/io/github/alainm23/planify/index.css");
+        provider.load_from_resource ("/io/github/lab_gek/bluplan/index.css");
 
         Gtk.StyleContext.add_provider_for_display (
             Gdk.Display.get_default (), provider, Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION
@@ -134,13 +134,13 @@ public class Planify : Adw.Application {
 
     #if WITH_LIBPORTAL
     public async bool ask_for_background (Xdp.BackgroundFlags flags = Xdp.BackgroundFlags.AUTOSTART) {
-        const string[] DAEMON_COMMAND = { "io.github.alainm23.planify", "--background" };
+        const string[] DAEMON_COMMAND = { "io.github.lab_gek.bluplan", "--background" };
         if (portal == null) {
             portal = new Xdp.Portal ();
         }
 
         string reason = _(
-            "Planify will automatically start when this device turns on " + "and run when its window is closed so that it can send to-do notifications.");
+            "BluPlan will automatically start when this device turns on " + "and run when its window is closed so that it can send to-do notifications.");
         var command = new GenericArray<unowned string> (2);
         foreach (unowned var arg in DAEMON_COMMAND) {
             command.add (arg);
@@ -189,7 +189,7 @@ public class Planify : Adw.Application {
     private void build_shortcuts () {
         var show_item = new SimpleAction ("show-item", VariantType.STRING);
         show_item.activate.connect ((parameter) => {
-            Planify.instance.main_window.view_item (parameter.get_string ());
+            BluPlan.instance.main_window.view_item (parameter.get_string ());
             activate ();
         });
 
@@ -227,7 +227,7 @@ public class Planify : Adw.Application {
         GLib.Environment.set_variable ("WEBKIT_DISABLE_DMABUF_RENDERER", "1", true);
         #endif
 
-        Planify app = Planify.instance;
+        BluPlan app = BluPlan.instance;
         return app.run (args);
     }
 }

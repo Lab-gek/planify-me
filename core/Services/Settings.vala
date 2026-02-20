@@ -32,7 +32,7 @@ public class Services.Settings : GLib.Object {
         return _instance;
     }
 
-    public const string ID = "io.github.alainm23.planify";
+    public const string ID = "io.github.lab_gek.bluplan";
 
     public Settings () {
         settings = new GLib.Settings (ID);

@@ -242,7 +242,7 @@ public class Views.Filter : Adw.Bin {
             dialog.set_pinned (true);
         }
 
-        dialog.present (Planify._instance.main_window);
+        dialog.present (BluPlan._instance.main_window);
     }
 
     private void update_request () {
@@ -634,7 +634,7 @@ public class Views.Filter : Adw.Bin {
             dialog.add_response ("cancel", _("Cancel"));
             dialog.add_response ("delete", _("Delete"));
             dialog.set_response_appearance ("delete", Adw.ResponseAppearance.DESTRUCTIVE);
-            dialog.present (Planify._instance.main_window);
+            dialog.present (BluPlan._instance.main_window);
 
             dialog.response.connect ((response) => {
                 if (response == "delete") {

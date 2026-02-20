@@ -372,7 +372,7 @@ public class Layouts.QuickAddCore : Adw.Bin {
         warning_image.gicon = new ThemedIcon ("dialog-warning");
         warning_image.pixel_size = 32;
 
-        var warning_label = new Gtk.Label (_("I'm sorry, Quick Add can't find any project available, try creating a project from Planify."));
+        var warning_label = new Gtk.Label (_("I'm sorry, Quick Add can't find any project available, try creating a project from BluPlan."));
         warning_label.wrap = true;
         warning_label.max_width_chars = 42;
         warning_label.xalign = 0;

@@ -218,7 +218,7 @@ public class Views.Scheduled.Scheduled : Adw.Bin {
         var dialog = new Dialogs.QuickAdd ();
         dialog.update_content (content);
         dialog.set_due (Utils.Datetime.get_date_only (new GLib.DateTime.now_local ().add_days (1)));
-        dialog.present (Planify._instance.main_window);
+        dialog.present (BluPlan._instance.main_window);
     }
 
     private Gtk.Popover build_view_setting_popover () {
@@ -333,7 +333,7 @@ public class Views.Scheduled.Scheduled : Adw.Bin {
                 }
             })] = dialog;
             
-            dialog.present (Planify._instance.main_window);
+            dialog.present (BluPlan._instance.main_window);
         })] = labels_filter;
 
         return popover;

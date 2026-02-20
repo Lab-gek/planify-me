@@ -20,12 +20,12 @@ msgstr ""
 "n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
 "X-Generator: Weblate 5.16-dev\n"
 
-#: data/io.github.alainm23.planify.appdata.xml.in.in:7
-#: data/io.github.alainm23.planify.desktop.in.in:4
+#: data/io.github.lab_gek.bluplan.appdata.xml.in.in:7
+#: data/io.github.lab_gek.bluplan.desktop.in.in:4
 msgid "Forget about forgetting things"
 msgstr "Забудьте про забування справ"
 
-#: data/io.github.alainm23.planify.appdata.xml.in.in:13
+#: data/io.github.lab_gek.bluplan.appdata.xml.in.in:13
 msgid ""
 "Planify is your modern and powerful task manager that helps you keep your "
 "life organized. With a clean and intuitive interface, cloud synchronization, "
@@ -36,62 +36,62 @@ msgstr ""
 "інтерфейсу, хмарній синхронізації та розширеним функціям ви ніколи не "
 "забудете, що важливо."
 
-#: data/io.github.alainm23.planify.appdata.xml.in.in:14
+#: data/io.github.lab_gek.bluplan.appdata.xml.in.in:14
 msgid "✨ Core Features:"
 msgstr "✨ Основні функції:"
 
-#: data/io.github.alainm23.planify.appdata.xml.in.in:16
+#: data/io.github.lab_gek.bluplan.appdata.xml.in.in:16
 msgid "Modern and clean interface designed with GTK4 and libadwaita"
 msgstr ""
 "Сучасний та чистий інтерфейс, розроблений за допомогою GTK4 та libadwaita"
 
-#: data/io.github.alainm23.planify.appdata.xml.in.in:17
+#: data/io.github.lab_gek.bluplan.appdata.xml.in.in:17
 msgid "Drag and drop to organize tasks and projects effortlessly"
 msgstr "Перетягування для легкого впорядкування завдань та проектів"
 
-#: data/io.github.alainm23.planify.appdata.xml.in.in:18
+#: data/io.github.lab_gek.bluplan.appdata.xml.in.in:18
 msgid "Visual progress indicators for each project"
 msgstr "Візуальні індикатори прогресу для кожного проекту"
 
-#: data/io.github.alainm23.planify.appdata.xml.in.in:19
+#: data/io.github.lab_gek.bluplan.appdata.xml.in.in:19
 msgid "Smart organization with sections and custom labels"
 msgstr "Розумна організація з розділами та налаштовуваними мітками"
 
-#: data/io.github.alainm23.planify.appdata.xml.in.in:20
+#: data/io.github.lab_gek.bluplan.appdata.xml.in.in:20
 msgid "Calendar integration to visualize your schedule"
 msgstr "Інтеграція календаря для візуалізації вашого розкладу"
 
-#: data/io.github.alainm23.planify.appdata.xml.in.in:21
+#: data/io.github.lab_gek.bluplan.appdata.xml.in.in:21
 msgid "Multiple reminders per task to never miss a deadline"
 msgstr ""
 "Кілька нагадувань для кожного завдання, щоб ніколи не пропустити дедлайн"
 
-#: data/io.github.alainm23.planify.appdata.xml.in.in:22
+#: data/io.github.lab_gek.bluplan.appdata.xml.in.in:22
 msgid "Dark mode with seamless system theme integration"
 msgstr "Темний режим із безшовною інтеграцією системної теми"
 
-#: data/io.github.alainm23.planify.appdata.xml.in.in:23
+#: data/io.github.lab_gek.bluplan.appdata.xml.in.in:23
 msgid "Quick and powerful search to find anything instantly"
 msgstr "Швидкий та потужний пошук, щоб миттєво знайти будь-що"
 
-#: data/io.github.alainm23.planify.appdata.xml.in.in:24
+#: data/io.github.lab_gek.bluplan.appdata.xml.in.in:24
 msgid "Recurring tasks with flexible patterns"
 msgstr "Повторювані завдання з гнучкими шаблонами"
 
-#: data/io.github.alainm23.planify.appdata.xml.in.in:25
+#: data/io.github.lab_gek.bluplan.appdata.xml.in.in:25
 msgid "Attachments and links in your tasks"
 msgstr "Вкладення та посилання у ваших завданнях"
 
-#: data/io.github.alainm23.planify.appdata.xml.in.in:27
+#: data/io.github.lab_gek.bluplan.appdata.xml.in.in:27
 msgid "☁️ Cloud Synchronization:"
 msgstr "☁️ Синхронізація з хмарою:"
 
-#: data/io.github.alainm23.planify.appdata.xml.in.in:29
+#: data/io.github.lab_gek.bluplan.appdata.xml.in.in:29
 msgid "Full synchronization with Todoist to access your tasks from anywhere"
 msgstr ""
 "Повна синхронізація з Todoist для доступу до ваших завдань з будь-якого місця"
 
-#: data/io.github.alainm23.planify.appdata.xml.in.in:30
+#: data/io.github.lab_gek.bluplan.appdata.xml.in.in:30
 msgid ""
 "Support for Nextcloud and CalDAV servers (Radicale, Baïkal) to keep your "
 "data private"
@@ -99,25 +99,25 @@ msgstr ""
 "Підтримка серверів Nextcloud та CalDAV (Radicale, Baïkal) для захисту "
 "конфіденційності ваших даних"
 
-#: data/io.github.alainm23.planify.appdata.xml.in.in:31
+#: data/io.github.lab_gek.bluplan.appdata.xml.in.in:31
 msgid "Offline mode: work without internet and sync when you're back online"
 msgstr ""
 "Офлайн-режим: працюйте без інтернету та синхронізуйте, коли знову "
 "підключитеся до мережі"
 
-#: data/io.github.alainm23.planify.appdata.xml.in.in:32
+#: data/io.github.lab_gek.bluplan.appdata.xml.in.in:32
 msgid "Cross-platform synchronization to access from any device"
 msgstr "Міжплатформна синхронізація для доступу з будь-якого пристрою"
 
-#: data/io.github.alainm23.planify.appdata.xml.in.in:34
+#: data/io.github.lab_gek.bluplan.appdata.xml.in.in:34
 msgid "* Planify is not created by, affiliated with, or supported by Doist"
 msgstr "* Planify не створений, не пов'язаний з Doist та не підтримується нею"
 
-#: data/io.github.alainm23.planify.desktop.in.in:3
+#: data/io.github.lab_gek.bluplan.desktop.in.in:3
 msgid "Planify"
 msgstr "Planify"
 
-#: data/io.github.alainm23.planify.desktop.in.in:14
+#: data/io.github.lab_gek.bluplan.desktop.in.in:14
 msgid "development;task;tasks;project;todo;reminder;reminders;event;events;calendar;todoist;"
 msgstr ""
 "development;task;tasks;project;todo;reminder;reminders;event;events;calendar;todoist;"

@@ -1,6 +1,6 @@
 # Adding New Language Support
 
-This guide will help you add support for a new language in Planify's date parsing system.
+This guide will help you add support for a new language in BluPlan's date parsing system.
 
 ## 📁 File Structure
 
@@ -97,4 +97,4 @@ Once your implementation is ready:
 3. Commit your changes: `git commit -m "Add [language] language support"`
 4. Submit a pull request
 
-Thanks for helping make Planify more accessible! 🌍
+Thanks for helping make BluPlan more accessible! 🌍

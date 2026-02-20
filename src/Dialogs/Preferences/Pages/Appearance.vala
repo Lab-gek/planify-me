@@ -73,7 +73,7 @@ public class Dialogs.Preferences.Pages.Appearance : Dialogs.Preferences.Pages.Ba
         };
 
         light_row.add_prefix (new Adw.Avatar (32, null, true) {
-            custom_image = new Gtk.Image.from_resource ("/io/github/alainm23/planify/light-mode.svg").get_paintable (),
+            custom_image = new Gtk.Image.from_resource ("/io/github/lab_gek/bluplan/light-mode.svg").get_paintable (),
             css_classes = { "theme-mode-image" }
         });
         light_row.add_suffix (light_radio);
@@ -90,7 +90,7 @@ public class Dialogs.Preferences.Pages.Appearance : Dialogs.Preferences.Pages.Ba
         };
 
         dark_row.add_prefix (new Adw.Avatar (32, null, true) {
-            custom_image = new Gtk.Image.from_resource ("/io/github/alainm23/planify/dark-mode.svg").get_paintable (),
+            custom_image = new Gtk.Image.from_resource ("/io/github/lab_gek/bluplan/dark-mode.svg").get_paintable (),
             css_classes = { "theme-mode-image" }
         });
         dark_row.add_suffix (dark_radio);
@@ -107,7 +107,7 @@ public class Dialogs.Preferences.Pages.Appearance : Dialogs.Preferences.Pages.Ba
         };
 
         blue_row.add_prefix (new Adw.Avatar (32, null, true) {
-            custom_image = new Gtk.Image.from_resource ("/io/github/alainm23/planify/blue-mode.svg").get_paintable (),
+            custom_image = new Gtk.Image.from_resource ("/io/github/lab_gek/bluplan/blue-mode.svg").get_paintable (),
             css_classes = { "theme-mode-image" }
         });
         blue_row.add_suffix (blue_radio);

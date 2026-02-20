@@ -60,7 +60,7 @@ public class Services.Notification : GLib.Object {
     private void reminder_added (Objects.Reminder reminder) {
         if (reminder.datetime.compare (new GLib.DateTime.now_local ()) <= 0) {
             GLib.Notification notification = build_notification (reminder);
-            Planify.instance.send_notification (reminder.id, notification);
+            BluPlan.instance.send_notification (reminder.id, notification);
             Services.Store.instance ().delete_reminder (reminder);
         } else if (Utils.Datetime.is_same_day (reminder.datetime, new GLib.DateTime.now_local ())) {
             uint interval = (uint) time_until_now (reminder.datetime);
@@ -85,14 +85,14 @@ public class Services.Notification : GLib.Object {
         }
 
         GLib.Notification notification = build_notification (reminder);
-        Planify.instance.send_notification (uid, notification);
+        BluPlan.instance.send_notification (uid, notification);
         Services.Store.instance ().delete_reminder (reminder);
     }
 
     private GLib.Notification build_notification (Objects.Reminder reminder) {
         var notification = new GLib.Notification (reminder.item.project.name);
         notification.set_body (reminder.item.content);
-        notification.set_icon (new ThemedIcon ("io.github.alainm23.planify"));
+        notification.set_icon (new ThemedIcon ("io.github.lab_gek.bluplan"));
         notification.set_priority (GLib.NotificationPriority.URGENT);
         notification.set_default_action_and_target_value ("show-item", new Variant.string (reminder.item_id));
         notification.add_button_with_target_value (_("Complete"), "app.complete", new Variant.string (reminder.item_id));

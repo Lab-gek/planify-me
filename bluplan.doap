@@ -5,7 +5,7 @@
          xmlns:gnome="http://api.gnome.org/doap-extensions#"
          xmlns="http://usefulinc.com/ns/doap#">
 
-  <name xml:lang="en">Planify</name>
+  <name xml:lang="en">BluPlan</name>
   <shortdesc xml:lang="en">Forget about forgetting things</shortdesc>
   <homepage rdf:resource="https://github.com/alainm23/planify" />
   <bug-database rdf:resource="https://github.com/alainm23/planify/issues"/>

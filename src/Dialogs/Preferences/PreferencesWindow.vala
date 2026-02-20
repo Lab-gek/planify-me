@@ -49,7 +49,7 @@ public class Dialogs.Preferences.PreferencesWindow : Adw.PreferencesDialog {
 
         var banner_description =
             new Gtk.Label (_(
-                               "Planify is being developed with love and passion for open source. However, if you like Planify and want to support its development, please consider supporting us.")) {
+                               "BluPlan is being developed with love and passion for open source. However, if you like BluPlan and want to support its development, please consider supporting us.")) {
             halign = START,
             xalign = 0,
             yalign = 0,
@@ -374,7 +374,7 @@ public class Dialogs.Preferences.PreferencesWindow : Adw.PreferencesDialog {
         signal_map[delete_row.activated.connect (() => {
             Util.get_default ().clear_database (_("Delete All Data?"),
                                                 _("Deletes all your lists, tasks, and reminders irreversibly"),
-                                                Planify.instance.main_window);
+                                                BluPlan.instance.main_window);
         })] = delete_row;
 
         add (page);

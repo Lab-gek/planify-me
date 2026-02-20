@@ -397,7 +397,7 @@ public class Layouts.ProjectRow : Gtk.ListBoxRow {
         handle_grid.add_controller (drop_magic_button_target);
         signals_map[drop_magic_button_target.drop.connect ((value, x, y) => {
             var dialog = new Dialogs.Project.new (project.source_id, false, project.id);
-            dialog.present (Planify._instance.main_window);
+            dialog.present (BluPlan._instance.main_window);
             return true;
         })] = drop_magic_button_target;
 
@@ -757,7 +757,7 @@ public class Layouts.ProjectRow : Gtk.ListBoxRow {
 
         edit_item.clicked.connect (() => {
             var dialog = new Dialogs.Project (project);
-            dialog.present (Planify._instance.main_window);
+            dialog.present (BluPlan._instance.main_window);
         });
 
         refresh_item.clicked.connect (() => {
@@ -765,7 +765,7 @@ public class Layouts.ProjectRow : Gtk.ListBoxRow {
         });
 
         delete_item.clicked.connect (() => {
-            project.delete_project ((Gtk.Window) Planify.instance.main_window);
+            project.delete_project ((Gtk.Window) BluPlan.instance.main_window);
         });
 
         share_markdown_item.clicked.connect (() => {
@@ -781,7 +781,7 @@ public class Layouts.ProjectRow : Gtk.ListBoxRow {
         });
 
         archive_item.clicked.connect (() => {
-            project.archive_project ((Gtk.Window) Planify.instance.main_window);
+            project.archive_project ((Gtk.Window) BluPlan.instance.main_window);
         });
     }
 

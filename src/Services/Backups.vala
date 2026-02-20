@@ -53,7 +53,7 @@ public class Services.Backups : Object {
 
         builder = new Json.Builder ();
         parser = new Json.Parser ();
-        path = Environment.get_user_data_dir () + "/io.github.alainm23.planify/backups";
+        path = Environment.get_user_data_dir () + "/io.github.lab_gek.bluplan/backups";
     }
 
     public Gee.ArrayList<Objects.Backup> get_backups_collection () {
@@ -389,7 +389,7 @@ public class Services.Backups : Object {
 
     public void create_backup () {
         var datetime = new GLib.DateTime.now_local ();
-        var file_name = "Planify backup %s.json".printf (datetime.format ("%c"));
+        var file_name = "BluPlan backup %s.json".printf (datetime.format ("%c"));
         var path = path + "/" + file_name;
 
         var file = File.new_for_path (path);
@@ -419,7 +419,7 @@ public class Services.Backups : Object {
         dialog.add_response ("cancel", _("Cancel"));
         dialog.add_response ("delete", _("Delete"));
         dialog.set_response_appearance ("delete", Adw.ResponseAppearance.DESTRUCTIVE);
-        dialog.present ((Gtk.Window) Planify.instance.main_window);
+        dialog.present ((Gtk.Window) BluPlan.instance.main_window);
 
         dialog.response.connect ((response) => {
             if (response == "delete") {
@@ -440,10 +440,10 @@ public class Services.Backups : Object {
 
     public void save_file_as (Objects.Backup backup) {
         var dialog = new Gtk.FileDialog ();
-        dialog.initial_name = "Planify backup %s.json".printf (backup.title);
+        dialog.initial_name = "BluPlan backup %s.json".printf (backup.title);
         add_filters (dialog);
 
-        dialog.save.begin (Planify._instance.main_window, null, (obj, res) => {
+        dialog.save.begin (BluPlan._instance.main_window, null, (obj, res) => {
             try {
                 var file = dialog.save.end (res);
 
@@ -468,7 +468,7 @@ public class Services.Backups : Object {
         add_filters (dialog);
 
         try {
-            var file = yield dialog.open (Planify._instance.main_window, null);
+            var file = yield dialog.open (BluPlan._instance.main_window, null);
 
             return file;
         } catch (Error e) {
@@ -545,11 +545,11 @@ public class Services.Backups : Object {
     private void show_message () {
         var dialog = new Adw.AlertDialog (
             _("Backup Successfully Imported"),
-            _("Planify will restart to apply the changes")
+            _("BluPlan will restart to apply the changes")
         );
 
         dialog.add_response ("ok", _("Restart Now"));
-        dialog.present (Planify._instance.main_window);
+        dialog.present (BluPlan._instance.main_window);
 
         dialog.response.connect ((response) => {
             restart_application ();
@@ -557,12 +557,12 @@ public class Services.Backups : Object {
     }
 
     private void restart_application () {
-        Planify._instance.recreate_main_window ();
+        BluPlan._instance.recreate_main_window ();
     }
 
     private void add_filters (Gtk.FileDialog file_dialog) {
         var filter = new Gtk.FileFilter ();
-        filter.set_filter_name (_("Planify Backup Files"));
+        filter.set_filter_name (_("BluPlan Backup Files"));
         filter.add_pattern ("*.json");
         
         var filters = new ListStore (typeof (Gtk.FileFilter));

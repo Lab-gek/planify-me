@@ -250,7 +250,7 @@ public class Views.Project : Adw.Bin {
 #if WITH_EVOLUTION
         calendar_sync_button.clicked.connect (() => {
             var dialog = new Dialogs.CalendarSync (project);
-            dialog.present (Planify._instance.main_window);
+            dialog.present (BluPlan._instance.main_window);
         });
 #endif
     }
@@ -395,7 +395,7 @@ public class Views.Project : Adw.Bin {
 
             signal_map[edit_item.activate_item.connect (() => {
                 var dialog = new Dialogs.Project (project);
-                dialog.present (Planify._instance.main_window);
+                dialog.present (BluPlan._instance.main_window);
             })] = edit_item;
         }
 
@@ -418,7 +418,7 @@ public class Views.Project : Adw.Bin {
                     project.update_local ();
                 })] = dialog;
 
-                dialog.present (Planify._instance.main_window);
+                dialog.present (BluPlan._instance.main_window);
             })] = schedule_item;
 
             signal_map[duplicate_item.clicked.connect (() => {
@@ -436,7 +436,7 @@ public class Views.Project : Adw.Bin {
 
             signal_map[manage_sections.clicked.connect (() => {
                 var dialog = new Dialogs.ManageSectionOrder (project);
-                dialog.present (Planify._instance.main_window);
+                dialog.present (BluPlan._instance.main_window);
             })] = manage_sections;
         }
 
@@ -452,7 +452,7 @@ public class Views.Project : Adw.Bin {
 
             calendar_sync_item.clicked.connect (() => {
                 var dialog = new Dialogs.CalendarSync (project);
-                dialog.present (Planify._instance.main_window);
+                dialog.present (BluPlan._instance.main_window);
             });
         }
 #endif
@@ -467,11 +467,11 @@ public class Views.Project : Adw.Bin {
             menu_box.append (delete_item);
 
             signal_map[archive_item.clicked.connect (() => {
-                project.archive_project ((Gtk.Window) Planify.instance.main_window);
+                project.archive_project ((Gtk.Window) BluPlan.instance.main_window);
             })] = archive_item;
 
             signal_map[delete_item.clicked.connect (() => {
-                project.delete_project ((Gtk.Window) Planify.instance.main_window);
+                project.delete_project ((Gtk.Window) BluPlan.instance.main_window);
             })] = delete_item;
         }
 
@@ -488,7 +488,7 @@ public class Views.Project : Adw.Bin {
             clipboard.read_text_async.begin (null, (obj, res) => {
                 try {
                     string content = clipboard.read_text_async.end (res);
-                    Planify.instance.main_window.add_task_action (content);
+                    BluPlan.instance.main_window.add_task_action (content);
                 } catch (GLib.Error error) {
                     debug (error.message);
                 }
@@ -687,7 +687,7 @@ public class Views.Project : Adw.Bin {
             popover.popdown ();
 
             var dialog = new Dialogs.CompletedTasks (project);
-            dialog.present (Planify._instance.main_window);
+            dialog.present (BluPlan._instance.main_window);
         })] = show_completed_item_button;
 
         signal_map[project.sorted_by_changed.connect (() => {
@@ -762,7 +762,7 @@ public class Views.Project : Adw.Bin {
             var dialog = new Dialogs.LabelPicker ();
             dialog.add_labels (project.source);
             dialog.labels = _labels;
-            dialog.present (Planify._instance.main_window);
+            dialog.present (BluPlan._instance.main_window);
 
             dialog.labels_changed.connect ((labels) => {
                 foreach (Objects.Label label in labels.values) {
@@ -798,7 +798,7 @@ public class Views.Project : Adw.Bin {
         }
 
         var dialog = new Dialogs.Section.new (project);
-        dialog.present (Planify._instance.main_window);
+        dialog.present (BluPlan._instance.main_window);
     }
 
     private void clear_multi_select () {

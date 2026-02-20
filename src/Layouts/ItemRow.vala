@@ -1301,7 +1301,7 @@ public class Layouts.ItemRow : Layouts.ItemBase {
                     }
                 })] = dialog;
 
-                dialog.present (Planify._instance.main_window);
+                dialog.present (BluPlan._instance.main_window);
             })] = move_item;
 
             signals_map[labels_item.activate_item.connect (() => {
@@ -1316,7 +1316,7 @@ public class Layouts.ItemRow : Layouts.ItemBase {
                     item.update_labels (labels);
                 })] = dialog;
 
-                dialog.present (Planify._instance.main_window);
+                dialog.present (BluPlan._instance.main_window);
             })] = labels_item;
 
             signals_map[complete_item.activate_item.connect (() => {
@@ -1331,7 +1331,7 @@ public class Layouts.ItemRow : Layouts.ItemBase {
             signals_map[add_item.activate_item.connect (() => {
                 var dialog = new Dialogs.QuickAdd ();
                 dialog.for_base_object (item);
-                dialog.present (Planify._instance.main_window);
+                dialog.present (BluPlan._instance.main_window);
             })] = add_item;
 
             signals_map[duplicate_item.clicked.connect (() => {
@@ -1419,7 +1419,7 @@ public class Layouts.ItemRow : Layouts.ItemBase {
                 })] = dialog;
 
                 dialog.project = item.project;
-                dialog.present (Planify._instance.main_window);
+                dialog.present (BluPlan._instance.main_window);
             })] = move_item;
         }
 
@@ -1435,7 +1435,7 @@ public class Layouts.ItemRow : Layouts.ItemBase {
 
         signals_map[more_information_item.activate_item.connect (() => {
             var dialog = new Dialogs.ItemChangeHistory (item);
-            dialog.present (Planify._instance.main_window);
+            dialog.present (BluPlan._instance.main_window);
         })] = more_information_item;
 
         return popover;
@@ -1764,7 +1764,7 @@ public class Layouts.ItemRow : Layouts.ItemBase {
         dnd_handlerses[drop_magic_button_target.drop.connect ((value, x, y) => {
             var dialog = new Dialogs.QuickAdd ();
             dialog.for_base_object (item);
-            dialog.present (Planify._instance.main_window);
+            dialog.present (BluPlan._instance.main_window);
 
             return true;
         })] = drop_magic_button_target;
@@ -1786,7 +1786,7 @@ public class Layouts.ItemRow : Layouts.ItemBase {
                 }
             }
 
-            dialog.present (Planify._instance.main_window);
+            dialog.present (BluPlan._instance.main_window);
             return true;
         })] = drop_order_magic_button_target;
     }

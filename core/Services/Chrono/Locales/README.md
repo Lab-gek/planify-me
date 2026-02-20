@@ -1,6 +1,6 @@
-# 🌍 Multi-language Support for Planify
+# 🌍 Multi-language Support for BluPlan
 
-This directory contains multi-language support for Planify's date parsing system.
+This directory contains multi-language support for BluPlan's date parsing system.
 
 ## 📁 Structure
 
@@ -101,4 +101,4 @@ Before submitting your implementation:
 - ✅ **Spanish** (es) - Complete
 - 🚧 **Your language here** - Contribute!
 
-Help us make Planify accessible to more people! 🚀
+Help us make BluPlan accessible to more people! 🚀

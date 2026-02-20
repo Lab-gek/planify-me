@@ -20,7 +20,7 @@
  */
 
 public class MainWindow : Adw.ApplicationWindow {
-    public weak Planify app { get; construct; }
+    public weak BluPlan app { get; construct; }
 
     private Layouts.Sidebar sidebar;
     private Adw.ViewStack views_stack;
@@ -40,12 +40,12 @@ public class MainWindow : Adw.ApplicationWindow {
     private const int64 VIEW_TIMEOUT = 300000000;
     private Gee.ArrayList<ViewCacheItem> view_cache = new Gee.ArrayList<ViewCacheItem> ();
 
-    public MainWindow (Planify application) {
+    public MainWindow (BluPlan application) {
         Object (
             application: application,
             app: application,
             icon_name: Build.APPLICATION_ID,
-            title: "Planify",
+            title: "BluPlan",
             width_request: 360,
             height_request: 294
         );
@@ -57,7 +57,7 @@ public class MainWindow : Adw.ApplicationWindow {
 
     static construct {
         weak Gtk.IconTheme default_theme = Gtk.IconTheme.get_for_display (Gdk.Display.get_default ());
-        default_theme.add_resource_path ("/io/github/alainm23/planify/");
+        default_theme.add_resource_path ("/io/github/lab_gek/bluplan/");
     }
 
     construct {
@@ -85,7 +85,7 @@ public class MainWindow : Adw.ApplicationWindow {
             css_classes = { "flat" }
         };
 
-        var title_label = new Gtk.Label ("Planify");
+        var title_label = new Gtk.Label ("BluPlan");
         title_label.add_css_class ("title");
 
         var sidebar_header = new Adw.HeaderBar () {
@@ -260,12 +260,12 @@ public class MainWindow : Adw.ApplicationWindow {
             bool active = Services.Settings.get_default ().settings.get_boolean ("run-on-startup");
 
             if (active) {
-                Planify.instance.ask_for_background.begin (Xdp.BackgroundFlags.AUTOSTART, (obj, res) => {
-                    Planify.instance.ask_for_background.end (res);
+                BluPlan.instance.ask_for_background.begin (Xdp.BackgroundFlags.AUTOSTART, (obj, res) => {
+                    BluPlan.instance.ask_for_background.end (res);
                 });
             } else {
-                Planify.instance.ask_for_background.begin (Xdp.BackgroundFlags.NONE, (obj, res) => {
-                    Planify.instance.ask_for_background.end (res);
+                BluPlan.instance.ask_for_background.begin (Xdp.BackgroundFlags.NONE, (obj, res) => {
+                    BluPlan.instance.ask_for_background.end (res);
                 });
             }
         });
@@ -338,7 +338,7 @@ public class MainWindow : Adw.ApplicationWindow {
         Services.EventBus.get_default ().send_task_completed_toast.connect (show_task_completed_toast);
 
         search_button.clicked.connect (() => {
-            (new Dialogs.QuickFind.QuickFind ()).present (Planify._instance.main_window);
+            (new Dialogs.QuickFind.QuickFind ()).present (BluPlan._instance.main_window);
         });
 
         Services.EventBus.get_default ().open_item.connect ((item) => {
@@ -687,7 +687,7 @@ public class MainWindow : Adw.ApplicationWindow {
             } else {
                 var dialog = new Dialogs.QuickAdd ();
                 dialog.update_content (content);
-                dialog.present (Planify._instance.main_window);
+                dialog.present (BluPlan._instance.main_window);
             }
         }
     }
@@ -712,7 +712,7 @@ public class MainWindow : Adw.ApplicationWindow {
         var keyboard_shortcuts_item = new Widgets.ContextMenu.MenuItem (_("Keyboard Shortcuts"));
         keyboard_shortcuts_item.secondary_text = "F1";
 
-        var about_item = new Widgets.ContextMenu.MenuItem (_("About Planify"));
+        var about_item = new Widgets.ContextMenu.MenuItem (_("About BluPlan"));
 
         archive_item = new Widgets.ContextMenu.MenuItem (_("Archived Projects"));
         archive_separator = new Widgets.ContextMenu.MenuSeparator ();
@@ -747,7 +747,7 @@ public class MainWindow : Adw.ApplicationWindow {
 
         archive_item.clicked.connect (() => {
             var dialog = new Dialogs.ManageProjects ();
-            dialog.present (Planify._instance.main_window);
+            dialog.present (BluPlan._instance.main_window);
         });
 
         return popover;
@@ -756,7 +756,7 @@ public class MainWindow : Adw.ApplicationWindow {
     public void open_shortcuts_window () {
         try {
             var shortcuts_builder = new Gtk.Builder ();
-            shortcuts_builder.add_from_resource ("/io/github/alainm23/planify/shortcuts.ui");
+            shortcuts_builder.add_from_resource ("/io/github/lab_gek/bluplan/shortcuts.ui");
             
             var shortcuts_window = (Gtk.ShortcutsWindow) shortcuts_builder.get_object ("shortcuts-planify");
             shortcuts_window.set_transient_for (this);
@@ -768,7 +768,7 @@ public class MainWindow : Adw.ApplicationWindow {
 
     public void open_preferences_window () {
         var preferences_dialog = new Dialogs.Preferences.PreferencesWindow ();
-        preferences_dialog.present (Planify._instance.main_window);
+        preferences_dialog.present (BluPlan._instance.main_window);
     }
 
     public void send_toast_error (int error_code, string error_message) {
@@ -810,19 +810,19 @@ public class MainWindow : Adw.ApplicationWindow {
             dialog = new Adw.AboutDialog ();
         } else {
             dialog = new Adw.AboutDialog.from_appdata (
-                "/io/github/alainm23/planify/" + Build.APPLICATION_ID + ".appdata.xml.in.in", Build.VERSION
+                "/io/github/lab_gek/bluplan/" + Build.APPLICATION_ID + ".appdata.xml.in.in", Build.VERSION
             );
         }
 
         dialog.application_icon = Build.APPLICATION_ID;
-        dialog.application_name = "Planify";
+        dialog.application_name = "BluPlan";
         dialog.developer_name = "Alain";
         dialog.designers = { "Alain" };
         dialog.website = "https://github.com/alainm23/planify";
         dialog.developers = { "Alain" };
         dialog.issue_url = "https://github.com/alainm23/planify/issues";
 
-        dialog.present (Planify._instance.main_window);
+        dialog.present (BluPlan._instance.main_window);
     }
 
     private Gtk.Widget build_error_db_page () {

@@ -384,7 +384,7 @@ public class Layouts.SectionBoard : Gtk.FlowBoxChild {
         signals_map[edit_gesture.released.connect ((n_press, x, y) => {
             if (n_press == 2) {
                 var dialog = new Dialogs.Section (section);
-                dialog.present (Planify._instance.main_window);
+                dialog.present (BluPlan._instance.main_window);
             }
         })] = edit_gesture;
 
@@ -605,13 +605,13 @@ public class Layouts.SectionBoard : Gtk.FlowBoxChild {
 
         edit_item.clicked.connect (() => {
             var dialog = new Dialogs.Section (section);
-            dialog.present (Planify._instance.main_window);
+            dialog.present (BluPlan._instance.main_window);
         });
 
         move_item.clicked.connect (() => {
             var dialog = new Dialogs.ProjectPicker.ProjectPicker.for_source (section.source);
             dialog.project = section.project;
-            dialog.present (Planify._instance.main_window);
+            dialog.present (BluPlan._instance.main_window);
 
             dialog.changed.connect ((type, id) => {
                 if (type == "project") {
@@ -622,11 +622,11 @@ public class Layouts.SectionBoard : Gtk.FlowBoxChild {
 
         manage_item.clicked.connect (() => {
             var dialog = new Dialogs.ManageSectionOrder (section.project);
-            dialog.present (Planify._instance.main_window);
+            dialog.present (BluPlan._instance.main_window);
         });
 
         archive_item.clicked.connect (() => {
-            section.archive_section ((Gtk.Window) Planify.instance.main_window);
+            section.archive_section ((Gtk.Window) BluPlan.instance.main_window);
         });
 
         delete_item.clicked.connect (() => {
@@ -638,7 +638,7 @@ public class Layouts.SectionBoard : Gtk.FlowBoxChild {
             dialog.add_response ("cancel", _ ("Cancel"));
             dialog.add_response ("delete", _ ("Delete"));
             dialog.set_response_appearance ("delete", Adw.ResponseAppearance.DESTRUCTIVE);
-            dialog.present (Planify._instance.main_window);
+            dialog.present (BluPlan._instance.main_window);
 
             dialog.response.connect ((response) => {
                 if (response == "delete") {
@@ -659,7 +659,7 @@ public class Layouts.SectionBoard : Gtk.FlowBoxChild {
         show_completed_item.clicked.connect (() => {
             var dialog = new Dialogs.CompletedTasks (section.project);
             dialog.add_update_filter (section);
-            dialog.present (Planify._instance.main_window);
+            dialog.present (BluPlan._instance.main_window);
         });
 
         duplicate_item.clicked.connect (() => {
@@ -674,7 +674,7 @@ public class Layouts.SectionBoard : Gtk.FlowBoxChild {
         dialog.for_base_object (section);
         dialog.update_content (content);
         dialog.set_new_task_position (new_task_position);
-        dialog.present (Planify._instance.main_window);
+        dialog.present (BluPlan._instance.main_window);
     }
 
     private void move_section (string project_id) {

@@ -20,7 +20,7 @@
  */
 
 public class Services.ActionManager : Object {
-    public Planify app { get; construct; }
+    public BluPlan app { get; construct; }
     public MainWindow window { get; construct; }
 
     public SimpleActionGroup actions { get; construct; }
@@ -69,7 +69,7 @@ public class Services.ActionManager : Object {
         { ACTION_SHOW_HIDE_SIDEBAR, action_show_hide_sidebar }
     };
 
-    public ActionManager (Planify app, MainWindow window) {
+    public ActionManager (BluPlan app, MainWindow window) {
         Object (
             app: app,
             window: window
@@ -168,7 +168,7 @@ public class Services.ActionManager : Object {
 
     private void action_open_search () {
         var dialog = new Dialogs.QuickFind.QuickFind ();
-        dialog.present (Planify._instance.main_window);
+        dialog.present (BluPlan._instance.main_window);
     }
 
     private void action_sync_manually () {
@@ -181,7 +181,7 @@ public class Services.ActionManager : Object {
         var default_source = Services.Store.instance ().get_default_source ();
         var source_id = default_source != null ? default_source.id : SourceType.LOCAL.to_string ();
         var dialog = new Dialogs.Project.new (source_id, true);
-        dialog.present (Planify._instance.main_window);
+        dialog.present (BluPlan._instance.main_window);
     }
 
     private void action_view_homepage () {

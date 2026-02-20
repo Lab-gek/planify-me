@@ -21,7 +21,7 @@ The class structure is highly intertwined between a few key objects: Item, Proje
 
 ```mermaid
 sequenceDiagram
-        title Opening Planify
+        title Opening BluPlan
 
         participant User
         participant Application
@@ -43,7 +43,7 @@ When the user opens the application, the `App.vala` runs `MainWindow.vala` to in
 
 ![](docs/image4.png)
 
-The Planify app has three main Views. The label list ([src/Views/Label](https://github.com/alainm23/planify/tree/main/src/Views/Label)), the task list ([src/Views/Project/List.vala](https://github.com/alainm23/planify/blob/main/src/Views/Project/List.vala)), and the day list ([src/Views/Scheduled](https://github.com/alainm23/planify/tree/main/src/Views/Scheduled)). As the user, as you navigate around the application, you can transition between these different states, changing which view is in your main window. By using the Inbox, Today, Scheduled, and Labels buttons in the sidebar, you can transition between those modes, which have specific Views associated with them. For example, if you press the Labels button, that will open a label list view. If you click on a specific label, you will be transitioned to a task list view with all of the tasks with that label attached. From here, you could transition to the day list view by pressing the Scheduled button in the sidebar.
+The BluPlan app has three main Views. The label list ([src/Views/Label](https://github.com/alainm23/planify/tree/main/src/Views/Label)), the task list ([src/Views/Project/List.vala](https://github.com/alainm23/planify/blob/main/src/Views/Project/List.vala)), and the day list ([src/Views/Scheduled](https://github.com/alainm23/planify/tree/main/src/Views/Scheduled)). As the user, as you navigate around the application, you can transition between these different states, changing which view is in your main window. By using the Inbox, Today, Scheduled, and Labels buttons in the sidebar, you can transition between those modes, which have specific Views associated with them. For example, if you press the Labels button, that will open a label list view. If you click on a specific label, you will be transitioned to a task list view with all of the tasks with that label attached. From here, you could transition to the day list view by pressing the Scheduled button in the sidebar.
 
 ## Adding a new task
 

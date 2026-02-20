@@ -297,7 +297,7 @@ public class Layouts.SectionRow : Gtk.ListBoxRow {
         signal_map[edit_gesture.released.connect ((n_press, x, y) => {
             if (n_press == 2) {
                 var dialog = new Dialogs.Section (section);
-                dialog.present (Planify._instance.main_window);
+                dialog.present (BluPlan._instance.main_window);
             }
         })] = edit_gesture;
 
@@ -649,7 +649,7 @@ public class Layouts.SectionRow : Gtk.ListBoxRow {
         dialog.for_base_object (section);
         dialog.update_content (content);
         dialog.set_new_task_position (new_task_position);
-        dialog.present (Planify._instance.main_window);
+        dialog.present (BluPlan._instance.main_window);
     }
 
     public void hide_destroy () {
@@ -707,13 +707,13 @@ public class Layouts.SectionRow : Gtk.ListBoxRow {
 
         edit_item.clicked.connect (() => {
             var dialog = new Dialogs.Section (section);
-            dialog.present (Planify._instance.main_window);
+            dialog.present (BluPlan._instance.main_window);
         });
 
         move_item.clicked.connect (() => {
             var dialog = new Dialogs.ProjectPicker.ProjectPicker.for_source (section.source);
             dialog.project = section.project;
-            dialog.present (Planify._instance.main_window);
+            dialog.present (BluPlan._instance.main_window);
 
             dialog.changed.connect ((type, id) => {
                 if (type == "project") {
@@ -724,21 +724,21 @@ public class Layouts.SectionRow : Gtk.ListBoxRow {
 
         manage_item.clicked.connect (() => {
             var dialog = new Dialogs.ManageSectionOrder (section.project);
-            dialog.present (Planify._instance.main_window);
+            dialog.present (BluPlan._instance.main_window);
         });
 
         delete_item.clicked.connect (() => {
-            section.delete_section ((Gtk.Window) Planify.instance.main_window);
+            section.delete_section ((Gtk.Window) BluPlan.instance.main_window);
         });
 
         show_completed_item.clicked.connect (() => {
             var dialog = new Dialogs.CompletedTasks (section.project);
             dialog.add_update_filter (section);
-            dialog.present (Planify._instance.main_window);
+            dialog.present (BluPlan._instance.main_window);
         });
 
         archive_item.clicked.connect (() => {
-            section.archive_section ((Gtk.Window) Planify.instance.main_window);
+            section.archive_section ((Gtk.Window) BluPlan.instance.main_window);
         });
 
         duplicate_item.clicked.connect (() => {
