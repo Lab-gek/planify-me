@@ -16,3 +16,12 @@ test_chrono = executable(
 
 test('chrono', test_chrono, timeout: 30, suite: ['chrono'])
 
+test_points = executable(
+    'test-points',
+    'test-points.vala',
+    dependencies: [ core_dep, glib_dep ],
+    install: false
+)
+
+test('points', test_points, timeout: 30, suite: ['points'])
+

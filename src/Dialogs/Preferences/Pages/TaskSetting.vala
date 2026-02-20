@@ -172,6 +172,57 @@ public class Dialogs.Preferences.Pages.TaskSetting : Dialogs.Preferences.Pages.B
         reminders_group.add (automatic_reminders);
         reminders_group.add (reminders_comborow);
 
+        var points_group = new Adw.PreferencesGroup () {
+            title = _("Points")
+        };
+
+        var points_enabled = new Adw.SwitchRow () {
+            title = _("Enable Points System"),
+            subtitle = _("Award points based on scheduled duration and completion time")
+        };
+        Services.Settings.get_default ().settings.bind ("points-enabled", points_enabled, "active",
+                                                        GLib.SettingsBindFlags.DEFAULT);
+
+        var points_grace_row = new Adw.SpinRow.with_range (0, 120, 1) {
+            title = _("Grace Period (minutes)"),
+            subtitle = _("Time after the end time before late penalties apply"),
+            value = Services.Settings.get_default ().settings.get_int ("points-grace-period")
+        };
+        Services.Settings.get_default ().settings.bind ("points-enabled", points_grace_row, "sensitive",
+                                                        GLib.SettingsBindFlags.DEFAULT);
+
+        var points_penalty_curve_model = new Gtk.StringList (null);
+        points_penalty_curve_model.append (_("Relaxed"));
+        points_penalty_curve_model.append (_("Balanced"));
+        points_penalty_curve_model.append (_("Strict"));
+
+        var points_penalty_curve_row = new Widgets.ComboWrapRow ();
+        points_penalty_curve_row.title = _("Penalty Curve");
+        points_penalty_curve_row.subtitle = _("Choose how points drop after the grace period");
+        points_penalty_curve_row.model = points_penalty_curve_model;
+        points_penalty_curve_row.selected = Services.Settings.get_default ().settings.get_enum ("points-penalty-curve");
+        Services.Settings.get_default ().settings.bind ("points-enabled", points_penalty_curve_row, "sensitive",
+                                                        GLib.SettingsBindFlags.DEFAULT);
+
+        var points_assume_working = new Adw.SwitchRow () {
+            title = _("Assume Working"),
+            subtitle = _("Keep full points after grace period when you were still working")
+        };
+        Services.Settings.get_default ().settings.bind ("points-assume-working", points_assume_working,
+                                                        "active", GLib.SettingsBindFlags.DEFAULT);
+        Services.Settings.get_default ().settings.bind ("points-enabled", points_assume_working, "sensitive",
+                                                        GLib.SettingsBindFlags.DEFAULT);
+
+        points_group.add (points_enabled);
+        points_group.add (points_grace_row);
+        points_group.add (points_penalty_curve_row);
+        points_group.add (points_assume_working);
+        points_group.add (new Gtk.Label (_("Scoring: 1 point per 5 minutes of scheduled duration (max 24 points at 2 hours), +1 bonus point when completed at least 5 minutes early.\nRelaxed: after grace, up to 15 min late = 75%%, up to 45 min = 50%%, over 45 min = 25%%.\nBalanced: after grace, up to 10 min late = 50%%, up to 30 min = 25%%, over 30 min = 0%%.\nStrict: after grace, up to 5 min late = 50%%, up to 15 min = 25%%, over 15 min = 0%%.")) {
+            css_classes = { "caption", "dimmed" },
+            wrap = true,
+            xalign = 0
+        });
+
         var content_box = new Gtk.Box (Gtk.Orientation.VERTICAL, 12) {
             margin_start = 12,
             margin_end = 12,
@@ -180,6 +231,7 @@ public class Dialogs.Preferences.Pages.TaskSetting : Dialogs.Preferences.Pages.B
         };
         content_box.append (group);
         content_box.append (reminders_group);
+        content_box.append (points_group);
 
         var scrolled_window = new Gtk.ScrolledWindow () {
             hscrollbar_policy = Gtk.PolicyType.NEVER,
@@ -217,6 +269,14 @@ public class Dialogs.Preferences.Pages.TaskSetting : Dialogs.Preferences.Pages.B
         signal_map[reminders_comborow.notify["selected"].connect (() => {
             Services.Settings.get_default ().settings.set_enum ("automatic-reminders", reminders_comborow.selected);
         })] = reminders_comborow;
+
+        signal_map[points_grace_row.output.connect (() => {
+            Services.Settings.get_default ().settings.set_int ("points-grace-period", (int) points_grace_row.value);
+        })] = points_grace_row;
+
+        signal_map[points_penalty_curve_row.notify["selected"].connect (() => {
+            Services.Settings.get_default ().settings.set_enum ("points-penalty-curve", points_penalty_curve_row.selected);
+        })] = points_penalty_curve_row;
 
         destroy.connect (() => {
             clean_up ();

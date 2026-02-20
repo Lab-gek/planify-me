@@ -240,6 +240,7 @@ public class Layouts.ProjectRow : Gtk.ListBoxRow {
         child = main_revealer;
         update_request ();
         update_count_label (project.item_count);
+        update_points_tooltip ();
         Services.Settings.get_default ().settings.bind ("show-tasks-count", count_revealer, "reveal_child", GLib.SettingsBindFlags.DEFAULT);
 
         if (drag_n_drop) {
@@ -372,6 +373,23 @@ public class Layouts.ProjectRow : Gtk.ListBoxRow {
             main_revealer.reveal_child = !project.is_inbox_project;
         });
 
+        signals_map[Services.Settings.get_default ().settings.changed["points-enabled"].connect (() => {
+            update_count_label (project.item_count);
+            update_points_tooltip ();
+        })] = Services.Settings.get_default ();
+
+        signals_map[Services.Settings.get_default ().settings.changed["points-grace-period"].connect (() => {
+            update_points_tooltip ();
+        })] = Services.Settings.get_default ();
+
+        signals_map[Services.Settings.get_default ().settings.changed["points-assume-working"].connect (() => {
+            update_points_tooltip ();
+        })] = Services.Settings.get_default ();
+
+        signals_map[Services.Settings.get_default ().settings.changed["points-penalty-curve"].connect (() => {
+            update_points_tooltip ();
+        })] = Services.Settings.get_default ();
+
         destroy.connect (() => {
             foreach (var entry in signals_map.entries) {
                 entry.value.disconnect (entry.key);
@@ -399,6 +417,32 @@ public class Layouts.ProjectRow : Gtk.ListBoxRow {
         }
         
         count_label.label = text;
+    }
+
+    private void update_points_tooltip () {
+        if (!Services.Settings.get_default ().get_boolean ("points-enabled")) {
+            handle_grid.tooltip_text = _("Points system is disabled");
+            return;
+        }
+
+        int grace_period = Services.Settings.get_default ().settings.get_int ("points-grace-period");
+        bool assume_working = Services.Settings.get_default ().settings.get_boolean ("points-assume-working");
+        int penalty_curve = Services.Settings.get_default ().settings.get_enum ("points-penalty-curve");
+
+        string curve_penalty_text;
+        if (penalty_curve == 0) {
+            curve_penalty_text = _("Late penalties after grace (Relaxed): up to 15 min = 75%%, up to 45 min = 50%%, over 45 min = 25%%.");
+        } else if (penalty_curve == 2) {
+            curve_penalty_text = _("Late penalties after grace (Strict): up to 5 min = 50%%, up to 15 min = 25%%, over 15 min = 0%%.");
+        } else {
+            curve_penalty_text = _("Late penalties after grace (Balanced): up to 10 min = 50%%, up to 30 min = 25%%, over 30 min = 0%%.");
+        }
+
+        if (assume_working) {
+            handle_grid.tooltip_text = _("Points: 1 point per 5 minutes (max 24) +1 if completed 5+ minutes early. Grace period: %d minutes. No late penalty while Assume Working is on.").printf (grace_period);
+        } else {
+            handle_grid.tooltip_text = _("Points: 1 point per 5 minutes (max 24) +1 if completed 5+ minutes early. Grace period: %d minutes. %s").printf (grace_period, curve_penalty_text);
+        }
     }
 
     private void build_drag_and_drop () {

@@ -76,6 +76,48 @@ public class Objects.Item : Objects.BaseObject {
 
     public int points { get; set; default = 0; }
 
+    public static int calculate_points_score (double duration_minutes, int completion_offset_minutes,
+                                              int grace_period_mins, bool assume_working,
+                                              int penalty_curve) {
+        int base_points = (int) Math.fmin (Math.floor (duration_minutes / 5), 24.0);
+        int bonus_points = completion_offset_minutes <= -5 ? 1 : 0;
+
+        double multiplier = 1.0;
+
+        if (!assume_working) {
+            int minutes_after_grace = completion_offset_minutes - grace_period_mins;
+            if (minutes_after_grace > 0) {
+                if (penalty_curve == 0) {
+                    if (minutes_after_grace <= 15) {
+                        multiplier = 0.75;
+                    } else if (minutes_after_grace <= 45) {
+                        multiplier = 0.50;
+                    } else {
+                        multiplier = 0.25;
+                    }
+                } else if (penalty_curve == 2) {
+                    if (minutes_after_grace <= 5) {
+                        multiplier = 0.50;
+                    } else if (minutes_after_grace <= 15) {
+                        multiplier = 0.25;
+                    } else {
+                        multiplier = 0.0;
+                    }
+                } else {
+                    if (minutes_after_grace <= 10) {
+                        multiplier = 0.50;
+                    } else if (minutes_after_grace <= 30) {
+                        multiplier = 0.25;
+                    } else {
+                        multiplier = 0.0;
+                    }
+                }
+            }
+        }
+
+        return (int) Math.floor ((base_points + bonus_points) * multiplier);
+    }
+
     public void calculate_points () {
         if (!Services.Settings.get_default ().get_boolean ("points-enabled")) {
              points = 0;
@@ -106,50 +148,19 @@ public class Objects.Item : Objects.BaseObject {
              duration_minutes = 0;
         }
 
-        // Base points: 1 point per 5 min, cap at 24 (120 min)
-        int base_points = (int) Math.fmin (Math.floor (duration_minutes / 5), 24.0);
-
-        // Early Bonus
-        int bonus_points = 0;
         GLib.DateTime? completion_dt = Utils.Datetime.get_date_from_string (completed_at);
-        
-        if (completion_dt != null && end_dt != null) {
-            // "1 bonus points when you complete 5 minuts before the end time"
-            // end_dt - completion_dt >= 5 min
-            if (end_dt.difference (completion_dt) >= (5 * GLib.TimeSpan.MINUTE)) {
-                bonus_points = 1;
-            }
-        }
-
-        // Late Penalty
-        double multiplier = 1.0;
         bool assume_working = Services.Settings.get_default ().get_boolean ("points-assume-working");
         int grace_period_mins = Services.Settings.get_default ().get_int ("points-grace-period");
-        
-        if (!assume_working && completion_dt != null && end_dt != null) {
-             // If completed AFTER end time + grace period
-             // Lateness = completion - (end + grace)
-             GLib.DateTime grace_limit = end_dt.add_minutes (grace_period_mins);
-             if (completion_dt.compare (grace_limit) > 0) {
-                 // Late
-                 GLib.TimeSpan lateness = completion_dt.difference (grace_limit);
-                 double late_minutes = lateness / (double) GLib.TimeSpan.MINUTE;
-                 
-                 // User asked "End time 12:00 and grase period is set at 10min and you complete at 12:15 you get half the points" 
-                 // 12:15 is 15 min past end, 5 min past grace.
-                 // So > 0 min past grace should penalize.
-                 
-                 if (late_minutes <= 10) {
-                     multiplier = 0.50; // User example matches 0.5 for small lateness
-                 } else if (late_minutes <= 30) {
-                     multiplier = 0.25;
-                 } else {
-                     multiplier = 0.0;
-                 }
-             }
+        int penalty_curve = Services.Settings.get_default ().settings.get_enum ("points-penalty-curve");
+
+        int completion_offset_minutes = 0;
+        if (completion_dt != null && end_dt != null) {
+            completion_offset_minutes = (int) (completion_dt.difference (end_dt) / GLib.TimeSpan.MINUTE);
         }
 
-        points = (int) Math.floor ((base_points + bonus_points) * multiplier);
+        points = calculate_points_score (duration_minutes, completion_offset_minutes,
+                                         grace_period_mins, assume_working,
+                                         penalty_curve);
     }
     
     public bool activate_name_editable { get; set; default = false; }
