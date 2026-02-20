@@ -1152,6 +1152,10 @@ public class Layouts.ItemRow : Layouts.ItemBase {
         if (item.has_due) {
             due_label.label = Utils.Datetime.get_relative_date_from_date (item.due.datetime);
 
+            if (item.has_time) {
+                due_label.label += Utils.Datetime.get_end_time_label (item.due);
+            }
+
             if (!edit) {
                 due_box_revealer.reveal_child = true;
             }

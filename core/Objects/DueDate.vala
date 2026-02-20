@@ -21,6 +21,7 @@
 
 public class Objects.DueDate : GLib.Object {
     public string date { get; set; default = ""; }
+    public string end_date { get; set; default = ""; }
     public string time_zone { get; set; default = ""; }
     public string recurrency_weeks { get; set; default = ""; }
     public bool is_recurring { get; set; default = false; }
@@ -29,6 +30,12 @@ public class Objects.DueDate : GLib.Object {
     public int recurrency_count { get; set; default = 0; }
     public string recurrency_end { get; set; default = ""; }
     public bool recurrence_supported { get; set; default = false; }
+
+    public bool has_end_date {
+        get {
+            return end_date != "";
+        }
+    }
 
     GLib.DateTime ? _datetime = null;
     public GLib.DateTime? datetime {
@@ -118,6 +125,10 @@ public class Objects.DueDate : GLib.Object {
             date = object.get_string_member ("date");
         }
 
+        if (object.has_member ("end_date")) {
+            end_date = object.get_string_member ("end_date");
+        }
+
         if (object.has_member ("timezone")) {
             time_zone = object.get_string_member ("timezone");
         }
@@ -149,6 +160,7 @@ public class Objects.DueDate : GLib.Object {
 
     public void reset () {
         date = "";
+        end_date = "";
         time_zone = "";
         recurrency_type = RecurrencyType.NONE;
         recurrency_interval = 0;
@@ -161,6 +173,9 @@ public class Objects.DueDate : GLib.Object {
 
         builder.set_member_name ("date");
         builder.add_string_value (date);
+
+        builder.set_member_name ("end_date");
+        builder.add_string_value (end_date);
 
         builder.set_member_name ("timezone");
         builder.add_string_value (time_zone);
@@ -208,6 +223,7 @@ public class Objects.DueDate : GLib.Object {
     public Objects.DueDate duplicate () {
         var new_due = new Objects.DueDate ();
         new_due.date = date;
+        new_due.end_date = end_date;
         new_due.time_zone = time_zone;
         new_due.recurrency_weeks = recurrency_weeks;
         new_due.is_recurring = is_recurring;
