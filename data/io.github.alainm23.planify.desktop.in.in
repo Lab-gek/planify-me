@@ -1,6 +1,6 @@
 [Desktop Entry]
-# Translators: Keep this string as `Planify`
-Name=Planify
+# Translators: Keep this string as `BluPlan`
+Name=BluPlan
 Comment=Forget about forgetting things
 Categories=Utility;Office;ProjectManagement;Calendar;
 Exec=@exec@

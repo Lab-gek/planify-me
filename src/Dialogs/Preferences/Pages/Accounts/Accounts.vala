@@ -231,7 +231,7 @@ public class Dialogs.Preferences.Pages.Accounts : Dialogs.Preferences.Pages.Base
             width_request = 64
         };
 
-        var label = new Gtk.Label (_("Planify is syncing your tasks, this may take a few moments")) {
+        var label = new Gtk.Label (_("BluPlan is syncing your tasks, this may take a few moments")) {
             wrap = true,
             halign = Gtk.Align.CENTER,
             justify = Gtk.Justification.CENTER,
@@ -441,7 +441,7 @@ public class Dialogs.Preferences.Pages.Accounts : Dialogs.Preferences.Pages.Base
             dialog.set_default_response ("change");
             dialog.set_close_response ("cancel");
 
-            dialog.choose.begin (Planify._instance.main_window, null, (obj, res) => {
+            dialog.choose.begin (BluPlan._instance.main_window, null, (obj, res) => {
                 string response = dialog.choose.end (res);
                 if (response == "change") {
                     preferences_dialog.push_subpage (new Dialogs.Preferences.Pages.InboxPage (preferences_dialog));
@@ -575,7 +575,7 @@ public class Dialogs.Preferences.Pages.Accounts : Dialogs.Preferences.Pages.Base
             secondary_label.add_css_class ("dimmed");
             secondary_label.add_css_class ("caption");
 
-            var primary_label = new Gtk.Label (_("Planify is syncing your tasks, this may take a few moments")) {
+            var primary_label = new Gtk.Label (_("BluPlan is syncing your tasks, this may take a few moments")) {
                 wrap = true,
                 halign = CENTER,
                 justify = CENTER,

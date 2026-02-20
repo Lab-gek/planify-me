@@ -536,7 +536,7 @@ public class Layouts.ItemSidebarView : Adw.Bin {
             }
 
             dialog.project = item.project;
-            dialog.present (Planify._instance.main_window);
+            dialog.present (BluPlan._instance.main_window);
 
             dialog.changed.connect ((type, id) => {
                 if (type == "project") {
@@ -553,7 +553,7 @@ public class Layouts.ItemSidebarView : Adw.Bin {
 
         more_information_item.activate_item.connect (() => {
             var dialog = new Dialogs.ItemChangeHistory (item);
-            dialog.present (Planify._instance.main_window);
+            dialog.present (BluPlan._instance.main_window);
         });
 
         return popover;
@@ -580,7 +580,7 @@ public class Layouts.ItemSidebarView : Adw.Bin {
         dialog.add_response ("cancel", _("Cancel"));
         dialog.add_response ("delete", _("Delete"));
         dialog.set_response_appearance ("delete", Adw.ResponseAppearance.DESTRUCTIVE);
-        dialog.present (Planify._instance.main_window);
+        dialog.present (BluPlan._instance.main_window);
 
         dialog.response.connect ((response) => {
             if (response == "delete") {
@@ -594,7 +594,7 @@ public class Layouts.ItemSidebarView : Adw.Bin {
         var dialog = new Dialogs.QuickAdd ();
         dialog.for_base_object (item);
         dialog.update_content (content);
-        dialog.present (Planify._instance.main_window);
+        dialog.present (BluPlan._instance.main_window);
     }
 
     public void checked_toggled (bool active) {

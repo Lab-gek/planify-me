@@ -492,7 +492,7 @@ public class Widgets.SubItems : Adw.Bin {
         var dialog = new Dialogs.QuickAdd ();
         dialog.for_base_object (item_parent);
         dialog.update_content (content);
-        dialog.present (Planify._instance.main_window);
+        dialog.present (BluPlan._instance.main_window);
     }
 
     public void clean_up () {

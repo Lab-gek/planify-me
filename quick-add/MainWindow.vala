@@ -6,7 +6,7 @@ public class MainWindow : Adw.ApplicationWindow {
         Object (
             application: application,
             icon_name: "io.github.alainm23.planify",
-            title: _("Planify - Quick Add"),
+            title: _("BluPlan - Quick Add"),
             resizable: false,
             width_request: 600,
             halign: Gtk.Align.START

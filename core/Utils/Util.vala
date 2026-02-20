@@ -447,7 +447,7 @@ public class Util : GLib.Object {
     }
 
     public void show_alert_destroy (Gtk.Window window) {
-        var dialog = new Adw.AlertDialog (null, _("Process completed, you need to start Planify again."));
+        var dialog = new Adw.AlertDialog (null, _("Process completed, you need to start BluPlan again."));
 
         dialog.add_response ("ok", _("Ok"));
         dialog.present (window);
@@ -584,7 +584,7 @@ public class Util : GLib.Object {
         project.source_id = SourceType.LOCAL.to_string ();
         project.icon_style = ProjectIconStyle.EMOJI;
         project.emoji = "🚀️";
-        project.name = _("Meet Planify");
+        project.name = _("Meet BluPlan");
         project.color = "blue";
         project.show_completed = true;
         project.description = _("This project shows you everything you need to know to hit the ground running. Don’t hesitate to play around with it – you can always recreate it from Preferences.");
@@ -627,7 +627,7 @@ public class Util : GLib.Object {
         item_06.content = _("You’re done!");
         item_06.description = _("""That’s all you really need to know. Feel free to start adding your own projects and to-dos.
 You can come back to this project later to learn the advanced features below.
-We hope you’ll enjoy using Planify!""");
+We hope you’ll enjoy using BluPlan!""");
 
         project.add_item_if_not_exists (item_01);
         project.add_item_if_not_exists (item_02);
@@ -648,14 +648,14 @@ We hope you’ll enjoy using Planify!""");
         item_02_01.project_id = project.id;
         item_02_01.section_id = section_01.id;
         item_02_01.content = _("Show your calendar events");
-        item_02_01.description = _("You can display your system's calendar events in Planify. Go to 'Preferences' 🡒 General 🡒 Calendar Events to turn it on.");
+        item_02_01.description = _("You can display your system's calendar events in BluPlan. Go to 'Preferences' 🡒 General 🡒 Calendar Events to turn it on.");
 
         var item_02_02 = new Objects.Item ();
         item_02_02.id = Util.get_default ().generate_id (item_02_02);
         item_02_02.project_id = project.id;
         item_02_02.section_id = section_01.id;
         item_02_02.content = _("Enable synchronization with third-party services");
-        item_02_02.description = _("Planify not only creates tasks locally, but can also synchronize with your Todoist account. Go to 'Preferences' 🡒 'Accounts'.");
+        item_02_02.description = _("BluPlan not only creates tasks locally, but can also synchronize with your Todoist account. Go to 'Preferences' 🡒 'Accounts'.");
 
         section_01.add_item_if_not_exists (item_02_01);
         section_01.add_item_if_not_exists (item_02_02);

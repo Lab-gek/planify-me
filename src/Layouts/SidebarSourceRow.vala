@@ -54,7 +54,7 @@ public class Layouts.SidebarSourceRow : Gtk.ListBoxRow {
                     if (source.needs_migration ()) {
                         var preferences_dialog = new Dialogs.Preferences.PreferencesWindow ();
                         preferences_dialog.show_page ("accounts");
-                        preferences_dialog.present (Planify._instance.main_window);
+                        preferences_dialog.present (BluPlan._instance.main_window);
                         return;
                     }
                     
@@ -190,7 +190,7 @@ public class Layouts.SidebarSourceRow : Gtk.ListBoxRow {
 
     private void prepare_new_project (string id) {
         var dialog = new Dialogs.Project.new (id);
-        dialog.present (Planify._instance.main_window);
+        dialog.present (BluPlan._instance.main_window);
     }
 
     private void add_all_projects () {

@@ -199,14 +199,14 @@
 
         <key name="run-on-startup" type="b">
             <default>false</default>
-            <summary>Run Planify on startup</summary>
-            <description>Automatically launch Planify when the system starts up to ensure tasks and reminders are always available</description>
+            <summary>Run BluPlan on startup</summary>
+            <description>Automatically launch BluPlan when the system starts up to ensure tasks and reminders are always available</description>
         </key>
 
         <key name="run-in-background" type="b">
             <default>false</default>
             <summary>Run in background</summary>
-            <description>Allow Planify to continue running in the background when the window is closed, enabling notifications and reminders</description>
+            <description>Allow BluPlan to continue running in the background when the window is closed, enabling notifications and reminders</description>
         </key>
 
         <key name="home-view" type="s">

@@ -177,11 +177,11 @@ public class Layouts.LabelRow : Gtk.ListBoxRow {
 
         signal_map[edit_item.clicked.connect (() => {
             var dialog = new Dialogs.Label (label);
-            dialog.present (Planify._instance.main_window);
+            dialog.present (BluPlan._instance.main_window);
         })] = edit_item;
 
         signal_map[delete_item.clicked.connect (() => {
-            label.delete_label.begin (Planify._instance.main_window);
+            label.delete_label.begin (BluPlan._instance.main_window);
         })] = delete_item;
 
         return menu_popover;

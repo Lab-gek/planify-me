@@ -5,12 +5,12 @@
 </a>
 
 <div align="center">
-  <span align="center"> <img width="128" height="128" class="center" src="data/icons/hicolor/scalable/apps/io.github.alainm23.planify.svg" alt="Planify Icon"></span>
-  <h1 align="center">Planify</h1>
+  <span align="center"> <img width="128" height="128" class="center" src="data/icons/hicolor/scalable/apps/io.github.alainm23.planify.svg" alt="BluPlan Icon"></span>
+  <h1 align="center">BluPlan</h1>
   <h3 align="center">Never worry about forgetting things again</h3>
 </div>
 
-![Planify Screenshot](https://raw.githubusercontent.com/alainm23/planify/main/data/resources/screenshot/screenshot-03.png)
+![BluPlan Screenshot](https://raw.githubusercontent.com/alainm23/planify/main/data/resources/screenshot/screenshot-03.png)
 
 ## ✨ Features
 
@@ -30,7 +30,7 @@
 - **Offline Mode**: Work without internet - sync when you're back online
 - **Cross-Platform**: Access your tasks from anywhere
 
-*Note: Planify is not created by, affiliated with, or supported by Doist*
+*Note: BluPlan is not created by, affiliated with, or supported by Doist*
 
 ### 💎 Advanced Features
 - **🔔 Smart Notifications**: Never miss important tasks
@@ -141,14 +141,14 @@ We welcome contributions! Here's how you can help:
 - Submit a pull request with a clear description
 
 ### 🌍 Translations
-Help make Planify available in your language:
+Help make BluPlan available in your language:
 
 - **Weblate (Recommended)**: [Join our translation project](https://hosted.weblate.org/engage/planner/)
 - **Manual**: Check our [Translation Guide](po/README.md)
 
 ## 📋 Code of Conduct
 
-Planify follows the [GNOME Code of Conduct](https://conduct.gnome.org/). We are committed to providing a welcoming and inclusive environment for all contributors.
+BluPlan follows the [GNOME Code of Conduct](https://conduct.gnome.org/). We are committed to providing a welcoming and inclusive environment for all contributors.
 
 **Our Principles:**
 - **Be friendly** - Use welcoming and inclusive language
@@ -160,7 +160,7 @@ Planify follows the [GNOME Code of Conduct](https://conduct.gnome.org/). We are 
 
 ## 💝 Support the Project
 
-If you find Planify useful, consider supporting its development:
+If you find BluPlan useful, consider supporting its development:
 
 <div align="center">
 

@@ -184,8 +184,8 @@ pkgconfig.generate(
     core_lib,
     filebase: 'planify',
     version: meson.project_version(),
-    name: 'Planify',
-    description: 'Extension endpoint to the Planify application',
+    name: 'BluPlan',
+    description: 'Extension endpoint to the BluPlan application',
     subdirs: 'planify',
     libraries: core_deps
 )

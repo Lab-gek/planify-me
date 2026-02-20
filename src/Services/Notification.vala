@@ -60,7 +60,7 @@ public class Services.Notification : GLib.Object {
     private void reminder_added (Objects.Reminder reminder) {
         if (reminder.datetime.compare (new GLib.DateTime.now_local ()) <= 0) {
             GLib.Notification notification = build_notification (reminder);
-            Planify.instance.send_notification (reminder.id, notification);
+            BluPlan.instance.send_notification (reminder.id, notification);
             Services.Store.instance ().delete_reminder (reminder);
         } else if (Utils.Datetime.is_same_day (reminder.datetime, new GLib.DateTime.now_local ())) {
             uint interval = (uint) time_until_now (reminder.datetime);
@@ -85,7 +85,7 @@ public class Services.Notification : GLib.Object {
         }
 
         GLib.Notification notification = build_notification (reminder);
-        Planify.instance.send_notification (uid, notification);
+        BluPlan.instance.send_notification (uid, notification);
         Services.Store.instance ().delete_reminder (reminder);
     }
 

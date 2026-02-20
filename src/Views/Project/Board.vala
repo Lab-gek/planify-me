@@ -325,7 +325,7 @@ public class Views.Board : Adw.Bin {
                 project.update_local ();
             })] = dialog;
 
-            dialog.present (Planify._instance.main_window);
+            dialog.present (BluPlan._instance.main_window);
         })] = gesture;
 
         return due_revealer;

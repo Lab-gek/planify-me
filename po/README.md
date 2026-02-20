@@ -1,6 +1,6 @@
 # Translation Guide
 
-Help make Planify available in your language! This guide will walk you through creating a new translation.
+Help make BluPlan available in your language! This guide will walk you through creating a new translation.
 
 ## Getting Started
 
@@ -43,7 +43,7 @@ msgstr "Hola"  # Replace with your translation
 Add your language code to the [LINGUAS](https://github.com/alainm23/planify/blob/main/po/LINGUAS) file.
 
 ### Step 6: Test Your Translation
-1. Build Planify with your translation
+1. Build BluPlan with your translation
 2. Check for text overflow or layout issues
 3. Verify all strings are translated
 

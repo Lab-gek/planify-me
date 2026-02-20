@@ -1,6 +1,6 @@
 search_provider_c_args = [
   '-DGETTEXT_PACKAGE="' + meson.project_name () + '"',
-  '-DG_LOG_DOMAIN="PlanifySearchProvider"',
+  '-DG_LOG_DOMAIN="BluPlanSearchProvider"',
 ]
 
 search_provider_sources = [

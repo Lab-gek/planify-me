@@ -143,7 +143,7 @@ public class Widgets.Attachments : Adw.Bin {
             modal = true
         };
 
-        chooser.open_multiple.begin (Planify._instance.main_window, null, (obj, res) => {
+        chooser.open_multiple.begin (BluPlan._instance.main_window, null, (obj, res) => {
             try {
                 var files = chooser.open_multiple.end (res);
 

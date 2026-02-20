@@ -443,7 +443,7 @@ public class Dialogs.Preferences.Pages.Backup : Dialogs.Preferences.Pages.BasePa
                 dialog.add_response ("cancel", _("Cancel"));
                 dialog.add_response ("restore", _("Restore Backup"));
                 dialog.set_response_appearance ("restore", Adw.ResponseAppearance.DESTRUCTIVE);
-                dialog.present (Planify._instance.main_window);
+                dialog.present (BluPlan._instance.main_window);
 
                 dialog.response.connect ((response) => {
                     if (response == "restore") {

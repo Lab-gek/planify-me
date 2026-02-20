@@ -240,7 +240,7 @@ public class Views.Label : Adw.Bin {
         labels_map.set (label.id, label);
         dialog.set_labels (labels_map);
 
-        dialog.present (Planify._instance.main_window);
+        dialog.present (BluPlan._instance.main_window);
     }
 
     public void clean_up () {

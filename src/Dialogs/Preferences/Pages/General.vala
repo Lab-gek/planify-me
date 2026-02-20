@@ -66,7 +66,7 @@ public class Dialogs.Preferences.Pages.General : Dialogs.Preferences.Pages.BaseP
 
         var run_background_row = new Adw.ActionRow ();
         run_background_row.title = _("Run in Background");
-        run_background_row.subtitle = _("Let Planify run in background and send notifications");
+        run_background_row.subtitle = _("Let BluPlan run in background and send notifications");
         run_background_row.set_activatable_widget (run_background_switch);
         run_background_row.add_suffix (run_background_switch);
 
@@ -80,7 +80,7 @@ public class Dialogs.Preferences.Pages.General : Dialogs.Preferences.Pages.BaseP
 
         var run_on_startup_row = new Adw.ActionRow ();
         run_on_startup_row.title = _("Run on Startup");
-        run_on_startup_row.subtitle = _("Whether Planify should run on startup");
+        run_on_startup_row.subtitle = _("Whether BluPlan should run on startup");
         run_on_startup_row.set_activatable_widget (run_on_startup_switch);
         run_on_startup_row.add_suffix (run_on_startup_switch);
 

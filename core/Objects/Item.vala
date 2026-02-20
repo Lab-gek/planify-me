@@ -1365,7 +1365,7 @@ public class Objects.Item : Objects.BaseObject {
         ical.add_property (child_order_property);
 
         return "%s%s%s".printf (
-            "BEGIN:VCALENDAR\nVERSION:2.0\nPRODID:-//Planify App (https://github.com/alainm23/planify)\n",
+            "BEGIN:VCALENDAR\nVERSION:2.0\nPRODID:-//BluPlan App (https://github.com/alainm23/planify)\n",
             ical.as_ical_string (),
             "END:VCALENDAR\n"
         );

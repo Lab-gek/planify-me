@@ -78,7 +78,7 @@ public class Views.LabelSourceRow : Gtk.ListBoxRow {
 
         signal_map[add_button.clicked.connect (() => {
             var dialog = new Dialogs.Label.new (source);
-            dialog.present (Planify._instance.main_window);
+            dialog.present (BluPlan._instance.main_window);
         })] = add_button;
 
         signal_map[group.row_activated.connect ((row) => {
