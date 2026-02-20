@@ -107,7 +107,7 @@ public class Objects.Item : Objects.BaseObject {
         }
 
         // Base points: 1 point per 5 min, cap at 24 (120 min)
-        int base_points = (int) Math.min (Math.floor (duration_minutes / 5), 24);
+        int base_points = (int) Math.fmin (Math.floor (duration_minutes / 5), 24.0);
 
         // Early Bonus
         int bonus_points = 0;
@@ -135,12 +135,16 @@ public class Objects.Item : Objects.BaseObject {
                  GLib.TimeSpan lateness = completion_dt.difference (grace_limit);
                  double late_minutes = lateness / (double) GLib.TimeSpan.MINUTE;
                  
+                 // User asked "End time 12:00 and grase period is set at 10min and you complete at 12:15 you get half the points" 
+                 // 12:15 is 15 min past end, 5 min past grace.
+                 // So > 0 min past grace should penalize.
+                 
                  if (late_minutes <= 10) {
-                     multiplier = 0.75;
+                     multiplier = 0.50; // User example matches 0.5 for small lateness
                  } else if (late_minutes <= 30) {
-                     multiplier = 0.50;
-                 } else {
                      multiplier = 0.25;
+                 } else {
+                     multiplier = 0.0;
                  }
              }
         }

@@ -24,7 +24,7 @@ public class Widgets.ComboWrapRow : Adw.PreferencesRow {
     private Gtk.Label _subtitle_label;
     private Adw.WrapBox _wrap_box;
 
-    public string title {
+    public new string title {
         owned get {
              return _title_label.label;
         }

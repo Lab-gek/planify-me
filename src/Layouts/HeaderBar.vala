@@ -24,6 +24,7 @@ public class Layouts.HeaderBar : Adw.Bin {
     private Gtk.Label title_label;
     private Gtk.Label subtitle_label;
     private Gtk.Revealer subtitle_revealer;
+    private Gtk.Label points_label;
     private Gtk.Revealer title_box_revealer;
     private Gtk.Revealer back_button_revealer;
     private Gtk.Button back_button;
@@ -118,6 +119,12 @@ public class Layouts.HeaderBar : Adw.Bin {
         title_box.append (title_label);
         title_box.append (subtitle_revealer);
 
+        points_label = new Gtk.Label ("") {
+            css_classes = { "caption", "dimmed" },
+            ellipsize = END
+        };
+        title_box.append (points_label);
+
         title_box_revealer = new Gtk.Revealer () {
             transition_type = CROSSFADE,
             child = title_box
@@ -145,6 +152,41 @@ public class Layouts.HeaderBar : Adw.Bin {
         signal_map[Services.Settings.get_default ().settings.changed["slim-mode"].connect (() => {
             update_sidebar_icon ();
         })] = Services.Settings.get_default ();
+
+        var store = Services.Store.instance ();
+        signal_map[store.item_updated.connect ((item, update_id) => {
+            update_points ();
+        })] = store;
+        
+        signal_map[store.item_added.connect ((item, insert) => {
+            update_points ();
+        })] = store;
+        
+        signal_map[store.item_deleted.connect ((item) => {
+            update_points ();
+        })] = store;
+
+        update_points ();
+    }
+
+    private void update_points () {
+        if (!Services.Settings.get_default ().get_boolean ("points-enabled")) {
+             points_label.label = "";
+             points_label.visible = false;
+             return;
+        }
+
+        int total = 0;
+        foreach (var item in Services.Store.instance ().get_items_completed ()) {
+             total += item.points;
+        }
+
+        if (total > 0) {
+            points_label.label = "%d pts".printf (total);
+            points_label.visible = true;
+        } else {
+            points_label.visible = false;
+        }
     }
 
     private void update_sidebar_icon () {

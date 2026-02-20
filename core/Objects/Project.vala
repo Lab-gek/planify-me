@@ -88,6 +88,33 @@ public class Objects.Project : Objects.BaseObject {
         }
     }
 
+    public int points {
+        get {
+            if (!Services.Settings.get_default ().get_boolean ("points-enabled")) {
+                return 0;
+            }
+            
+            int total = 0;
+            var store = Services.Store.instance ();
+            
+            // Items directly in this project
+            var items = store.get_items_by_project (this);
+            foreach (var item in items) {
+                if (item.checked && !item.is_deleted) {
+                     total += item.points;
+                }
+            }
+            
+            // Sub-projects
+            var sub_projects = store.get_projects_by_parent (this.id);
+            foreach (var sub in sub_projects) {
+                total += sub.points;
+            }
+            
+            return total;
+        }
+    }
+
     public SourceType source_type {
         get {
             return source.source_type;

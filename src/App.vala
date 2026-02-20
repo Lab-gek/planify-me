@@ -19,6 +19,9 @@
  * Authored by: Alain M. <alainmh23@gmail.com>
  */
 
+[CCode (cname = "gtk_style_context_add_provider_for_display")]
+extern void add_style_provider_for_display (Gdk.Display display, Gtk.StyleProvider provider, uint priority);
+
 public class BluPlan : Adw.Application {
     public MainWindow main_window;
 
@@ -117,7 +120,7 @@ public class BluPlan : Adw.Application {
         var provider = new Gtk.CssProvider ();
         provider.load_from_resource ("/io/github/lab_gek/bluplan/index.css");
 
-        Gtk.StyleContext.add_provider_for_display (
+        add_style_provider_for_display (
             Gdk.Display.get_default (), provider, Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION
         );
 

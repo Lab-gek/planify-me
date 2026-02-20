@@ -1621,6 +1621,8 @@ public class Services.Database : GLib.Object {
 
     public bool update_item (Objects.Item item, string update_id = "") {
         item.updated_at = new GLib.DateTime.now_local ().to_string ();
+        item.calculate_points ();
+        
         Sqlite.Statement stmt;
 
         sql = """

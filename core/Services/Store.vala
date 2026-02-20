@@ -300,6 +300,20 @@ public class Services.Store : GLib.Object {
         }
     }
 
+    public Gee.ArrayList<Objects.Project> get_projects_by_parent (string parent_id) {
+        Gee.ArrayList<Objects.Project> return_value = new Gee.ArrayList<Objects.Project> ();
+
+        lock (_projects) {
+            foreach (Objects.Project project in projects) {
+                if (project.parent_id == parent_id && !project.is_deleted && !project.is_archived) {
+                    return_value.add (project);
+                }
+            }
+
+            return return_value;
+        }
+    }
+
     public Gee.ArrayList<Objects.Project> get_projects_by_source (string source_id) {
         Gee.ArrayList<Objects.Project> return_value = new Gee.ArrayList<Objects.Project> ();
         lock (_projects) {

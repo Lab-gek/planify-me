@@ -382,7 +382,23 @@ public class Layouts.ProjectRow : Gtk.ListBoxRow {
     }
 
     private void update_count_label (int count) {
-        count_label.label = count <= 0 ? "" : count.to_string ();
+        string text = "";
+
+        if (Services.Settings.get_default ().get_boolean ("points-enabled")) {
+             int pts = project.points;
+             if (pts > 0) {
+                 text = "%d pts".printf (pts);
+             }
+        }
+
+        if (count > 0) {
+            if (text != "") {
+                text += " · ";
+            }
+            text += count.to_string ();
+        }
+        
+        count_label.label = text;
     }
 
     private void build_drag_and_drop () {

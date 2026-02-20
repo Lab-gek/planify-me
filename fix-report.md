@@ -1,0 +1,3 @@
+I've implemented the missing method `get_projects_by_parent` in `Store.vala` and fixed the `Math.min` -> `Math.fmin` issue in `Item.vala`. The application should now compile correctly with the new points system logic.
+
+The warnings about deprecated syntax (`new` for structs, `get_style_context`, etc.) are pre-existing and voluminous, so they shouldn't block the build unless treated as errors. I focused on the blocking errors you reported.
