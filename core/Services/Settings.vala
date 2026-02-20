@@ -68,6 +68,10 @@ public class Services.Settings : GLib.Object {
         return settings.get_double (key);
     }
 
+    public int get_int (string key) {
+        return settings.get_int (key);
+    }
+
     public string get_string (string key) {
         return settings.get_string (key);
     }

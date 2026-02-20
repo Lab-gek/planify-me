@@ -78,6 +78,7 @@ public class Services.Database : GLib.Object {
         table_columns["Items"].add ("calendar_event_uid");
         table_columns["Items"].add ("deadline_date");
         table_columns["Items"].add ("responsible_uid");
+        table_columns["Items"].add ("points");
 
 
         table_columns["Labels"] = new Gee.ArrayList<string> ();
@@ -286,7 +287,8 @@ public class Services.Database : GLib.Object {
                 item_type           TEXT,
                 calendar_event_uid  TEXT,
                 deadline_date       TEXT,
-                responsible_uid     TEXT
+                responsible_uid     TEXT,
+                points              INTEGER
             );
         """;
 
@@ -648,6 +650,12 @@ public class Services.Database : GLib.Object {
         add_text_column ("Items", "calendar_event_uid", "");
         add_text_column ("Items", "deadline_date", "");
         add_text_column ("Items", "responsible_uid", "");
+
+        /*
+         * Copilot
+         * - Add points column to Items
+         */
+        add_int_column ("Items", "points", 0);
     }
 
     public void clear_database () {
@@ -1394,11 +1402,11 @@ public class Services.Database : GLib.Object {
             INSERT OR IGNORE INTO Items (id, content, description, due, added_at, completed_at,
                 updated_at, section_id, project_id, parent_id, priority, child_order,
                 checked, is_deleted, day_order, collapsed, pinned, labels, extra_data, item_type, calendar_event_uid, deadline_date,
-                responsible_uid)
+                responsible_uid, points)
             VALUES ($id, $content, $description, $due, $added_at, $completed_at,
                 $updated_at, $section_id, $project_id, $parent_id, $priority, $child_order,
                 $checked, $is_deleted, $day_order, $collapsed, $pinned, $labels, $extra_data, $item_type, $calendar_event_uid, $deadline_date,
-                $responsible_uid);
+                $responsible_uid, $points);
         """;
 
         db.prepare_v2 (sql, sql.length, out stmt);
@@ -1425,6 +1433,7 @@ public class Services.Database : GLib.Object {
         set_parameter_str (stmt, "$calendar_event_uid", item.calendar_event_uid);
         set_parameter_str (stmt, "$deadline_date", item.deadline_date);
         set_parameter_str (stmt, "$responsible_uid", item.responsible_uid);
+        set_parameter_int (stmt, "$points", item.points);
 
         int result = stmt.step ();
         if (result != Sqlite.DONE) {
@@ -1449,11 +1458,11 @@ public class Services.Database : GLib.Object {
         INSERT OR IGNORE INTO Items (id, content, description, due, added_at, completed_at,
             updated_at, section_id, project_id, parent_id, priority, child_order,
             checked, is_deleted, day_order, collapsed, pinned, labels, extra_data, item_type, calendar_event_uid, deadline_date,
-            responsible_uid)
+            responsible_uid, points)
         VALUES ($id, $content, $description, $due, $added_at, $completed_at,
             $updated_at, $section_id, $project_id, $parent_id, $priority, $child_order,
             $checked, $is_deleted, $day_order, $collapsed, $pinned, $labels, $extra_data, $item_type, $calendar_event_uid, $deadline_date,
-            $responsible_uid);
+            $responsible_uid, $points);
         """;
 
         db.prepare_v2 (sql, sql.length, out stmt);
@@ -1482,6 +1491,7 @@ public class Services.Database : GLib.Object {
             set_parameter_str (stmt, "$calendar_event_uid", item.calendar_event_uid);
             set_parameter_str (stmt, "$deadline_date", item.deadline_date);
             set_parameter_str (stmt, "$responsible_uid", item.responsible_uid);
+            set_parameter_int (stmt, "$points", item.points);
 
             int result = stmt.step ();
             if (result != Sqlite.DONE) {
@@ -1566,6 +1576,7 @@ public class Services.Database : GLib.Object {
         return_value.calendar_event_uid = stmt.column_text (20);
         return_value.deadline_date = stmt.column_text (21);
         return_value.responsible_uid = stmt.column_text (22);
+        return_value.points = stmt.column_int (23);
 
         return return_value;
     }
@@ -1619,7 +1630,7 @@ public class Services.Database : GLib.Object {
                 priority=$priority, child_order=$child_order, checked=$checked,
                 is_deleted=$is_deleted, day_order=$day_order, collapsed=$collapsed,
                 pinned=$pinned, labels=$labels, extra_data=$extra_data, item_type=$item_type, calendar_event_uid=$calendar_event_uid,
-                deadline_date=$deadline_date, responsible_uid=$responsible_uid
+                deadline_date=$deadline_date, responsible_uid=$responsible_uid, points=$points
             WHERE id=$id;
         """;
 
@@ -1646,6 +1657,7 @@ public class Services.Database : GLib.Object {
         set_parameter_str (stmt, "$calendar_event_uid", item.calendar_event_uid);
         set_parameter_str (stmt, "$deadline_date", item.deadline_date);
         set_parameter_str (stmt, "$responsible_uid", item.responsible_uid);
+        set_parameter_int (stmt, "$points", item.points);
         set_parameter_str (stmt, "$id", item.id);
 
         int result = stmt.step ();
@@ -1687,16 +1699,20 @@ public class Services.Database : GLib.Object {
     }
 
     public bool complete_item (Objects.Item item, bool old_checked) {
+        // Calculate points
+        item.calculate_points ();
+
         Sqlite.Statement stmt;
 
         sql = """
-            UPDATE Items SET checked=$checked, completed_at=$completed_at
+            UPDATE Items SET checked=$checked, completed_at=$completed_at, points=$points
             WHERE id=$id OR parent_id=$id;
         """;
 
         db.prepare_v2 (sql, sql.length, out stmt);
         set_parameter_bool (stmt, "$checked", item.checked);
         set_parameter_str (stmt, "$completed_at", item.completed_at);
+        set_parameter_int (stmt, "$points", item.points);
         set_parameter_str (stmt, "$id", item.id);
 
         int result = stmt.step ();

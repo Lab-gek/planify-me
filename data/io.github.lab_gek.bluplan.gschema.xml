@@ -275,12 +275,6 @@
             <description>Play an audio notification sound when marking tasks as completed to provide satisfying feedback</description>
         </key>
 
-        <key name="task-complete-tone-uri" type="s">
-            <default>""</default>
-            <summary>Custom completion sound</summary>
-            <description>URI of a custom audio file to play when tasks are completed. Leave empty to use the default bundled sound.</description>
-        </key>
-
         <key name="open-task-sidebar" type="b">
             <default>false</default>
             <summary>Open Task In Sidebar View</summary>
@@ -351,6 +345,24 @@
             <default>false</default>
             <summary>Keep task properties when adding multiple tasks</summary>
             <description>When "Keep adding" is enabled, preserve date, labels, and pinned status for the next task</description>
+        </key>
+
+        <key name="points-enabled" type="b">
+            <default>true</default>
+            <summary>Enable Points System</summary>
+            <description>Enable a gamified points system based on task duration and completion time.</description>
+        </key>
+
+        <key name="points-grace-period" type="i">
+            <default>10</default>
+            <summary>Points Grace Period</summary>
+            <description>Grace period in minutes after a task's due time before points are halved.</description>
+        </key>
+
+        <key name="points-assume-working" type="b">
+            <default>false</default>
+            <summary>Assume Working for Points</summary>
+            <description>If enabled, full points are awarded even if the task is completed late, assuming work was done.</description>
         </key>
     </schema>
 </schemalist>

@@ -74,6 +74,80 @@ public class Objects.Item : Objects.BaseObject {
 
     public int priority { get; set; default = Constants.PRIORITY_4; }
 
+    public int points { get; set; default = 0; }
+
+    public void calculate_points () {
+        if (!Services.Settings.get_default ().get_boolean ("points-enabled")) {
+             points = 0;
+             return;
+        }
+
+        if (completed_at == "") {
+             points = 0;
+             return;
+        }
+
+        double duration_minutes = 0;
+        GLib.DateTime? start_dt = due.datetime;
+        GLib.DateTime? end_dt = null;
+
+        if (due.has_end_date) {
+             end_dt = Utils.Datetime.get_todoist_datetime (due.end_date);
+        }
+
+        // Calculate scheduled duration
+        if (start_dt != null && end_dt != null) {
+            GLib.TimeSpan span = end_dt.difference (start_dt);
+            duration_minutes = span / GLib.TimeSpan.MINUTE;
+        } else {
+             // Fallback or default? If no duration, maybe 0 points?
+             // Or maybe a default fixed amount? 
+             // "you get X points based on how long a tasks was scheduled" -> implies 0 if not scheduled.
+             duration_minutes = 0;
+        }
+
+        // Base points: 1 point per 5 min, cap at 24 (120 min)
+        int base_points = (int) Math.min (Math.floor (duration_minutes / 5), 24);
+
+        // Early Bonus
+        int bonus_points = 0;
+        GLib.DateTime? completion_dt = Utils.Datetime.get_date_from_string (completed_at);
+        
+        if (completion_dt != null && end_dt != null) {
+            // "1 bonus points when you complete 5 minuts before the end time"
+            // end_dt - completion_dt >= 5 min
+            if (end_dt.difference (completion_dt) >= (5 * GLib.TimeSpan.MINUTE)) {
+                bonus_points = 1;
+            }
+        }
+
+        // Late Penalty
+        double multiplier = 1.0;
+        bool assume_working = Services.Settings.get_default ().get_boolean ("points-assume-working");
+        int grace_period_mins = Services.Settings.get_default ().get_int ("points-grace-period");
+        
+        if (!assume_working && completion_dt != null && end_dt != null) {
+             // If completed AFTER end time + grace period
+             // Lateness = completion - (end + grace)
+             GLib.DateTime grace_limit = end_dt.add_minutes (grace_period_mins);
+             if (completion_dt.compare (grace_limit) > 0) {
+                 // Late
+                 GLib.TimeSpan lateness = completion_dt.difference (grace_limit);
+                 double late_minutes = lateness / (double) GLib.TimeSpan.MINUTE;
+                 
+                 if (late_minutes <= 10) {
+                     multiplier = 0.75;
+                 } else if (late_minutes <= 30) {
+                     multiplier = 0.50;
+                 } else {
+                     multiplier = 0.25;
+                 }
+             }
+        }
+
+        points = (int) Math.floor ((base_points + bonus_points) * multiplier);
+    }
+    
     public bool activate_name_editable { get; set; default = false; }
 
     string _short_content;
