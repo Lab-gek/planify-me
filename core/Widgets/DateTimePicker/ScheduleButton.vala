@@ -234,6 +234,11 @@ public class Widgets.ScheduleButton : Gtk.Grid {
             due_image.icon_name = "month-symbolic";
         }
 
+        if (item.has_time && item.due.has_end_date) {
+            due_label.label += Utils.Datetime.get_end_time_label (item.due);
+            due_label.tooltip_text = due_label.label;
+        }
+
         if (item.due.is_recurring) {
             var end_label = "";
             if (item.due.end_type == RecurrencyEndType.ON_DATE) {

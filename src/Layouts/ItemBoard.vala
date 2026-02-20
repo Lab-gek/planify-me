@@ -673,6 +673,11 @@ public class Layouts.ItemBoard : Layouts.ItemBase {
 
         if (item.has_due) {
             due_label.label = Utils.Datetime.get_relative_date_from_date (item.due.datetime);
+
+            if (item.has_time) {
+                due_label.label += Utils.Datetime.get_end_time_label (item.due);
+            }
+
             due_box_revealer.reveal_child = true;
 
             repeat_revealer.reveal_child = item.due.is_recurring;

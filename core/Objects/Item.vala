@@ -505,6 +505,10 @@ public class Objects.Item : Objects.BaseObject {
             due.date = Utils.Datetime.ical_to_date_time_local (ical.get_due ()).to_string ();
         }
 
+        if (!ical.get_dtend ().is_null_time ()) {
+            due.end_date = Utils.Datetime.ical_to_date_time_local (ical.get_dtend ()).to_string ();
+        }
+
         ICal.Property ? rrule_property = ical_vtodo.get_first_property (ICal.PropertyKind.RRULE_PROPERTY);
         if (rrule_property != null) {
             Utils.Datetime.recurrence_to_due (rrule_property.get_rrule (), due);
@@ -1230,6 +1234,18 @@ public class Objects.Item : Objects.BaseObject {
 
             ical.set_due (new_icaltime);
 
+            if (due.has_end_date) {
+                var end_dt = Utils.Datetime.get_date_from_string (due.end_date);
+                if (end_dt != null) {
+                    ICal.Time end_icaltime = Utils.Datetime.datetimes_to_icaltime (
+                        end_dt,
+                        Utils.Datetime.has_time (end_dt) ? end_dt : null,
+                        null
+                    );
+                    ical.set_dtend (end_icaltime);
+                }
+            }
+
             if (due.is_recurring) {
                 var rrule = new ICal.Recurrence ();
 
@@ -1744,6 +1760,7 @@ public class Objects.Item : Objects.BaseObject {
 
     public void update_due (Objects.DueDate duedate) {
         due.date = duedate.date;
+        due.end_date = duedate.end_date;
         due.is_recurring = duedate.is_recurring;
         due.recurrency_type = duedate.recurrency_type;
         due.recurrency_interval = duedate.recurrency_interval;

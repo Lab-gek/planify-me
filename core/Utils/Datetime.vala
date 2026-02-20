@@ -80,6 +80,19 @@ public class Utils.Datetime {
 
         return returned;
     }
+
+    public static string get_end_time_label (Objects.DueDate due) {
+        if (!due.has_end_date) {
+            return "";
+        }
+
+        var end_dt = get_date_from_string (due.end_date);
+        if (end_dt == null) {
+            return "";
+        }
+
+        return " – " + end_dt.format (get_default_time_format ());
+    }
     
     public static string days_left (GLib.DateTime datetime, bool show_today = false) {
         string return_value = "";

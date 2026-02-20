@@ -21,13 +21,16 @@
 
 public class Widgets.DateTimePicker.DateTimePicker : Gtk.Popover {
     private Widgets.DateTimePicker.TimePicker time_picker;
+    private Widgets.DateTimePicker.TimePicker end_time_picker;
     private Widgets.Calendar.CalendarMonth calendar_view;
     private Widgets.Calendar.CalendarScroll calendar_scroll_view;
     private Widgets.ContextMenu.MenuItem repeat_item;
     private NoDateButton no_date_button;
     private OptionButton time_option_button;
+    private OptionButton end_time_option_button;
     private OptionButton repeat_option_button;
     private Gtk.Revealer time_option_revealer;
+    private Gtk.Revealer end_time_option_revealer;
     private Adw.Bin dimming_widget;
     private Gtk.Overlay main_overlay;
     private Gee.ArrayList<Gtk.Revealer> active_revealers;
@@ -44,6 +47,19 @@ public class Widgets.DateTimePicker.DateTimePicker : Gtk.Popover {
         set {
             _has_time = value;
             time_option_button.has_value = _has_time;
+            end_time_option_button.sensitive = _has_time;
+        }
+    }
+
+    bool _has_end_time = false;
+    public bool has_end_time {
+        get {
+            return _has_end_time;
+        }
+
+        set {
+            _has_end_time = value;
+            end_time_option_button.has_value = _has_end_time;
         }
     }
 
@@ -78,6 +94,18 @@ public class Widgets.DateTimePicker.DateTimePicker : Gtk.Popover {
             } else {
                 has_time = false;
                 time_option_button.label_text = _("Time");
+            }
+
+            if (_duedate != null && end_time_picker != null && _duedate.has_end_date) {
+                var end_dt = Utils.Datetime.get_date_from_string (_duedate.end_date);
+                if (end_dt != null) {
+                    end_time_picker.time = end_dt;
+                    end_time_option_button.label_text = end_dt.format (Utils.Datetime.get_default_time_format ());
+                    has_end_time = true;
+                }
+            } else {
+                has_end_time = false;
+                end_time_option_button.label_text = _("End Time");
             }
 
             if (_duedate != null && _duedate.is_recurring) {
@@ -118,6 +146,14 @@ public class Widgets.DateTimePicker.DateTimePicker : Gtk.Popover {
                 if (_duedate != null && _duedate.datetime != null) {
                     _duedate.datetime = Utils.Datetime.get_date_only (_duedate.datetime);
                 }
+            }
+
+            if (end_time_picker != null && has_end_time && _duedate != null && _duedate.datetime != null) {
+                _duedate.end_date = Utils.Datetime.get_todoist_datetime_format (
+                    add_date_time (_duedate.datetime, end_time_picker.time)
+                );
+            } else if (_duedate != null) {
+                _duedate.end_date = "";
             }
 
             return _duedate;
@@ -183,6 +219,10 @@ public class Widgets.DateTimePicker.DateTimePicker : Gtk.Popover {
 
         time_option_button = new OptionButton ("clock-symbolic", _("Time"));
 
+        end_time_option_button = new OptionButton ("clock-symbolic", _("End Time")) {
+            sensitive = false
+        };
+
         repeat_option_button = new OptionButton ("playlist-repeat-symbolic", _("Repeat"));
 
         var content_box = new Gtk.Box (Gtk.Orientation.VERTICAL, 0) {
@@ -197,6 +237,7 @@ public class Widgets.DateTimePicker.DateTimePicker : Gtk.Popover {
         content_box.append (calendar_view);
         content_box.append (new Widgets.ContextMenu.MenuSeparator ());
         content_box.append (time_option_button);
+        content_box.append (end_time_option_button);
         content_box.append (repeat_option_button);
 
         var popover_scrolled = new Gtk.ScrolledWindow () {
@@ -220,6 +261,7 @@ public class Widgets.DateTimePicker.DateTimePicker : Gtk.Popover {
         main_overlay.add_overlay (dimming_widget);
 
         build_time_picker_revealer ();
+        build_end_time_picker_revealer ();
         build_repeat_picker_revealer ();
 
         main_stack = new Gtk.Stack () {
@@ -242,7 +284,22 @@ public class Widgets.DateTimePicker.DateTimePicker : Gtk.Popover {
 
         time_option_button.clear_clicked.connect (() => {
             has_time = false;
+            has_end_time = false;
             time_picker.reset ();
+            end_time_picker.reset ();
+            _duedate.end_date = "";
+            duedate_changed ();
+        });
+
+        end_time_option_button.clicked.connect (() => {
+            show_revealer (end_time_option_revealer);
+            end_time_picker.grab_entry_focus ();
+        });
+
+        end_time_option_button.clear_clicked.connect (() => {
+            has_end_time = false;
+            end_time_picker.reset ();
+            _duedate.end_date = "";
             duedate_changed ();
         });
 
@@ -350,6 +407,10 @@ public class Widgets.DateTimePicker.DateTimePicker : Gtk.Popover {
                 time_option_revealer.reveal_child = false;
             }
 
+            if (end_time_option_revealer.reveal_child) {
+                end_time_option_revealer.reveal_child = false;
+            }
+
             if (repeat_option_revealer.reveal_child) {
                 repeat_option_revealer.reveal_child = false;
             }
@@ -416,6 +477,22 @@ public class Widgets.DateTimePicker.DateTimePicker : Gtk.Popover {
 
         time_option_button.label_text = time_picker.time.format (Utils.Datetime.get_default_time_format ());
         time_option_revealer.reveal_child = false;
+        duedate_changed ();
+    }
+
+    private void save_end_time () {
+        if (_duedate == null || _duedate.datetime == null) {
+            return;
+        }
+
+        has_end_time = true;
+
+        _duedate.end_date = Utils.Datetime.get_todoist_datetime_format (
+            add_date_time (_duedate.datetime, end_time_picker.time)
+        );
+
+        end_time_option_button.label_text = end_time_picker.time.format (Utils.Datetime.get_default_time_format ());
+        end_time_option_revealer.reveal_child = false;
         duedate_changed ();
     }
 
@@ -508,6 +585,12 @@ public class Widgets.DateTimePicker.DateTimePicker : Gtk.Popover {
             time_picker.reset ();
         }
 
+        end_time_option_button.label_text = _("End Time");
+        has_end_time = false;
+        if (end_time_picker != null) {
+            end_time_picker.reset ();
+        }
+
         visible_no_date = false;
         has_recurrency = false;
         if (calendar_view != null) {
@@ -552,6 +635,46 @@ public class Widgets.DateTimePicker.DateTimePicker : Gtk.Popover {
 
         time_picker.activated.connect (() => {
             save_time ();
+        });
+    }
+
+    private void build_end_time_picker_revealer () {
+        end_time_picker = new Widgets.DateTimePicker.TimePicker () {
+            hexpand = true
+        };
+
+        var save_end_time_button = new Gtk.Button.with_label (_("Save"));
+
+        var end_time_option_box = new Gtk.Box (Gtk.Orientation.VERTICAL, 6) {
+            margin_start = 9,
+            margin_end = 9,
+            margin_bottom = 9,
+            margin_top = 9,
+        };
+        end_time_option_box.append (end_time_picker);
+        end_time_option_box.append (save_end_time_button);
+
+        var end_time_option_container = new Adw.Bin () {
+            child = end_time_option_box
+        };
+        end_time_option_container.add_css_class ("card");
+
+        end_time_option_revealer = new Gtk.Revealer () {
+            child = end_time_option_container,
+            valign = END,
+            transition_type = SLIDE_UP,
+            reveal_child = false
+        };
+
+        main_overlay.add_overlay (end_time_option_revealer);
+        register_revealer (end_time_option_revealer);
+
+        save_end_time_button.clicked.connect (() => {
+            save_end_time ();
+        });
+
+        end_time_picker.activated.connect (() => {
+            save_end_time ();
         });
     }
 
