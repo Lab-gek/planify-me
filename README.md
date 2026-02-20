@@ -5,7 +5,7 @@
 </a>
 
 <div align="center">
-  <span align="center"> <img width="128" height="128" class="center" src="data/icons/hicolor/scalable/apps/io.github.alainm23.planify.svg" alt="BluPlan Icon"></span>
+  <span align="center"> <img width="128" height="128" class="center" src="data/icons/hicolor/scalable/apps/io.github.lab_gek.bluplan.svg" alt="BluPlan Icon"></span>
   <h1 align="center">BluPlan</h1>
   <h3 align="center">Never worry about forgetting things again</h3>
 </div>
@@ -44,7 +44,7 @@
 
 ### 🏪 Official Distribution
 
-<a href="https://flathub.org/apps/details/io.github.alainm23.planify" rel="noreferrer noopener" target="_blank">
+<a href="https://flathub.org/apps/details/io.github.lab_gek.bluplan" rel="noreferrer noopener" target="_blank">
   <img loading="lazy" draggable="false" width='240' alt='Download on Flathub' src='https://dl.flathub.org/assets/badges/flathub-badge-en.png' />
 </a>
 
@@ -114,7 +114,7 @@ ninja
 sudo ninja install
 
 # Run
-io.github.alainm23.planify
+io.github.lab_gek.bluplan
 ```
 
 ### 🏗️ Development Setup

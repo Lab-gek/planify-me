@@ -19,10 +19,10 @@
  * Authored by: Alain M. <alainmh23@gmail.com>
  */
 
-[DBus (name = "io.github.alainm23.planify")]
+[DBus (name = "io.github.lab_gek.bluplan")]
 public class Services.DBusServer : Object {
-    private const string DBUS_NAME = "io.github.alainm23.planify";
-    private const string DBUS_PATH = "/io/github/alainm23/planify";
+    private const string DBUS_NAME = "io.github.lab_gek.bluplan";
+    private const string DBUS_PATH = "/io/github/lab_gek/bluplan";
 
     private static GLib.Once<DBusServer> instance;
 
@@ -56,7 +56,7 @@ public class Services.DBusServer : Object {
     }
 }
 
-[DBus (name = "io.github.alainm23.planify")]
+[DBus (name = "io.github.lab_gek.bluplan")]
 public errordomain DBusServerError {
     SOME_ERROR
 }

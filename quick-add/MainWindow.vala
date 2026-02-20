@@ -5,7 +5,7 @@ public class MainWindow : Adw.ApplicationWindow {
     public MainWindow (QuickAdd application) {
         Object (
             application: application,
-            icon_name: "io.github.alainm23.planify",
+            icon_name: "io.github.lab_gek.bluplan",
             title: _("BluPlan - Quick Add"),
             resizable: false,
             width_request: 600,
@@ -15,7 +15,7 @@ public class MainWindow : Adw.ApplicationWindow {
 
     static construct {
         weak Gtk.IconTheme default_theme = Gtk.IconTheme.get_for_display (Gdk.Display.get_default ());
-        default_theme.add_resource_path ("/io/github/alainm23/planify/");
+        default_theme.add_resource_path ("/io/github/lab_gek/bluplan/");
     }
 
     construct {

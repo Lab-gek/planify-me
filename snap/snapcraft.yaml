@@ -128,7 +128,7 @@ parts:
       - --prefix=/snap/planify/current/usr
     build-snaps:
       - webkitgtk-6-gnome-2204-sdk
-    parse-info: [usr/share/appdata/io.github.alainm23.planify.appdata.xml]
+    parse-info: [usr/share/appdata/io.github.lab_gek.bluplan.appdata.xml]
     organize:
       snap/planify/current: .
 
@@ -136,7 +136,7 @@ slots:
   planify:
     interface: dbus
     bus: session
-    name: io.github.alainm23.planify
+    name: io.github.lab_gek.bluplan
 
 plugs:
   webkitgtk-6-gnome-2204:
@@ -146,8 +146,8 @@ plugs:
 
 apps:
   planify:
-    command: usr/bin/io.github.alainm23.planify
-    desktop: usr/share/applications/io.github.alainm23.planify.desktop
+    command: usr/bin/io.github.lab_gek.bluplan
+    desktop: usr/share/applications/io.github.lab_gek.bluplan.desktop
     environment: &environment
       LD_LIBRARY_PATH: $SNAP/webkitgtk-platform/usr/lib:$SNAP/webkitgtk-platform/usr/lib/$CRAFT_ARCH_TRIPLET_BUILD_FOR:$LD_LIBRARY_PATH
       GI_TYPELIB_PATH: ${SNAP}/gnome-platform/usr/lib/${CRAFT_ARCH_TRIPLET_BUILD_FOR}/girepository-1.0:${SNAP}/gnome-platform/usr/lib/${CRAFT_ARCH_TRIPLET_BUILD_FOR}/gjs/girepository-1.0:${SNAP}/webkitgtk-platform/usr/lib/${CRAFT_ARCH_TRIPLET_BUILD_FOR}/girepository-1.0
@@ -162,7 +162,7 @@ apps:
       - unity7
 
   quick-add:
-    command: usr/bin/io.github.alainm23.planify.quick-add
+    command: usr/bin/io.github.lab_gek.bluplan.quick-add
     extensions: [gnome]
     environment: *environment
     plugs: *plugs

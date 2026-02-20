@@ -78,7 +78,7 @@ public class Widgets.NewVersionPopup : Adw.Bin {
 
         update_button.clicked.connect (() => {
             try {
-                AppInfo.launch_default_for_uri ("appstream://io.github.alainm23.planify", null);
+                AppInfo.launch_default_for_uri ("appstream://io.github.lab_gek.bluplan", null);
             } catch (Error e) {
                 warning ("Error opening GNOME Software: %s", e.message);
             }

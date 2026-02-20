@@ -59,7 +59,7 @@ public class Dialogs.Preferences.Pages.Backup : Dialogs.Preferences.Pages.BasePa
 
         backups_group.set_sort_func (set_sort_func);
 
-        var location_label = new Gtk.Label (_("Backup files are stored in: %s").printf (Environment.get_user_data_dir () + "/io.github.alainm23.planify/backups")) {
+        var location_label = new Gtk.Label (_("Backup files are stored in: %s").printf (Environment.get_user_data_dir () + "/io.github.lab_gek.bluplan/backups")) {
             wrap = true,
             xalign = 0,
             margin_start = 6

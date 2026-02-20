@@ -30,7 +30,7 @@ public class Services.Api : GLib.Object {
 
     public async Objects.Release? get_latest_release () throws Error {
         var session = new Soup.Session ();
-        var message = new Soup.Message ("GET", "https://flathub.org/api/v2/appstream/io.github.alainm23.planify?locale=en");
+        var message = new Soup.Message ("GET", "https://flathub.org/api/v2/appstream/io.github.lab_gek.bluplan?locale=en");
         
         var response = yield session.send_and_read_async (message, Priority.DEFAULT, null);
         var json_string = (string) response.get_data ();

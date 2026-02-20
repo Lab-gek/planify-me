@@ -1,9 +1,9 @@
 {
-    "app-id" : "io.github.alainm23.planify.Devel",
+    "app-id" : "io.github.lab_gek.bluplan.Devel",
     "runtime" : "org.gnome.Platform",
     "runtime-version" : "49",
     "sdk" : "org.gnome.Sdk",
-    "command" : "io.github.alainm23.planify.Devel",
+    "command" : "io.github.lab_gek.bluplan.Devel",
     "tags" : [
         "devel"
     ],
@@ -15,10 +15,10 @@
         "--socket=wayland",
         "--talk-name=org.gnome.evolution.dataserver.Calendar8",
         "--talk-name=org.gnome.evolution.dataserver.Sources5",
-        "--talk-name=io.github.alainm23.planify",
-        "--talk-name=io.github.alainm23.planify.quick-add",
-        "--own-name=io.github.alainm23.planify.quick-add",
-        "--own-name=io.github.alainm23.planify"
+        "--talk-name=io.github.lab_gek.bluplan",
+        "--talk-name=io.github.lab_gek.bluplan.quick-add",
+        "--own-name=io.github.lab_gek.bluplan.quick-add",
+        "--own-name=io.github.lab_gek.bluplan"
     ],
     "cleanup" : [
         "/include",

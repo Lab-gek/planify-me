@@ -57,7 +57,7 @@ public class MainWindow : Adw.ApplicationWindow {
 
     static construct {
         weak Gtk.IconTheme default_theme = Gtk.IconTheme.get_for_display (Gdk.Display.get_default ());
-        default_theme.add_resource_path ("/io/github/alainm23/planify/");
+        default_theme.add_resource_path ("/io/github/lab_gek/bluplan/");
     }
 
     construct {
@@ -756,7 +756,7 @@ public class MainWindow : Adw.ApplicationWindow {
     public void open_shortcuts_window () {
         try {
             var shortcuts_builder = new Gtk.Builder ();
-            shortcuts_builder.add_from_resource ("/io/github/alainm23/planify/shortcuts.ui");
+            shortcuts_builder.add_from_resource ("/io/github/lab_gek/bluplan/shortcuts.ui");
             
             var shortcuts_window = (Gtk.ShortcutsWindow) shortcuts_builder.get_object ("shortcuts-planify");
             shortcuts_window.set_transient_for (this);
@@ -810,7 +810,7 @@ public class MainWindow : Adw.ApplicationWindow {
             dialog = new Adw.AboutDialog ();
         } else {
             dialog = new Adw.AboutDialog.from_appdata (
-                "/io/github/alainm23/planify/" + Build.APPLICATION_ID + ".appdata.xml.in.in", Build.VERSION
+                "/io/github/lab_gek/bluplan/" + Build.APPLICATION_ID + ".appdata.xml.in.in", Build.VERSION
             );
         }
 

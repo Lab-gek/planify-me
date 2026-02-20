@@ -170,7 +170,7 @@ public class Util : GLib.Object {
 
     public string get_avatar_path (string id) {
         return GLib.Path.build_filename (
-            Environment.get_user_data_dir () + "/io.github.alainm23.planify", id + ".jpg"
+            Environment.get_user_data_dir () + "/io.github.lab_gek.bluplan", id + ".jpg"
         );
     }
 
@@ -403,7 +403,7 @@ public class Util : GLib.Object {
     private Gtk.MediaFile soud_medida = null;
     public void play_audio () {
         if (soud_medida == null) {
-            soud_medida = Gtk.MediaFile.for_resource ("/io/github/alainm23/planify/success.ogg");
+            soud_medida = Gtk.MediaFile.for_resource ("/io/github/lab_gek/bluplan/success.ogg");
         }
         
         soud_medida.play ();

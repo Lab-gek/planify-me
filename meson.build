@@ -1,5 +1,5 @@
 project(
-  'io.github.alainm23.planify',
+  'io.github.lab_gek.bluplan',
   'vala', 'c',
   version: '4.18.0'
 )
@@ -67,7 +67,7 @@ endif
 ############
 
 asresources = gnome.compile_resources (
-    'as-resources', 'data/io.github.alainm23.planify.gresource.xml',
+    'as-resources', 'data/io.github.lab_gek.bluplan.gresource.xml',
     source_dir: 'data',
     c_name: 'as'
 )
@@ -81,12 +81,12 @@ if profile == 'development'
   find_program('git')
   rev_txt = run_command('git','rev-parse','--short','HEAD').stdout().strip()
   rev = '-@0@'.format(rev_txt)
-  application_id = 'io.github.alainm23.planify.Devel'
-  application_path = '/io/github/alainm23/planify/Devel'
+  application_id = 'io.github.lab_gek.bluplan.Devel'
+  application_path = '/io/github/lab_gek/bluplan/Devel'
 else
   rev = ''
-  application_id = 'io.github.alainm23.planify'
-  application_path = '/io/github/alainm23/planify'
+  application_id = 'io.github.lab_gek.bluplan'
+  application_path = '/io/github/lab_gek/bluplan'
 endif
 
 ############
@@ -99,7 +99,7 @@ localedir = prefix / get_option ('localedir')
 libexecdir = prefix / get_option('libexecdir')
 
 grep = find_program('grep')
-total_strings_res = run_command(grep, '-c', 'msgid', meson.project_source_root() + '/po/io.github.alainm23.planify.pot', check : true)
+total_strings_res = run_command(grep, '-c', 'msgid', meson.project_source_root() + '/po/io.github.lab_gek.bluplan.pot', check : true)
 total_strings = total_strings_res.stdout().strip().to_int() - 1
 
 conf_data = configuration_data()

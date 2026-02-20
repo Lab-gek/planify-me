@@ -12,7 +12,7 @@ public class QuickAdd : Adw.Application {
     }
 
     construct {
-        application_id = "io.github.alainm23.planify.quick-add";
+        application_id = "io.github.lab_gek.bluplan.quick-add";
         flags |= ApplicationFlags.FLAGS_NONE;
 
         Intl.setlocale (LocaleCategory.ALL, "");
@@ -43,7 +43,7 @@ public class QuickAdd : Adw.Application {
         });
 
         var provider = new Gtk.CssProvider ();
-        provider.load_from_resource ("/io/github/alainm23/planify/index.css");
+        provider.load_from_resource ("/io/github/lab_gek/bluplan/index.css");
         Gtk.StyleContext.add_provider_for_display (
             Gdk.Display.get_default (), provider, Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION
         );

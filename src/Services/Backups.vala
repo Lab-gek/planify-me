@@ -53,7 +53,7 @@ public class Services.Backups : Object {
 
         builder = new Json.Builder ();
         parser = new Json.Parser ();
-        path = Environment.get_user_data_dir () + "/io.github.alainm23.planify/backups";
+        path = Environment.get_user_data_dir () + "/io.github.lab_gek.bluplan/backups";
     }
 
     public Gee.ArrayList<Objects.Backup> get_backups_collection () {

@@ -1,19 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <schemalist>
-    <enum id="io.github.alainm23.planify.appearance">
+    <enum id="io.github.lab_gek.bluplan.appearance">
         <value nick="Light" value="0" />
         <value nick="Dark" value="1" />
         <value nick="Dark Blue" value="2" />
     </enum>
 
-    <enum id="io.github.alainm23.planify.default-priority">
+    <enum id="io.github.lab_gek.bluplan.default-priority">
         <value nick="Priority 1" value="0" />
         <value nick="Priority 2" value="1" />
         <value nick="Priority 3" value="2" />
         <value nick="None" value="3" />
     </enum>
 
-    <enum id="io.github.alainm23.planify.start-week">
+    <enum id="io.github.lab_gek.bluplan.start-week">
         <value nick="Sunday" value="0" />
         <value nick="Monday" value="1" />
         <value nick="Tuesday" value="2" />
@@ -23,32 +23,32 @@
         <value nick="Saturday" value="6" />
     </enum>
 
-    <enum id="io.github.alainm23.planify.new-tasks-position">
+    <enum id="io.github.lab_gek.bluplan.new-tasks-position">
         <value nick="Top" value="0" />
         <value nick="Bottom" value="1" />
     </enum>
 
-    <enum id="io.github.alainm23.planify.clock-format">
+    <enum id="io.github.lab_gek.bluplan.clock-format">
         <value nick="24h" value="0" />
         <value nick="12h" value="1" />
     </enum>
 
-    <enum id="io.github.alainm23.planify.projects-sort-by">
+    <enum id="io.github.lab_gek.bluplan.projects-sort-by">
         <value nick="Custom sort order" value="0" />
         <value nick="Alphabetically" value="1" />
     </enum>
 
-    <enum id="io.github.alainm23.planify.projects-ordered">
+    <enum id="io.github.lab_gek.bluplan.projects-ordered">
         <value nick="Ascending" value="0" />
         <value nick="Descending" value="1" />
     </enum>
 
-    <enum id="io.github.alainm23.planify.complete-task">
+    <enum id="io.github.lab_gek.bluplan.complete-task">
         <value nick="Instantly" value="0" />
         <value nick="Wait 2500 milliseconds" value="1" />
     </enum>
 
-    <enum id="io.github.alainm23.planify.automatic-reminders">
+    <enum id="io.github.lab_gek.bluplan.automatic-reminders">
         <value nick="At due time" value="0" />
         <value nick="10 minutes before" value="1" />
         <value nick="30 minutes before" value="2" />
@@ -58,38 +58,38 @@
         <value nick="3 hour before" value="6" />
     </enum>
 
-    <schema path="/io/github/alainm23/planify/" id="io.github.alainm23.planify" gettext-domain="io.github.alainm23.planify">        
-        <key name="new-tasks-position" enum="io.github.alainm23.planify.new-tasks-position">
+    <schema path="/io/github/lab_gek/bluplan/" id="io.github.lab_gek.bluplan" gettext-domain="io.github.lab_gek.bluplan">        
+        <key name="new-tasks-position" enum="io.github.lab_gek.bluplan.new-tasks-position">
             <default>"Bottom"</default>
             <summary>Choose which items should be counted for the badge on the application icon</summary>
             <description>Choose which items should be counted for the badge on the application icon</description>
         </key>
 
-        <key name="clock-format" enum="io.github.alainm23.planify.clock-format">
+        <key name="clock-format" enum="io.github.lab_gek.bluplan.clock-format">
             <default>"24h"</default>
             <summary></summary>
             <description></description>
         </key>
 
-        <key name="projects-sort-by" enum="io.github.alainm23.planify.projects-sort-by">
+        <key name="projects-sort-by" enum="io.github.lab_gek.bluplan.projects-sort-by">
             <default>"Custom sort order"</default>
             <summary></summary>
             <description></description>
         </key>
 
-        <key name="projects-ordered" enum="io.github.alainm23.planify.projects-ordered">
+        <key name="projects-ordered" enum="io.github.lab_gek.bluplan.projects-ordered">
             <default>"Descending"</default>
             <summary></summary>
             <description></description>
         </key>
 
-        <key name="complete-task" enum="io.github.alainm23.planify.complete-task">
+        <key name="complete-task" enum="io.github.lab_gek.bluplan.complete-task">
             <default>"Instantly"</default>
             <summary>Task completion behavior</summary>
             <description>Controls when tasks are marked as completed - instantly or with confirmation</description>
         </key>
 
-        <key name="appearance" enum="io.github.alainm23.planify.appearance">
+        <key name="appearance" enum="io.github.lab_gek.bluplan.appearance">
             <default>"Dark"</default>
             <summary>Application appearance theme</summary>
             <description>Sets the visual theme of the application (Light, Dark, or System)</description>
@@ -107,13 +107,13 @@
             <description>Automatically switch between light and dark themes based on system settings</description>
         </key>
 
-        <key name="default-priority" enum="io.github.alainm23.planify.default-priority">
+        <key name="default-priority" enum="io.github.lab_gek.bluplan.default-priority">
             <default>"None"</default>
             <summary>Default task priority</summary>
             <description>Sets the default priority level for new tasks</description>
         </key>
 
-        <key name="start-week" enum="io.github.alainm23.planify.start-week">
+        <key name="start-week" enum="io.github.lab_gek.bluplan.start-week">
             <default>"Monday"</default>
             <summary>First day of the week</summary>
             <description>Sets which day should be considered the first day of the week in calendar views</description>
@@ -311,7 +311,7 @@
             <description>Enable automatic reminder notifications for tasks with due dates to help stay on track with deadlines</description>
         </key>
 
-        <key name="automatic-reminders" enum="io.github.alainm23.planify.automatic-reminders">
+        <key name="automatic-reminders" enum="io.github.lab_gek.bluplan.automatic-reminders">
             <default>"At due time"</default>
             <summary>Automatic Reminders</summary>
             <description>Configure when automatic reminders are triggered - at due time, before due time, or custom intervals</description>

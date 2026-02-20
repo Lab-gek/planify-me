@@ -4,8 +4,8 @@ desktop_conf.set('exec', application_id)
 desktop_conf.set('icon', application_id)
 desktop_file = i18n.merge_file(
   input: configure_file(
-    input: files('io.github.alainm23.planify.desktop.in.in'),
-    output: 'io.github.alainm23.planify.desktop.in',
+    input: files('io.github.lab_gek.bluplan.desktop.in.in'),
+    output: 'io.github.lab_gek.bluplan.desktop.in',
     configuration: desktop_conf,
   ),
   output: '@0@.desktop'.format(application_id),
@@ -26,8 +26,8 @@ appdata_conf = configuration_data()
 appdata_conf.set('appid', application_id)
 appstream_file = i18n.merge_file(
   input: configure_file(
-    input: files('io.github.alainm23.planify.appdata.xml.in.in'),
-    output: 'io.github.alainm23.planify.appdata.xml.in',
+    input: files('io.github.lab_gek.bluplan.appdata.xml.in.in'),
+    output: 'io.github.lab_gek.bluplan.appdata.xml.in',
     configuration: appdata_conf
   ),
   output: '@0@.appdata.xml'.format(application_id),
@@ -36,7 +36,7 @@ appstream_file = i18n.merge_file(
   install_dir: get_option('datadir') / 'metainfo',
 )
 
-install_data('io.github.alainm23.planify.gschema.xml',
+install_data('io.github.lab_gek.bluplan.gschema.xml',
   install_dir: get_option('datadir') / 'glib-2.0/schemas',
 )
 

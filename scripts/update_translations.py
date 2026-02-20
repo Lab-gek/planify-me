@@ -63,14 +63,14 @@ def restore_full_header(po_file, old_header):
 
 def main():
     po_dir = Path('po')
-    pot_file = po_dir / 'io.github.alainm23.planify.pot'
+    pot_file = po_dir / 'io.github.lab_gek.bluplan.pot'
     
     # Generate POT file
     subprocess.run([
         'xgettext', '--files-from=po/POTFILES', '--directory=.',
-        '--output=po/io.github.alainm23.planify.pot',
+        '--output=po/io.github.lab_gek.bluplan.pot',
         '--from-code=UTF-8', '--keyword=_', '--keyword=N_',
-        '--package-name=io.github.alainm23.planify'
+        '--package-name=io.github.lab_gek.bluplan'
     ], check=True)
     
     # Update PO files

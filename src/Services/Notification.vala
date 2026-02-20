@@ -92,7 +92,7 @@ public class Services.Notification : GLib.Object {
     private GLib.Notification build_notification (Objects.Reminder reminder) {
         var notification = new GLib.Notification (reminder.item.project.name);
         notification.set_body (reminder.item.content);
-        notification.set_icon (new ThemedIcon ("io.github.alainm23.planify"));
+        notification.set_icon (new ThemedIcon ("io.github.lab_gek.bluplan"));
         notification.set_priority (GLib.NotificationPriority.URGENT);
         notification.set_default_action_and_target_value ("show-item", new Variant.string (reminder.item_id));
         notification.add_button_with_target_value (_("Complete"), "app.complete", new Variant.string (reminder.item_id));

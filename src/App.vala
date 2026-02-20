@@ -69,8 +69,8 @@ public class BluPlan : Adw.Application {
         Intl.textdomain (Build.GETTEXT_PACKAGE);
 
         add_main_option_entries (OPTIONS);
-        create_dir_with_parents ("/io.github.alainm23.planify");
-        create_dir_with_parents ("/io.github.alainm23.planify/backups");
+        create_dir_with_parents ("/io.github.lab_gek.bluplan");
+        create_dir_with_parents ("/io.github.lab_gek.bluplan/backups");
     }
 
     protected override void activate () {
@@ -115,7 +115,7 @@ public class BluPlan : Adw.Application {
         Services.Settings.get_default ().settings.bind ("window-maximized", main_window, "maximized", SettingsBindFlags.SET);
 
         var provider = new Gtk.CssProvider ();
-        provider.load_from_resource ("/io/github/alainm23/planify/index.css");
+        provider.load_from_resource ("/io/github/lab_gek/bluplan/index.css");
 
         Gtk.StyleContext.add_provider_for_display (
             Gdk.Display.get_default (), provider, Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION
@@ -134,7 +134,7 @@ public class BluPlan : Adw.Application {
 
     #if WITH_LIBPORTAL
     public async bool ask_for_background (Xdp.BackgroundFlags flags = Xdp.BackgroundFlags.AUTOSTART) {
-        const string[] DAEMON_COMMAND = { "io.github.alainm23.planify", "--background" };
+        const string[] DAEMON_COMMAND = { "io.github.lab_gek.bluplan", "--background" };
         if (portal == null) {
             portal = new Xdp.Portal ();
         }

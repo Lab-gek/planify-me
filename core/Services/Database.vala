@@ -176,7 +176,7 @@ public class Services.Database : GLib.Object {
     }
 
     public void init_database () {
-        db_path = Environment.get_user_data_dir () + "/io.github.alainm23.planify/database.db";
+        db_path = Environment.get_user_data_dir () + "/io.github.lab_gek.bluplan/database.db";
         Sqlite.Database.open (db_path, out db);
 
         create_tables ();
@@ -651,7 +651,7 @@ public class Services.Database : GLib.Object {
     }
 
     public void clear_database () {
-        string db_path = Environment.get_user_data_dir () + "/io.github.alainm23.planify/database.db";
+        string db_path = Environment.get_user_data_dir () + "/io.github.lab_gek.bluplan/database.db";
         File db_file = File.new_for_path (db_path);
 
         if (db_file.query_exists ()) {

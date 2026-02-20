@@ -15,5 +15,5 @@ jobs:
       - uses: flatpak/flatpak-github-actions/flatpak-builder@v6
         with:
           bundle: planify.Devel.flatpak
-          manifest-path: build-aux/io.github.alainm23.planify.Devel.json
+          manifest-path: build-aux/io.github.lab_gek.bluplan.Devel.json
           cache-key: 'flatpak-builder-${{ github.sha }}'
