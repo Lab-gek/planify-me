@@ -100,6 +100,24 @@ public class Dialogs.Preferences.Pages.TaskSetting : Dialogs.Preferences.Pages.B
 
         group.add (task_complete_tone);
 
+        var custom_tone_row = new Adw.ActionRow ();
+        custom_tone_row.title = _("Custom Completion Sound");
+        custom_tone_row.subtitle = get_custom_tone_subtitle ();
+
+        var choose_tone_button = new Gtk.Button.with_label (_("Choose"));
+        choose_tone_button.valign = Gtk.Align.CENTER;
+        custom_tone_row.add_suffix (choose_tone_button);
+
+        var test_tone_button = new Gtk.Button.with_label (_("Test"));
+        test_tone_button.valign = Gtk.Align.CENTER;
+        custom_tone_row.add_suffix (test_tone_button);
+
+        var reset_tone_button = new Gtk.Button.with_label (_("Reset"));
+        reset_tone_button.valign = Gtk.Align.CENTER;
+        custom_tone_row.add_suffix (reset_tone_button);
+
+        group.add (custom_tone_row);
+
         var open_task_sidebar = new Adw.SwitchRow ();
         open_task_sidebar.title = _("Open Tasks in Sidebar View");
         open_task_sidebar.subtitle = _("Always display task details in the sidebar instead of expanding in list view.");
@@ -218,9 +236,77 @@ public class Dialogs.Preferences.Pages.TaskSetting : Dialogs.Preferences.Pages.B
             Services.Settings.get_default ().settings.set_enum ("automatic-reminders", reminders_comborow.selected);
         })] = reminders_comborow;
 
+        signal_map[choose_tone_button.clicked.connect (() => {
+            var chooser = new Gtk.FileDialog () {
+                title = _("Choose completion sound"),
+                modal = true
+            };
+            add_audio_filters (chooser);
+
+            chooser.open.begin (BluPlan._instance.main_window, null, (obj, res) => {
+                try {
+                    var file = chooser.open.end (res);
+                    if (Services.Settings.get_default ().has_key ("task-complete-tone-uri")) {
+                        Services.Settings.get_default ().settings.set_string ("task-complete-tone-uri", file.get_uri ());
+                    }
+                    custom_tone_row.subtitle = get_custom_tone_subtitle ();
+                } catch (Error e) {
+                    debug ("Error choosing completion sound: %s".printf (e.message));
+                }
+            });
+        })] = choose_tone_button;
+
+        signal_map[reset_tone_button.clicked.connect (() => {
+            if (Services.Settings.get_default ().has_key ("task-complete-tone-uri")) {
+                Services.Settings.get_default ().settings.set_string ("task-complete-tone-uri", "");
+            }
+            custom_tone_row.subtitle = get_custom_tone_subtitle ();
+        })] = reset_tone_button;
+
+        signal_map[test_tone_button.clicked.connect (() => {
+            Util.get_default ().play_audio ();
+        })] = test_tone_button;
+
         destroy.connect (() => {
             clean_up ();
         });
+    }
+
+    private string get_custom_tone_subtitle () {
+        if (!Services.Settings.get_default ().has_key ("task-complete-tone-uri")) {
+            return _("Use the bundled success sound");
+        }
+
+        var uri = Services.Settings.get_default ().settings.get_string ("task-complete-tone-uri");
+        if (uri == "") {
+            return _("Use the bundled success sound");
+        }
+
+        var file = File.new_for_uri (uri);
+        var basename = file.get_basename ();
+        if (basename != null && basename != "") {
+            return basename;
+        }
+
+        return uri;
+    }
+
+    private void add_audio_filters (Gtk.FileDialog file_dialog) {
+        var filter = new Gtk.FileFilter ();
+        filter.set_filter_name (_("Audio Files"));
+        filter.add_mime_type ("audio/ogg");
+        filter.add_mime_type ("audio/mpeg");
+        filter.add_mime_type ("audio/wav");
+        filter.add_mime_type ("audio/x-wav");
+        filter.add_pattern ("*.ogg");
+        filter.add_pattern ("*.mp3");
+        filter.add_pattern ("*.wav");
+
+        var filters = new ListStore (typeof (Gtk.FileFilter));
+        filters.append (filter);
+
+        file_dialog.filters = filters;
+        file_dialog.default_filter = filter;
     }
 
     public override void clean_up () {

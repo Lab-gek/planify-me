@@ -275,6 +275,12 @@
             <description>Play an audio notification sound when marking tasks as completed to provide satisfying feedback</description>
         </key>
 
+        <key name="task-complete-tone-uri" type="s">
+            <default>""</default>
+            <summary>Custom completion sound</summary>
+            <description>URI of a custom audio file to play when tasks are completed. Leave empty to use the default bundled sound.</description>
+        </key>
+
         <key name="open-task-sidebar" type="b">
             <default>false</default>
             <summary>Open Task In Sidebar View</summary>

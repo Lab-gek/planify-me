@@ -401,9 +401,34 @@ public class Util : GLib.Object {
     }
 
     private Gtk.MediaFile soud_medida = null;
+    private string current_audio_uri = "";
+
+    private string get_task_complete_audio_uri () {
+        if (!Services.Settings.get_default ().has_key ("task-complete-tone-uri")) {
+            return "resource:///io/github/lab_gek/bluplan/success.ogg";
+        }
+
+        var custom_uri = Services.Settings.get_default ().settings.get_string ("task-complete-tone-uri");
+        if (custom_uri != "") {
+            var custom_file = File.new_for_uri (custom_uri);
+            if (custom_file.query_exists ()) {
+                return custom_uri;
+            }
+        }
+
+        return "resource:///io/github/lab_gek/bluplan/success.ogg";
+    }
+
     public void play_audio () {
-        if (soud_medida == null) {
-            soud_medida = Gtk.MediaFile.for_resource ("/io/github/lab_gek/bluplan/success.ogg");
+        var target_audio_uri = get_task_complete_audio_uri ();
+        if (soud_medida == null || current_audio_uri != target_audio_uri) {
+            current_audio_uri = target_audio_uri;
+            if (target_audio_uri.has_prefix ("resource://")) {
+                soud_medida = Gtk.MediaFile.for_resource ("/io/github/lab_gek/bluplan/success.ogg");
+            } else {
+                var custom_file = File.new_for_uri (target_audio_uri);
+                soud_medida = Gtk.MediaFile.for_file (custom_file);
+            }
         }
         
         soud_medida.play ();
