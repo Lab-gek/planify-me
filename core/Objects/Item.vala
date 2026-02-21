@@ -79,7 +79,7 @@ public class Objects.Item : Objects.BaseObject {
     public static int calculate_points_score (double duration_minutes, int completion_offset_minutes,
                                               int grace_period_mins, bool assume_working,
                                               int penalty_curve) {
-        int base_points = (int) Math.fmin (Math.floor (duration_minutes / 5), 24.0);
+        int base_points = (int) Math.fmax (0.0, Math.fmin (Math.floor (duration_minutes / 5), 24.0));
         int bonus_points = completion_offset_minutes <= -5 ? 1 : 0;
 
         double multiplier = 1.0;
@@ -149,6 +149,10 @@ public class Objects.Item : Objects.BaseObject {
         }
 
         GLib.DateTime? completion_dt = Utils.Datetime.get_date_from_string (completed_at);
+        if (completion_dt == null) {
+            points = 0;
+            return;
+        }
         bool assume_working = Services.Settings.get_default ().get_boolean ("points-assume-working");
         int grace_period_mins = Services.Settings.get_default ().get_int ("points-grace-period");
         int penalty_curve = Services.Settings.get_default ().settings.get_enum ("points-penalty-curve");

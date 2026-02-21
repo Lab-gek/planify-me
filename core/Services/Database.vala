@@ -1707,7 +1707,8 @@ public class Services.Database : GLib.Object {
         Sqlite.Statement stmt;
 
         sql = """
-            UPDATE Items SET checked=$checked, completed_at=$completed_at, points=$points
+            UPDATE Items SET checked=$checked, completed_at=$completed_at,
+                points=CASE WHEN id=$id THEN $points ELSE points END
             WHERE id=$id OR parent_id=$id;
         """;
 

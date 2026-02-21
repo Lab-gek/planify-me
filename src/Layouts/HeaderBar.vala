@@ -153,6 +153,10 @@ public class Layouts.HeaderBar : Adw.Bin {
             update_sidebar_icon ();
         })] = Services.Settings.get_default ();
 
+        signal_map[Services.Settings.get_default ().settings.changed["points-enabled"].connect (() => {
+            update_points ();
+        })] = Services.Settings.get_default ();
+
         var store = Services.Store.instance ();
         signal_map[store.item_updated.connect ((item, update_id) => {
             update_points ();

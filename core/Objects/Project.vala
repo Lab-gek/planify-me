@@ -293,6 +293,12 @@ public class Objects.Project : Objects.BaseObject {
             }
         });
 
+        Services.Store.instance ().item_updated.connect ((item, update_id) => {
+            if (item.project_id == id) {
+                count_update ();
+            }
+        });
+
         Services.EventBus.get_default ().item_moved.connect ((item, old_project_id) => {
             if (item.project_id == id || old_project_id == id) {
                 count_update ();
