@@ -40,6 +40,30 @@
 - **📎 Attachments**: Add files and links to your tasks
 - **🎨 Customization**: Personalize colors and themes
 
+### 🎯 Focus Mode (Pomodoro Timer)
+- **⏱️ Integrated Timer**: Built-in Pomodoro timer to help you stay focused
+- **🔄 Work/Break Cycles**: Automatic transitions between work and break periods
+- **🎖️ Points System**: Earn bonus points for completing tasks during focus sessions
+- **🔧 Customizable**: Configure work duration, break length, and rounds before long break
+
+### 🖥️ GNOME Shell Extension
+Take your focus sessions to the next level with our **GNOME Shell extension**!
+
+- **📊 Top Bar Integration**: See your Pomodoro timer right in the GNOME top bar
+- **⚡ Quick Controls**: Start, pause, stop, and complete tasks without opening the app
+- **👁️ Visual Status**: Glanceable focus state indicator (working/break/idle)
+- **📋 Next Task Preview**: View your next scheduled task at a glance
+- **🎛️ Highly Configurable**: Choose exactly what information to display
+
+**Installation:**
+```bash
+cd gnome-shell-extension
+./install.sh
+gnome-extensions enable bluplan-focus@lab_gek.github.io
+```
+
+See [gnome-shell-extension/README.md](gnome-shell-extension/README.md) for detailed installation and configuration instructions.
+
 ## 📥 Installation
 
 ### 🏪 Official Distribution

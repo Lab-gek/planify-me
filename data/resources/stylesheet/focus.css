@@ -9,3 +9,45 @@ label.focus-timer.focus-timer-break {
 label.focus-state-label.focus-state-break {
 	color: #33d17a;
 }
+
+/* Compact upcoming tasks styling */
+listbox.compact-rows row {
+	min-height: 36px;
+	padding: 4px 8px;
+}
+
+listbox.compact-rows row .compact-task-row {
+	opacity: 0.8;
+	font-size: 0.9em;
+}
+
+listbox.compact-rows row:hover {
+	opacity: 1;
+	background: alpha(@accent_color, 0.1);
+}
+
+/* Make current task more prominent */
+.boxed-list row:not(.compact-task-row) {
+	padding: 12px;
+	min-height: 48px;
+}
+
+/* Task promotion animation */
+@keyframes task-promote-slide-up {
+	0% {
+		transform: translateY(0);
+		opacity: 1;
+	}
+	50% {
+		transform: translateY(-60px);
+		opacity: 0.7;
+	}
+	100% {
+		transform: translateY(-120px);
+		opacity: 0;
+	}
+}
+
+.task-promote-animation {
+	animation: task-promote-slide-up 300ms cubic-bezier(0.4, 0.0, 0.2, 1) forwards;
+}

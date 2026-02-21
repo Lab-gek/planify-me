@@ -47,4 +47,17 @@ if compile_schemas.found()
   )
 endif
 
+# D-Bus Service
+dbus_conf = configuration_data()
+dbus_conf.set('app_id', application_id)
+dbus_conf.set('bindir', bindir)
+
+configure_file(
+  input: 'io.github.lab_gek.bluplan.service.in',
+  output: '@0@.service'.format(application_id),
+  configuration: dbus_conf,
+  install: true,
+  install_dir: datadir / 'dbus-1' / 'services'
+)
+
 subdir('icons')

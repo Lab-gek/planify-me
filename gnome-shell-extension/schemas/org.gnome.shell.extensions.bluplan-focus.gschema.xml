@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schemalist>
+  <schema id="org.gnome.shell.extensions.bluplan-focus" path="/org/gnome/shell/extensions/bluplan-focus/">
+    
+    <!-- View Mode -->
+    <key name="view-mode" type="s">
+      <default>'expanded'</default>
+      <summary>View mode for the panel button</summary>
+      <description>
+        Controls how the panel button displays information.
+        Options: 'compact' (icon only), 'expanded' (icon + timer + task), 'custom' (use individual toggles)
+      </description>
+      <choices>
+        <choice value='compact'/>
+        <choice value='expanded'/>
+        <choice value='custom'/>
+      </choices>
+    </key>
+    
+    <!-- Individual Element Visibility (used when view-mode is 'custom') -->
+    <key name="show-timer" type="b">
+      <default>true</default>
+      <summary>Show timer in panel</summary>
+      <description>Display the countdown timer next to the icon</description>
+    </key>
+    
+    <key name="show-controls" type="b">
+      <default>true</default>
+      <summary>Show control buttons in menu</summary>
+      <description>Display start/pause, stop, and complete buttons in the popup menu</description>
+    </key>
+    
+    <key name="show-task-name" type="b">
+      <default>true</default>
+      <summary>Show task name</summary>
+      <description>Display the name of the currently focused task</description>
+    </key>
+    
+    <key name="show-next-task" type="b">
+      <default>true</default>
+      <summary>Show next scheduled task</summary>
+      <description>Display the next suggested task in the popup menu</description>
+    </key>
+    
+    <!-- Button Position -->
+    <key name="button-position" type="s">
+      <default>'right'</default>
+      <summary>Panel button position</summary>
+      <description>
+        Position of the panel button in the top bar.
+        Options: 'left', 'center', 'right'
+      </description>
+      <choices>
+        <choice value='left'/>
+        <choice value='center'/>
+        <choice value='right'/>
+      </choices>
+    </key>
+    
+  </schema>
+</schemalist>

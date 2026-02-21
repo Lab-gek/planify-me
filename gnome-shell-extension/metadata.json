@@ -1,0 +1,15 @@
+{
+  "name": "BluPlan Focus",
+  "description": "Display BluPlan Pomodoro timer and task status in the top bar",
+  "uuid": "bluplan-focus@lab_gek.github.io",
+  "shell-version": [
+    "45",
+    "46",
+    "47",
+    "48",
+    "49"
+  ],
+  "version": 1,
+  "url": "https://github.com/alainm23/planify",
+  "settings-schema": "org.gnome.shell.extensions.bluplan-focus"
+}

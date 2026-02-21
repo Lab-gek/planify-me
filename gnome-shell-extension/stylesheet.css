@@ -1,0 +1,50 @@
+/* stylesheet.css
+ *
+ * Styles for BluPlan Focus extension
+ */
+
+/* Panel button container - spacing handled in JS BoxLayout */
+
+.bluplan-timer-label {
+    font-weight: bold;
+    padding-left: 4px;
+    padding-right: 4px;
+}
+
+.bluplan-panel-task-label {
+    padding-left: 6px;
+    max-width: 200px;
+}
+
+.bluplan-task-label {
+    font-weight: bold;
+    padding: 4px 8px;
+}
+
+.bluplan-controls-box {
+    /* Control button layout - spacing handled in JS */
+    padding: 8px;
+}
+
+.bluplan-control-button {
+    min-width: 60px;
+    padding: 8px 12px;
+}
+
+.bluplan-section-label {
+    font-weight: bold;
+    font-size: 0.9em;
+    color: #888;
+    padding: 4px 8px;
+}
+
+.bluplan-next-task-label {
+    padding: 4px 8px;
+}
+
+.bluplan-status-label {
+    font-size: 0.85em;
+    font-style: italic;
+    color: #888;
+    padding: 4px 8px;
+}

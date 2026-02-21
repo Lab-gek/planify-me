@@ -19,6 +19,7 @@ public class Views.Focus : Adw.Bin {
 
     private Gtk.Stack task_stack;
     private Gtk.ListBox task_listbox;
+    private Gtk.ListBox upcoming_listbox;
 
     private Gtk.Button start_pause_button;
     private Gtk.Button stop_button;
@@ -28,6 +29,9 @@ public class Views.Focus : Adw.Bin {
 
     private uint clock_timeout_id = 0;
     private Gee.HashMap<ulong, weak GLib.Object> signal_map = new Gee.HashMap<ulong, weak GLib.Object> ();
+    private Objects.Item? previous_focus_item = null;
+    private bool is_animating = false;
+    private Gee.ArrayList<string> cached_upcoming_ids = new Gee.ArrayList<string> ();
 
     public Focus () {
         Object ();
@@ -119,7 +123,7 @@ public class Views.Focus : Adw.Bin {
         task_listbox = new Gtk.ListBox () {
             css_classes = { "boxed-list" },
             selection_mode = Gtk.SelectionMode.NONE,
-            margin_bottom = 12
+            margin_bottom = 18
         };
 
         var detail_box = new Gtk.Box (Gtk.Orientation.VERTICAL, 6) {
@@ -129,10 +133,30 @@ public class Views.Focus : Adw.Bin {
             margin_bottom = 12
         };
         detail_box.append (new Gtk.Label (_("Current Task")) {
-            css_classes = { "font-bold" },
-            xalign = 0
+            css_classes = { "title-3", "font-bold" },
+            xalign = 0,
+            margin_bottom = 6
         });
         detail_box.append (task_listbox);
+
+        // Add upcoming tasks section
+        upcoming_listbox = new Gtk.ListBox () {
+            css_classes = { "boxed-list" },
+            selection_mode = Gtk.SelectionMode.NONE,
+            margin_bottom = 12
+        };
+        // Add CSS class to make rows more compact
+        upcoming_listbox.add_css_class ("compact-rows");
+
+        var upcoming_label = new Gtk.Label (_("Upcoming Tasks")) {
+            css_classes = { "caption-heading", "dim-label" },
+            xalign = 0,
+            margin_top = 12,
+            margin_bottom = 6
+        };
+
+        detail_box.append (upcoming_label);
+        detail_box.append (upcoming_listbox);
 
         task_stack = new Gtk.Stack () {
             transition_type = Gtk.StackTransitionType.CROSSFADE
@@ -230,8 +254,7 @@ public class Views.Focus : Adw.Bin {
         })] = Services.FocusManager.get_default ();
 
         signal_map[Services.FocusManager.get_default ().focus_item_changed.connect (() => {
-            update_task_ui ();
-            update_control_buttons ();
+            handle_focus_item_change ();
         })] = Services.FocusManager.get_default ();
 
         clock_timeout_id = Timeout.add_seconds (1, () => {
@@ -246,6 +269,50 @@ public class Views.Focus : Adw.Bin {
     }
 
 
+
+    private void handle_focus_item_change () {
+        var new_item = Services.FocusManager.get_default ().focus_item;
+        
+        // Check if new task was in the cached upcoming list
+        bool should_animate = false;
+        if (previous_focus_item != null && new_item != null) {
+            // Check if the new item was in our cached upcoming list
+            should_animate = cached_upcoming_ids.contains (new_item.id);
+        }
+        
+        previous_focus_item = new_item;
+        
+        if (should_animate && !is_animating) {
+            animate_task_promotion ();
+        } else {
+            update_task_ui ();
+            update_control_buttons ();
+        }
+    }
+
+    private void animate_task_promotion () {
+        is_animating = true;
+        
+        // Get the first upcoming task widget before update
+        var first_upcoming = upcoming_listbox.get_first_child ();
+        if (first_upcoming == null) {
+            is_animating = false;
+            update_task_ui ();
+            update_control_buttons ();
+            return;
+        }
+        
+        // Add animation class to trigger CSS animation
+        first_upcoming.add_css_class ("task-promote-animation");
+        
+        // Wait for animation to complete (300ms)
+        Timeout.add (300, () => {
+            is_animating = false;
+            update_task_ui ();
+            update_control_buttons ();
+            return false;
+        });
+    }
 
     private void update_task_ui () {
         var item = Services.FocusManager.get_default ().focus_item;
@@ -264,6 +331,57 @@ public class Views.Focus : Adw.Bin {
         var row = new Layouts.ItemRow (item);
         row.edit = true;
         task_listbox.append (row);
+
+        // Update upcoming tasks list
+        update_upcoming_tasks ();
+    }
+
+    private void update_upcoming_tasks () {
+        // Clear existing upcoming tasks
+        Gtk.Widget? child = upcoming_listbox.get_first_child ();
+        while (child != null) {
+            upcoming_listbox.remove (child);
+            child = upcoming_listbox.get_first_child ();
+        }
+
+        // Get and display upcoming tasks
+        var upcoming_items = Services.FocusManager.get_default ().get_suggested_focus_items (5);
+        
+        // Cache the IDs for animation detection
+        cached_upcoming_ids.clear ();
+        foreach (var item in upcoming_items) {
+            cached_upcoming_ids.add (item.id);
+        }
+        
+        if (upcoming_items.size == 0) {
+            var no_tasks_box = new Gtk.Box (Gtk.Orientation.VERTICAL, 0) {
+                height_request = 48,
+                valign = Gtk.Align.CENTER
+            };
+            var no_tasks_label = new Gtk.Label (_("No upcoming tasks")) {
+                css_classes = { "dim-label", "caption" },
+                margin_top = 12,
+                margin_bottom = 12
+            };
+            no_tasks_box.append (no_tasks_label);
+            upcoming_listbox.append (no_tasks_box);
+        } else {
+            foreach (var upcoming_item in upcoming_items) {
+                var row = new Layouts.ItemRow (upcoming_item);
+                row.edit = false;
+                // Add CSS class for compact display
+                row.add_css_class ("compact-task-row");
+                
+                // Make it clickable to set as focus item
+                var gesture = new Gtk.GestureClick ();
+                gesture.released.connect (() => {
+                    Services.FocusManager.get_default ().change_focus_item (upcoming_item);
+                });
+                row.add_controller (gesture);
+                
+                upcoming_listbox.append (row);
+            }
+        }
     }
 
     private void update_timer_ui () {

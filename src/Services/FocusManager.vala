@@ -69,8 +69,17 @@ public class Services.FocusManager : GLib.Object {
 
     private void clear_focus_item_if_matches (string item_id) {
         if (focus_item != null && focus_item.id == item_id) {
-            stop ();
-            change_focus_item (null);
+            // Get the next suggested task BEFORE clearing current one
+            var next_task = suggest_focus_item ();
+            
+            if (next_task != null) {
+                // Directly switch to next task (triggers animation)
+                change_focus_item (next_task);
+            } else {
+                // No more tasks, clear and stop
+                change_focus_item (null);
+                stop ();
+            }
         }
     }
 
@@ -139,10 +148,26 @@ public class Services.FocusManager : GLib.Object {
     }
 
     public Objects.Item ? suggest_focus_item () {
-        var now = new GLib.DateTime.now_local ();
+        var suggestions = get_suggested_focus_items ();
+        if (suggestions.size > 0) {
+            return suggestions[0];
+        }
+        return null;
+    }
 
+    public Gee.ArrayList<Objects.Item> get_suggested_focus_items (int max_items = 5) {
+        var result = new Gee.ArrayList<Objects.Item> ();
+        var now = new GLib.DateTime.now_local ();
+        var added_ids = new Gee.HashSet<string> ();
+
+        // First priority: scheduled items that are active now
         foreach (var item in Services.Store.instance ().get_items_by_scheduled (false)) {
             if (item == null || item.checked || item.due == null || item.due.datetime == null) {
+                continue;
+            }
+
+            // Skip the currently focused item
+            if (focus_item != null && item.id == focus_item.id) {
                 continue;
             }
 
@@ -151,19 +176,41 @@ public class Services.FocusManager : GLib.Object {
 
             if (end_dt != null) {
                 if (start_dt.compare (now) <= 0 && end_dt.compare (now) >= 0) {
-                    return item;
+                    result.add (item);
+                    added_ids.add (item.id);
+                    if (result.size >= max_items) {
+                        return result;
+                    }
                 }
             } else if (Utils.Datetime.is_today (start_dt)) {
-                return item;
+                result.add (item);
+                added_ids.add (item.id);
+                if (result.size >= max_items) {
+                    return result;
+                }
             }
         }
 
+        // Second priority: today's tasks
         var today_items = Services.Store.instance ().get_items_by_date (now, false);
-        if (today_items.size > 0) {
-            return today_items[0];
+        foreach (var item in today_items) {
+            if (item == null || item.checked || added_ids.contains (item.id)) {
+                continue;
+            }
+
+            // Skip the currently focused item
+            if (focus_item != null && item.id == focus_item.id) {
+                continue;
+            }
+
+            result.add (item);
+            added_ids.add (item.id);
+            if (result.size >= max_items) {
+                return result;
+            }
         }
 
-        return null;
+        return result;
     }
 
     public void auto_suggest_if_enabled () {
