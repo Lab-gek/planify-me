@@ -1239,6 +1239,7 @@ public class Layouts.ItemRow : Layouts.ItemBase {
 
         var move_item = new Widgets.ContextMenu.MenuItem (_ ("Move"), "arrow3-right-symbolic");
         var labels_item = new Widgets.ContextMenu.MenuItem (_ ("Labels"), "tag-outline-symbolic");
+        var focus_item = new Widgets.ContextMenu.MenuItem (_ ("Focus on this task"), "timer-symbolic");
 
         var add_item = new Widgets.ContextMenu.MenuItem (_ ("Add Subtask"), "plus-large-symbolic");
         var complete_item = new Widgets.ContextMenu.MenuItem (_ ("Complete"), "check-round-outline-symbolic");
@@ -1262,6 +1263,7 @@ public class Layouts.ItemRow : Layouts.ItemBase {
             menu_box.append (pinboard_item);
             menu_box.append (move_item);
             menu_box.append (labels_item);
+            menu_box.append (focus_item);
             menu_box.append (new Widgets.ContextMenu.MenuSeparator ());
             menu_box.append (add_item);
             menu_box.append (duplicate_item);
@@ -1319,6 +1321,11 @@ public class Layouts.ItemRow : Layouts.ItemBase {
                 dialog.present (BluPlan._instance.main_window);
             })] = labels_item;
 
+            signals_map[focus_item.activate_item.connect (() => {
+                Services.FocusManager.get_default ().change_focus_item (item);
+                Services.EventBus.get_default ().pane_selected (PaneType.FILTER, Objects.Filters.Focus.get_default ().view_id);
+            })] = focus_item;
+
             signals_map[complete_item.activate_item.connect (() => {
                 checked_button.active = !checked_button.active;
                 checked_toggled (checked_button.active);
@@ -1366,6 +1373,7 @@ public class Layouts.ItemRow : Layouts.ItemBase {
         var copy_clipboard_item = new Widgets.ContextMenu.MenuItem (_ ("Copy to Clipboard"), "clipboard-symbolic");
         var duplicate_item = new Widgets.ContextMenu.MenuItem (_ ("Duplicate"), "tabs-stack-symbolic");
         var move_item = new Widgets.ContextMenu.MenuItem (_ ("Move"), "arrow3-right-symbolic");
+        var focus_item = new Widgets.ContextMenu.MenuItem (_ ("Focus on this task"), "timer-symbolic");
 
         var delete_item = new Widgets.ContextMenu.MenuItem (_ ("Delete Task"), "user-trash-symbolic");
         delete_item.add_css_class ("menu-item-danger");
@@ -1387,6 +1395,7 @@ public class Layouts.ItemRow : Layouts.ItemBase {
             menu_box.append (copy_clipboard_item);
             menu_box.append (duplicate_item);
             menu_box.append (move_item);
+            menu_box.append (focus_item);
 
             signals_map[use_note_item.activate_item.connect (() => {
                 item.item_type = use_note_item.active ? ItemType.NOTE : ItemType.TASK;
@@ -1421,6 +1430,11 @@ public class Layouts.ItemRow : Layouts.ItemBase {
                 dialog.project = item.project;
                 dialog.present (BluPlan._instance.main_window);
             })] = move_item;
+
+            signals_map[focus_item.activate_item.connect (() => {
+                Services.FocusManager.get_default ().change_focus_item (item);
+                Services.EventBus.get_default ().pane_selected (PaneType.FILTER, Objects.Filters.Focus.get_default ().view_id);
+            })] = focus_item;
         }
 
         menu_box.append (delete_item);

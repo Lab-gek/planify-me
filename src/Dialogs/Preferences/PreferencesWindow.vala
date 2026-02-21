@@ -151,6 +151,17 @@ public class Dialogs.Preferences.PreferencesWindow : Adw.PreferencesDialog {
             push_subpage (build_page ("task-setting"));
         })] = task_setting_row;
 
+        var focus_row = new Adw.ActionRow ();
+        focus_row.activatable = true;
+        focus_row.add_prefix (generate_icon ("focus-mode-symbolic"));
+        focus_row.add_suffix (generate_icon ("go-next-symbolic"));
+        focus_row.title = _("Focus");
+        focus_row.subtitle = _("Pomodoro and current task");
+
+        signal_map[focus_row.activated.connect (() => {
+            push_subpage (build_page ("focus-setting"));
+        })] = focus_row;
+
         var sidebar_row = new Adw.ActionRow ();
         sidebar_row.activatable = true;
         sidebar_row.add_prefix (generate_icon ("dock-left-symbolic"));
@@ -202,6 +213,7 @@ public class Dialogs.Preferences.PreferencesWindow : Adw.PreferencesDialog {
         personalization_group.add (home_page_row);
         personalization_group.add (general_row);
         personalization_group.add (task_setting_row);
+        personalization_group.add (focus_row);
         personalization_group.add (sidebar_row);
         personalization_group.add (appearance_row);
         personalization_group.add (quick_add_row);
@@ -427,6 +439,9 @@ public class Dialogs.Preferences.PreferencesWindow : Adw.PreferencesDialog {
                 break;
             case "task-setting":
                 page_map[page] = new Dialogs.Preferences.Pages.TaskSetting (this);
+                break;
+            case "focus-setting":
+                page_map[page] = new Dialogs.Preferences.Pages.FocusSetting (this);
                 break;
             case "quick-add":
                 page_map[page] = new Dialogs.Preferences.Pages.QuickAdd (this);

@@ -315,6 +315,10 @@ public class Layouts.Sidebar : Adw.Bin {
         flowbox.append (new Layouts.FilterPaneChild (Objects.Filters.Scheduled.get_default ()) {
             tooltip_markup = Util.get_default ().markup_accel_tooltip (_("Go to Scheduled"), "Ctrl+U")
         });
+
+        flowbox.append (new Layouts.FilterPaneChild (Objects.Filters.Focus.get_default ()) {
+            tooltip_markup = Util.get_default ().markup_accel_tooltip (_("Go to Focus"), "Ctrl+F")
+        });
         
         flowbox.append (new Layouts.FilterPaneChild (Objects.Filters.Labels.get_default ()) {
             tooltip_markup = Util.get_default ().markup_accel_tooltip (_("Go to Labels"), "Ctrl+L")
@@ -366,6 +370,10 @@ public class Layouts.Sidebar : Adw.Bin {
 
         listbox.append (new Layouts.FilterPaneRow (Objects.Filters.Scheduled.get_default ()) {
             tooltip_markup = Util.get_default ().markup_accel_tooltip (_("Go to Scheduled"), "Ctrl+U")
+        });
+
+        listbox.append (new Layouts.FilterPaneRow (Objects.Filters.Focus.get_default ()) {
+            tooltip_markup = Util.get_default ().markup_accel_tooltip (_("Go to Focus"), "Ctrl+F")
         });
         
         listbox.append (new Layouts.FilterPaneRow (Objects.Filters.Labels.get_default ()) {

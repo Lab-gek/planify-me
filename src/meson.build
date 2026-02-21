@@ -37,6 +37,7 @@ sources = files(
   'Services/Api.vala',
   'Services/Notification.vala',
   'Services/TimeMonitor.vala',
+    'Services/FocusManager.vala',
   'Services/DBusServer.vala',
   'Services/Backups.vala',
   'Services/MigrateFromPlanner.vala',
@@ -93,6 +94,7 @@ sources = files(
   'Views/Label/Labels.vala',
   'Views/Label/LabelSourceRow.vala',
   'Views/Filter.vala',
+    'Views/Focus.vala',
   
   'Views/Scheduled/Scheduled.vala',
   'Views/Scheduled/ScheduledSection.vala',
@@ -128,6 +130,7 @@ sources = files(
   'Dialogs/Preferences/Pages/HomeView.vala',
   'Dialogs/Preferences/Pages/General.vala',
   'Dialogs/Preferences/Pages/TaskSetting.vala',
+    'Dialogs/Preferences/Pages/FocusSetting.vala',
   'Dialogs/Preferences/Pages/QuickAdd.vala',
   'Dialogs/Preferences/Pages/Donate.vala',
   'Dialogs/Preferences/Pages/Accounts/Accounts.vala',

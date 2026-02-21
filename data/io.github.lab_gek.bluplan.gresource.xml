@@ -4,6 +4,7 @@
   <gresource prefix="/io/github/lab_gek/bluplan/stylesheet">
     <file alias="animations.css" compressed="true">resources/stylesheet/animations.css</file>
     <file alias="calendar.css" compressed="true">resources/stylesheet/calendar.css</file>
+    <file alias="focus.css" compressed="true">resources/stylesheet/focus.css</file>
     <file alias="stylesheet.css" compressed="true">resources/stylesheet/stylesheet.css</file>
     <file alias="variables.css" compressed="true">resources/stylesheet/variables.css</file>
     <file alias="sidebar.css" compressed="true">resources/stylesheet/sidebar.css</file>
@@ -118,6 +119,7 @@
     <file alias="map-marker-symbolic.svg">resources/icons/map-marker-symbolic.svg</file>
     <file alias="people-symbolic.svg">resources/icons/people-symbolic.svg</file>
     <file alias="delay-long-small-symbolic.svg">resources/icons/delay-long-small-symbolic.svg</file>
+    <file alias="focus-mode-symbolic.svg">resources/icons/focus-mode-symbolic.svg</file>
     <file alias="tab-new-symbolic.svg">resources/icons/tab-new-symbolic.svg</file>
   </gresource>
 
@@ -211,6 +213,7 @@
     <file alias="map-marker-symbolic.svg">resources/icons/map-marker-symbolic.svg</file>
     <file alias="people-symbolic.svg">resources/icons/people-symbolic.svg</file>
     <file alias="delay-long-small-symbolic.svg">resources/icons/delay-long-small-symbolic.svg</file>
+    <file alias="focus-mode-symbolic.svg">resources/icons/focus-mode-symbolic.svg</file>
     <file alias="tab-new-symbolic.svg">resources/icons/tab-new-symbolic.svg</file>
   </gresource>
 
@@ -304,6 +307,7 @@
     <file alias="map-marker-symbolic.svg">resources/icons/map-marker-symbolic.svg</file>
     <file alias="people-symbolic.svg">resources/icons/people-symbolic.svg</file>
     <file alias="delay-long-small-symbolic.svg">resources/icons/delay-long-small-symbolic.svg</file>
+    <file alias="focus-mode-symbolic.svg">resources/icons/focus-mode-symbolic.svg</file>
     <file alias="tab-new-symbolic.svg">resources/icons/tab-new-symbolic.svg</file>
   </gresource>
 </gresources>

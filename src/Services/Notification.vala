@@ -94,7 +94,7 @@ public class Services.Notification : GLib.Object {
         notification.set_body (reminder.item.content);
         notification.set_icon (new ThemedIcon ("io.github.lab_gek.bluplan"));
         notification.set_priority (GLib.NotificationPriority.URGENT);
-        notification.set_default_action_and_target_value ("show-item", new Variant.string (reminder.item_id));
+        notification.set_default_action_and_target_value ("app.show-item", new Variant.string (reminder.item_id));
         notification.add_button_with_target_value (_("Complete"), "app.complete", new Variant.string (reminder.item_id));
         notification.add_button_with_target_value (_("Snooze for 10 minutes"), "app.snooze-10", new Variant.string (reminder.item_id));
         notification.add_button_with_target_value (_("Snooze for 30 minutes"), "app.snooze-30", new Variant.string (reminder.item_id));

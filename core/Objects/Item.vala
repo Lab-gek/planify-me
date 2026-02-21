@@ -152,6 +152,12 @@ public class Objects.Item : Objects.BaseObject {
         bool assume_working = Services.Settings.get_default ().get_boolean ("points-assume-working");
         int grace_period_mins = Services.Settings.get_default ().get_int ("points-grace-period");
         int penalty_curve = Services.Settings.get_default ().settings.get_enum ("points-penalty-curve");
+        bool focus_session_active = Services.Settings.get_default ().settings.get_boolean ("focus-session-active");
+        string focus_item_id = Services.Settings.get_default ().settings.get_string ("focus-current-item-id");
+
+        if (focus_session_active && focus_item_id == id) {
+            grace_period_mins += Services.Settings.get_default ().settings.get_int ("focus-break-seconds") / 60;
+        }
 
         int completion_offset_minutes = 0;
         if (completion_dt != null && end_dt != null) {
@@ -161,6 +167,10 @@ public class Objects.Item : Objects.BaseObject {
         points = calculate_points_score (duration_minutes, completion_offset_minutes,
                                          grace_period_mins, assume_working,
                                          penalty_curve);
+
+        if (focus_session_active && focus_item_id == id) {
+            points += Services.Settings.get_default ().settings.get_int ("focus-bonus-points");
+        }
     }
     
     public bool activate_name_editable { get; set; default = false; }

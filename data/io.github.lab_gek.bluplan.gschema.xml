@@ -252,7 +252,7 @@
         </key>
 
         <key name="views-order-visible" type="as">
-            <default>['inbox', 'today', 'scheduled', 'labels']</default>
+            <default>['inbox', 'today', 'scheduled', 'focus', 'labels']</default>
             <summary>Visible views and their order</summary>
             <description>Controls which views are visible in the sidebar and their display order</description>
         </key>
@@ -375,6 +375,96 @@
             <default>false</default>
             <summary>Assume Working for Points</summary>
             <description>If enabled, full points are awarded even if the task is completed late, assuming work was done.</description>
+        </key>
+
+        <key name="focus-work-duration" type="i">
+            <default>25</default>
+            <summary>Focus work duration</summary>
+            <description>Pomodoro work duration in minutes.</description>
+        </key>
+
+        <key name="focus-short-break" type="i">
+            <default>5</default>
+            <summary>Focus short break duration</summary>
+            <description>Short break duration in minutes.</description>
+        </key>
+
+        <key name="focus-long-break" type="i">
+            <default>15</default>
+            <summary>Focus long break duration</summary>
+            <description>Long break duration in minutes.</description>
+        </key>
+
+        <key name="focus-rounds-before-long-break" type="i">
+            <default>4</default>
+            <summary>Rounds before long break</summary>
+            <description>How many work intervals run before a long break.</description>
+        </key>
+
+        <key name="focus-bonus-points" type="i">
+            <default>2</default>
+            <summary>Focus bonus points</summary>
+            <description>Extra points awarded when completing a focused task.</description>
+        </key>
+
+        <key name="focus-auto-suggest" type="b">
+            <default>true</default>
+            <summary>Auto suggest a focus task</summary>
+            <description>Suggest a task based on current schedule when opening Focus view.</description>
+        </key>
+
+        <key name="focus-current-item-id" type="s">
+            <default>""</default>
+            <summary>Current focused task ID</summary>
+            <description>Stores the currently focused task across sessions.</description>
+        </key>
+
+        <key name="focus-session-active" type="b">
+            <default>false</default>
+            <summary>Focus session active</summary>
+            <description>Whether a focus work/break session is currently active.</description>
+        </key>
+
+        <key name="focus-break-seconds" type="i">
+            <default>0</default>
+            <summary>Accumulated focus break seconds</summary>
+            <description>Total break seconds accumulated in the current focus session.</description>
+        </key>
+
+        <key name="focus-session-state" type="i">
+            <default>0</default>
+            <summary>Focus session state</summary>
+            <description>Persisted focus state: 0 idle, 1 working, 2 short break, 3 long break.</description>
+        </key>
+
+        <key name="focus-session-running" type="b">
+            <default>false</default>
+            <summary>Focus session running</summary>
+            <description>Whether the persisted focus session timer is actively running.</description>
+        </key>
+
+        <key name="focus-session-seconds-remaining" type="i">
+            <default>0</default>
+            <summary>Focus seconds remaining</summary>
+            <description>Seconds remaining in the current focus interval.</description>
+        </key>
+
+        <key name="focus-session-interval-duration" type="i">
+            <default>0</default>
+            <summary>Focus interval duration seconds</summary>
+            <description>Total duration in seconds for the current focus interval.</description>
+        </key>
+
+        <key name="focus-session-current-round" type="i">
+            <default>1</default>
+            <summary>Focus current round</summary>
+            <description>Current pomodoro round index for the persisted focus session.</description>
+        </key>
+
+        <key name="focus-session-last-updated-unix" type="x">
+            <default>0</default>
+            <summary>Focus session last updated unix time</summary>
+            <description>UTC unix timestamp when focus session runtime state was last persisted.</description>
         </key>
     </schema>
 </schemalist>

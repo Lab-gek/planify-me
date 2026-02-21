@@ -10,6 +10,7 @@ core/Objects/DueDate.vala
 core/Objects/Filters/AllItems.vala
 core/Objects/Filters/Anytime.vala
 core/Objects/Filters/Completed.vala
+core/Objects/Filters/Focus.vala
 core/Objects/Filters/FilterItem.vala
 core/Objects/Filters/Inbox.vala
 core/Objects/Filters/Labels.vala
@@ -141,6 +142,7 @@ src/Dialogs/Preferences/Pages/Appearance.vala
 src/Dialogs/Preferences/Pages/Backup.vala
 src/Dialogs/Preferences/Pages/BasePage.vala
 src/Dialogs/Preferences/Pages/Donate.vala
+src/Dialogs/Preferences/Pages/FocusSetting.vala
 src/Dialogs/Preferences/Pages/General.vala
 src/Dialogs/Preferences/Pages/HomeView.vala
 src/Dialogs/Preferences/Pages/QuickAdd.vala
@@ -176,11 +178,13 @@ src/Services/ActionManager.vala
 src/Services/Api.vala
 src/Services/Backups.vala
 src/Services/DBusServer.vala
+src/Services/FocusManager.vala
 src/Services/MigrateFromPlanner.vala
 src/Services/Notification.vala
 src/Services/TimeMonitor.vala
 src/Utils/TaskUtils.vala
 src/Views/Filter.vala
+src/Views/Focus.vala
 src/Views/Label/Label.vala
 src/Views/Label/LabelSourceRow.vala
 src/Views/Label/Labels.vala

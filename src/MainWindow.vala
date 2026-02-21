@@ -296,6 +296,8 @@ public class MainWindow : Adw.ApplicationWindow {
                     add_today_view ();
                 } else if (id == Objects.Filters.Scheduled.get_default ().view_id) {
                     add_scheduled_view ();
+                } else if (id == Objects.Filters.Focus.get_default ().view_id) {
+                    add_focus_view ();
                 } else if (id == Objects.Filters.Pinboard.get_default ().view_id) {
                     add_filter_view (Objects.Filters.Pinboard.get_default ());
                 } else if (id == Objects.Filters.Labels.get_default ().view_id) {
@@ -553,6 +555,19 @@ public class MainWindow : Adw.ApplicationWindow {
         }
 
         views_stack.set_visible_child_name ("scheduled-view");
+    }
+
+    public void add_focus_view () {
+        Views.Focus ? focus_view = (Views.Focus) views_stack.get_child_by_name ("focus-view");
+        if (focus_view == null) {
+            focus_view = new Views.Focus ();
+            views_stack.add_named (focus_view, "focus-view");
+            add_view_to_cache ("focus-view", focus_view);
+        } else {
+            update_view_access ("focus-view");
+        }
+
+        views_stack.set_visible_child_name ("focus-view");
     }
 
     public void add_labels_view () {
@@ -893,6 +908,10 @@ public class MainWindow : Adw.ApplicationWindow {
             return 180000000; // 3 min
         }
 
+        if (view_id == "focus-view") {
+            return 1800000000; // 30 min
+        }
+
         return VIEW_TIMEOUT; // 5 min
     }
 
@@ -903,6 +922,8 @@ public class MainWindow : Adw.ApplicationWindow {
             ((Views.Today) view).clean_up ();
         } else if (view is Views.Scheduled.Scheduled) {
             ((Views.Scheduled.Scheduled) view).clean_up ();
+        } else if (view is Views.Focus) {
+            ((Views.Focus) view).clean_up ();
         } else if (view is Views.Filter) {
             ((Views.Filter) view).clean_up ();
         } else if (view is Views.Label) {

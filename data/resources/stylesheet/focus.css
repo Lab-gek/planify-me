@@ -1,0 +1,11 @@
+label.focus-timer {
+	color: @accent_color;
+}
+
+label.focus-timer.focus-timer-break {
+	color: #33d17a;
+}
+
+label.focus-state-label.focus-state-break {
+	color: #33d17a;
+}

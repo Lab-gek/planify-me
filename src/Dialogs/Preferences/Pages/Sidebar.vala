@@ -42,6 +42,7 @@ public class Dialogs.Preferences.Pages.Sidebar : Dialogs.Preferences.Pages.BaseP
         views_group.add_child (new SidebarRow (Objects.Filters.Inbox.get_default ()));
         views_group.add_child (new SidebarRow (Objects.Filters.Today.get_default ()));
         views_group.add_child (new SidebarRow (Objects.Filters.Scheduled.get_default ()));
+        views_group.add_child (new SidebarRow (Objects.Filters.Focus.get_default ()));
         views_group.add_child (new SidebarRow (Objects.Filters.Pinboard.get_default ()));
         views_group.add_child (new SidebarRow (Objects.Filters.Labels.get_default ()));
         views_group.add_child (new SidebarRow (Objects.Filters.Completed.get_default ()));

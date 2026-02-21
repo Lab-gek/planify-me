@@ -124,6 +124,7 @@ core_files = files(
     'Objects/Filters/Tomorrow.vala',
     'Objects/Filters/Anytime.vala',
     'Objects/Filters/Repeating.vala',
+    'Objects/Filters/Focus.vala',
     'Objects/Filters/Unlabeled.vala',
     'Objects/Filters/FilterItem.vala',
     'Objects/Filters/AllItems.vala'

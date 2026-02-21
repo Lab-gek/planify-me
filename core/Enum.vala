@@ -153,26 +153,7 @@ public enum FocusState {
     IDLE,
     WORKING,
     SHORT_BREAK,
-    LONG_BREAK;
-
-    public string to_string () {
-        switch (this) {
-            case IDLE:
-                return _("Idle");
-
-            case WORKING:
-                return _("Working");
-
-            case SHORT_BREAK:
-                return _("Short Break");
-
-            case LONG_BREAK:
-                return _("Long Break");
-
-            default:
-                assert_not_reached ();
-        }
-    }
+    LONG_BREAK
 }
 
 public enum LoadingButtonType {
