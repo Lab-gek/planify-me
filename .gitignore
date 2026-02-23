@@ -11,3 +11,4 @@ subprojects/gxml**/
 planify*txt
 .flatpak
 .buildconfig
+gnome-shell-extension/BuPlan-Gnome-v0.1.zip

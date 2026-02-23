@@ -34,7 +34,7 @@ class BluPlanPanelButton extends PanelMenu.Button {
         
         // Connect to settings changes
         this._settings.connect('view-mode', () => this._rebuildUI());
-        this._settings.connect('show-timer', () => this._rebuildUI());
+        // Timer is always shown, but we still listen for task-name changes
         this._settings.connect('show-task-name', () => this._rebuildUI());
     }
     
@@ -50,16 +50,13 @@ class BluPlanPanelButton extends PanelMenu.Button {
         });
         box.add_child(this._stateIcon);
         
-        // Timer label
+        // Timer label (always shown for pomodoro visibility)
         this._timerLabel = new St.Label({
             text: '--:--',
             y_align: Clutter.ActorAlign.CENTER,
             style_class: 'bluplan-timer-label'
         });
-        
-        if (this._settings.showTimer) {
-            box.add_child(this._timerLabel);
-        }
+        box.add_child(this._timerLabel);
         
         this.add_child(box);
         this._panelBox = box;
@@ -205,14 +202,13 @@ class BluPlanPanelButton extends PanelMenu.Button {
         });
         this._panelBox.add_child(this._stateIcon);
         
-        if (this._settings.showTimer) {
-            this._timerLabel = new St.Label({
-                text: this._formatTime(this._currentState?.secondsRemaining || 0),
-                y_align: Clutter.ActorAlign.CENTER,
-                style_class: 'bluplan-timer-label'
-            });
-            this._panelBox.add_child(this._timerLabel);
-        }
+        // Timer is always shown
+        this._timerLabel = new St.Label({
+            text: this._formatTime(this._currentState?.secondsRemaining || 0),
+            y_align: Clutter.ActorAlign.CENTER,
+            style_class: 'bluplan-timer-label'
+        });
+        this._panelBox.add_child(this._timerLabel);
         
         if (this._settings.showTaskName && this._currentState?.focusedItemContent) {
             const taskLabel = new St.Label({

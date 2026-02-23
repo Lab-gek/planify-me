@@ -13,7 +13,7 @@ A GNOME Shell extension that displays BluPlan's Pomodoro timer and task status d
 
 ## Display Modes
 
-- **Compact**: Icon only - minimal space usage
+- **Compact**: Icon + timer - minimal space usage
 - **Expanded**: Icon + timer + current task name
 - **Custom**: Pick and choose which elements to show
 

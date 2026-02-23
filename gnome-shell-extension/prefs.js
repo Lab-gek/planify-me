@@ -32,7 +32,7 @@ export default class BluPlanFocusPreferences extends ExtensionPreferences {
             title: 'View Mode',
             subtitle: 'Choose how much information to display',
             model: new Gtk.StringList({
-                strings: ['Compact (icon only)', 'Expanded (icon + timer + task)', 'Custom (configure below)']
+                strings: ['Compact (icon + timer)', 'Expanded (icon + timer + task)', 'Custom (configure below)']
             })
         });
         
@@ -54,16 +54,16 @@ export default class BluPlanFocusPreferences extends ExtensionPreferences {
         });
         page.add(elementsGroup);
         
-        // Show timer switch
+        // Timer always active info
         const showTimerRow = new Adw.ActionRow({
-            title: 'Show Timer',
-            subtitle: 'Display countdown timer in the panel'
+            title: 'Timer Always Active',
+            subtitle: 'Pomodoro countdown timer is always displayed in the panel'
         });
         const showTimerSwitch = new Gtk.Switch({
-            active: settings.get_boolean('show-timer'),
+            active: true,
+            sensitive: false,
             valign: Gtk.Align.CENTER
         });
-        settings.bind('show-timer', showTimerSwitch, 'active', Gio.SettingsBindFlags.DEFAULT);
         showTimerRow.add_suffix(showTimerSwitch);
         showTimerRow.activatable_widget = showTimerSwitch;
         elementsGroup.add(showTimerRow);

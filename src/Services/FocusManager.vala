@@ -230,10 +230,6 @@ public class Services.FocusManager : GLib.Object {
             auto_suggest_if_enabled ();
         }
 
-        if (focus_item == null) {
-            return;
-        }
-
         if (state == FocusState.IDLE) {
             current_round = 1;
             total_break_seconds = 0;

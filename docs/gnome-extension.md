@@ -114,7 +114,7 @@ Emitted when the focused task changes (user selects different task or task is cl
 | Key | Type | Default | Description |
 |-----|------|---------|-------------|
 | `view-mode` | choice | `'expanded'` | Display mode: compact/expanded/custom |
-| `show-timer` | boolean | `true` | Show timer in panel (custom mode) |
+| `show-timer` | boolean | `true` | Legacy key; timer is always shown in panel |
 | `show-controls` | boolean | `true` | Show control buttons in menu |
 | `show-task-name` | boolean | `true` | Show task name (custom mode) |
 | `show-next-task` | boolean | `true` | Show next scheduled task in menu |
@@ -122,9 +122,9 @@ Emitted when the focused task changes (user selects different task or task is cl
 
 ### View Mode Behavior
 
-- **compact**: Only icon visible in panel
+- **compact**: Icon + timer visible in panel
 - **expanded**: Icon + timer + task name visible
-- **custom**: Respects individual `show-*` settings
+- **custom**: Respects individual `show-*` settings except timer (always shown)
 
 ## State Synchronization
 

@@ -8,7 +8,7 @@
       <summary>View mode for the panel button</summary>
       <description>
         Controls how the panel button displays information.
-        Options: 'compact' (icon only), 'expanded' (icon + timer + task), 'custom' (use individual toggles)
+        Options: 'compact' (icon + timer), 'expanded' (icon + timer + task), 'custom' (use individual toggles)
       </description>
       <choices>
         <choice value='compact'/>

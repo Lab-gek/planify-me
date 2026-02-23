@@ -46,10 +46,8 @@ export class SettingsManager {
     
     // Element visibility
     get showTimer() {
-        if (this.viewMode !== 'custom') {
-            return this.viewMode === 'expanded';
-        }
-        return this._settings.get_boolean('show-timer');
+        // Timer is always shown for better pomodoro visibility
+        return true;
     }
     
     set showTimer(value) {
