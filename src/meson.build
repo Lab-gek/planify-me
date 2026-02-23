@@ -114,6 +114,7 @@ sources = files(
   'Dialogs/LabelPicker.vala',
   'Dialogs/ItemChangeHistory.vala',
   'Dialogs/ErrorDialog.vala',
+  'Dialogs/PointsInfoDialog.vala',
   'Dialogs/CompletedTasks.vala',
   
   'Dialogs/QuickFind/QuickFind.vala',

@@ -217,11 +217,28 @@ public class Dialogs.Preferences.Pages.TaskSetting : Dialogs.Preferences.Pages.B
         points_group.add (points_grace_row);
         points_group.add (points_penalty_curve_row);
         points_group.add (points_assume_working);
-        points_group.add (new Gtk.Label (_("Scoring: 1 point per 5 minutes of scheduled duration (max 24 points at 2 hours), +1 bonus point when completed at least 5 minutes early.\nRelaxed: after grace, up to 15 min late = 75%%, up to 45 min = 50%%, over 45 min = 25%%.\nBalanced: after grace, up to 10 min late = 50%%, up to 30 min = 25%%, over 30 min = 0%%.\nStrict: after grace, up to 5 min late = 50%%, up to 15 min = 25%%, over 15 min = 0%%.")) {
+        
+        // Summary with examples
+        var points_summary = new Gtk.Label (null) {
             css_classes = { "caption", "dimmed" },
             wrap = true,
-            xalign = 0
+            xalign = 0,
+            use_markup = true
+        };
+        points_summary.label = _("<b>Quick Reference:</b>\n• 1 pt per 5 min (max 24 pts at 2 hrs)\n• <tt>15 min = 3 pts</tt>, <tt>30 min = 6 pts</tt>, <tt>60 min = 12 pts</tt>\n• +1 pt when completed ≥5 min early");
+        points_group.add (points_summary);
+        
+        // "Learn More" button
+        var learn_more_row = new Adw.ActionRow () {
+            title = _("Learn More About Points"),
+            activatable = true
+        };
+        learn_more_row.add_suffix (new Gtk.Image.from_icon_name ("go-next-symbolic"));
+        learn_more_row.activated.connect (() => {
+            var dialog = new Dialogs.PointsInfoDialog ();
+            dialog.present (BluPlan._instance.main_window);
         });
+        points_group.add (learn_more_row);
 
         var content_box = new Gtk.Box (Gtk.Orientation.VERTICAL, 12) {
             margin_start = 12,

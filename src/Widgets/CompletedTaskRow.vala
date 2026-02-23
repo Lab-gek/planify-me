@@ -96,6 +96,20 @@ public class Widgets.CompletedTaskRow : Gtk.ListBoxRow {
             bottom_box.append (subitems_label);
         }
 
+        // Add points indicator for completed tasks
+        if (Services.Settings.get_default ().get_boolean ("points-enabled") && item.points > 0) {
+            if (item.items.size > 0 || item.has_section) {
+                bottom_box.append (new Gtk.Label ("|") {
+                    css_classes = { "dimmed", "caption" }
+                });
+            }
+
+            var points_label = new Gtk.Label ("+%d pts".printf (item.points)) {
+                css_classes = { "success", "caption" }
+            };
+            bottom_box.append (points_label);
+        }
+
         var v_box = new Gtk.Box (Gtk.Orientation.VERTICAL, 0) {
             hexpand = true
         };

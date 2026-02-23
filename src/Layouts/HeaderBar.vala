@@ -25,6 +25,8 @@ public class Layouts.HeaderBar : Adw.Bin {
     private Gtk.Label subtitle_label;
     private Gtk.Revealer subtitle_revealer;
     private Gtk.Label points_label;
+    private Gtk.Button points_info_button;
+    private Gtk.Box points_box;
     private Gtk.Revealer title_box_revealer;
     private Gtk.Revealer back_button_revealer;
     private Gtk.Button back_button;
@@ -123,7 +125,20 @@ public class Layouts.HeaderBar : Adw.Bin {
             css_classes = { "caption", "dimmed" },
             ellipsize = END
         };
-        title_box.append (points_label);
+
+        points_info_button = new Gtk.Button.from_icon_name ("dialog-information-symbolic") {
+            css_classes = { "flat", "circular" },
+            tooltip_text = _("About the Points System"),
+            valign = CENTER
+        };
+
+        points_box = new Gtk.Box (HORIZONTAL, 6) {
+            halign = CENTER
+        };
+        points_box.append (points_label);
+        points_box.append (points_info_button);
+
+        title_box.append (points_box);
 
         title_box_revealer = new Gtk.Revealer () {
             transition_type = CROSSFADE,
@@ -148,6 +163,11 @@ public class Layouts.HeaderBar : Adw.Bin {
         signal_map[back_button.clicked.connect (() => {
             back_activated ();
         })] = back_button;
+
+        signal_map[points_info_button.clicked.connect (() => {
+            var dialog = new Dialogs.PointsInfoDialog ();
+            dialog.present (BluPlan._instance.main_window);
+        })] = points_info_button;
 
         signal_map[Services.Settings.get_default ().settings.changed["slim-mode"].connect (() => {
             update_sidebar_icon ();
@@ -176,7 +196,7 @@ public class Layouts.HeaderBar : Adw.Bin {
     private void update_points () {
         if (!Services.Settings.get_default ().get_boolean ("points-enabled")) {
              points_label.label = "";
-             points_label.visible = false;
+             points_box.visible = false;
              return;
         }
 
@@ -187,9 +207,9 @@ public class Layouts.HeaderBar : Adw.Bin {
 
         if (total > 0) {
             points_label.label = "%d pts".printf (total);
-            points_label.visible = true;
+            points_box.visible = true;
         } else {
-            points_label.visible = false;
+            points_box.visible = false;
         }
     }
 

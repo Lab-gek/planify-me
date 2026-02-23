@@ -237,7 +237,23 @@ public class Widgets.ScheduleButton : Gtk.Grid {
         if (item.has_time && item.due.has_end_date) {
             due_label.label += Utils.Datetime.get_end_time_label (item.due);
             due_label.tooltip_text = due_label.label;
+            
+            // Add points preview if points system is enabled and task is not completed
+            if (!item.completed && Services.Settings.get_default ().get_boolean ("points-enabled")) {
+                var start_time = item.due.datetime;
+                var end_time = Utils.Datetime.get_date_from_string (item.due.end_date);
+                
+                if (start_time != null && end_time != null) {
+                    var duration_minutes = (end_time.difference (start_time) / TimeSpan.MINUTE);
+                    int potential_points = (int) Math.fmax (0.0, Math.fmin (Math.floor (duration_minutes / 5), 24.0));
+                    
+                    if (potential_points > 0) {
+                        due_label.tooltip_text += "\n" + _("Potential: ~%d pts").printf (potential_points);
+                    }
+                }
+            }
         }
+
 
         if (item.due.is_recurring) {
             var end_label = "";
