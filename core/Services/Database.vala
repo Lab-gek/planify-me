@@ -533,6 +533,10 @@ public class Services.Database : GLib.Object {
             END;
         """;
 
+        if (db.exec (sql, null, out errormsg) != Sqlite.OK) {
+            warning (errormsg);
+        }
+
         sql = """
             CREATE TRIGGER IF NOT EXISTS after_update_section_item
             AFTER UPDATE ON Items
@@ -727,8 +731,6 @@ public class Services.Database : GLib.Object {
         """.printf (table);
 
         db.prepare_v2 (sql, sql.length, out stmt);
-
-        stmt.step ();
 
         while (stmt.step () == Sqlite.ROW) {
             if (!columns.contains (stmt.column_text (1))) {

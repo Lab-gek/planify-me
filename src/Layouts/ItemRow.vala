@@ -903,23 +903,14 @@ public class Layouts.ItemRow : Layouts.ItemBase {
                 if (active) {
                     if (item.id != focused_item_id) {
                         itemrow_box.add_css_class ("dimmed");
-                        
                     }
+                    show_subtasks_button.add_css_class ("dimmed");
                 } else {
                     itemrow_box.remove_css_class ("dimmed");
-                    
+                    show_subtasks_button.remove_css_class ("dimmed");
                 }
             } else if (!active && edit) {
                 edit = false;
-            }
-        })] = Services.EventBus.get_default ();
-
-
-        signals_map[Services.EventBus.get_default ().dim_content.connect ((active, focused_item_id) => {
-            if (active) {
-                show_subtasks_button.add_css_class ("dimmed");
-            } else {
-                show_subtasks_button.remove_css_class ("dimmed");
             }
         })] = Services.EventBus.get_default ();
 

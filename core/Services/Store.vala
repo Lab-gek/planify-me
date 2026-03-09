@@ -364,9 +364,7 @@ public class Services.Store : GLib.Object {
         }
 
         project.freeze_update = false;
-        project.count_update ();
-        update_project (project);
-        
+
         if (Services.Database.get_default ().delete_project (project)) {
             project.deleted ();
             project_deleted (project);
