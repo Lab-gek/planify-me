@@ -64,6 +64,11 @@
         <value nick="Strict" value="2" />
     </enum>
 
+    <enum id="io.github.lab_gek.bluplan.focus-queue-break-behavior">
+        <value nick="Pomodoro session" value="0" />
+        <value nick="Between tasks" value="1" />
+    </enum>
+
     <schema path="/io/github/lab_gek/bluplan/" id="io.github.lab_gek.bluplan" gettext-domain="io.github.lab_gek.bluplan">        
         <key name="new-tasks-position" enum="io.github.lab_gek.bluplan.new-tasks-position">
             <default>"Bottom"</default>
@@ -401,6 +406,12 @@
             <description>How many work intervals run before a long break.</description>
         </key>
 
+        <key name="focus-queue-break-behavior" enum="io.github.lab_gek.bluplan.focus-queue-break-behavior">
+            <default>"Pomodoro session"</default>
+            <summary>Focus queue break behavior</summary>
+            <description>Controls whether queued tasks follow one continuous Pomodoro session or add a fixed pause between tasks.</description>
+        </key>
+
         <key name="focus-bonus-points" type="i">
             <default>2</default>
             <summary>Focus bonus points</summary>
@@ -423,6 +434,12 @@
             <default>[]</default>
             <summary>Queued focus task IDs</summary>
             <description>Stores the manual Focus Queue across sessions.</description>
+        </key>
+
+        <key name="focus-queue-item-durations" type="as">
+            <default>[]</default>
+            <summary>Queued focus task work durations</summary>
+            <description>Stores the selected work duration for queued tasks so Pomodoro-expanded end times remain accurate.</description>
         </key>
 
         <key name="focus-session-active" type="b">

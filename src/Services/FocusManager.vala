@@ -11,16 +11,24 @@ public class Services.FocusQueueProposal : GLib.Object {
     public Objects.Item item { get; construct; }
     public GLib.DateTime proposed_start { get; construct; }
     public GLib.DateTime proposed_end { get; construct; }
+    public int duration_seconds { get; construct; }
+    public int starting_round { get; construct; }
+    public int starting_work_progress_seconds { get; construct; }
     public bool has_conflict { get; construct; }
     public bool rolls_to_tomorrow { get; construct; }
     public bool uses_existing_duration { get; construct; }
 
     public FocusQueueProposal (Objects.Item item, GLib.DateTime proposed_start, GLib.DateTime proposed_end,
-                               bool has_conflict, bool rolls_to_tomorrow, bool uses_existing_duration) {
+                               int duration_seconds, int starting_round, int starting_work_progress_seconds,
+                               bool has_conflict,
+                               bool rolls_to_tomorrow, bool uses_existing_duration) {
         Object (
             item: item,
             proposed_start: proposed_start,
             proposed_end: proposed_end,
+            duration_seconds: duration_seconds,
+            starting_round: starting_round,
+            starting_work_progress_seconds: starting_work_progress_seconds,
             has_conflict: has_conflict,
             rolls_to_tomorrow: rolls_to_tomorrow,
             uses_existing_duration: uses_existing_duration
@@ -54,6 +62,7 @@ public class Services.FocusManager : GLib.Object {
     public Objects.Item ? focus_item { get; private set; default = null; }
     public Objects.Item ? last_opened_item { get; private set; default = null; }
     private Gee.ArrayList<string> queued_item_ids = new Gee.ArrayList<string> ();
+    private Gee.HashMap<string, int> queued_item_durations = new Gee.HashMap<string, int> ();
 
     construct {
         restore_focus_item ();
@@ -107,6 +116,7 @@ public class Services.FocusManager : GLib.Object {
     private void remove_queue_item_if_matches (string item_id) {
         if (queued_item_ids.contains (item_id)) {
             queued_item_ids.remove (item_id);
+            queued_item_durations.unset (item_id);
             sync_queue_settings ();
             queue_changed ();
         }
@@ -133,12 +143,25 @@ public class Services.FocusManager : GLib.Object {
         return rounds_before_long;
     }
 
+    private int get_queue_break_behavior () {
+        return Services.Settings.get_default ().settings.get_enum ("focus-queue-break-behavior");
+    }
+
+    private bool queue_uses_pomodoro_session_breaks () {
+        return get_queue_break_behavior () == 0;
+    }
+
+    private int get_between_task_break_seconds () {
+        return 5 * 60;
+    }
+
     public void change_focus_item (Objects.Item ? item) {
         focus_item = item;
 
         bool queue_updated = false;
         if (item != null && queued_item_ids.contains (item.id)) {
             queued_item_ids.remove (item.id);
+            queued_item_durations.unset (item.id);
             sync_queue_settings ();
             queue_updated = true;
         }
@@ -157,8 +180,44 @@ public class Services.FocusManager : GLib.Object {
         }
     }
 
+    private string[] build_queue_id_settings_values () {
+        var values = new string[queued_item_ids.size];
+
+        for (int i = 0; i < queued_item_ids.size; i++) {
+            values[i] = queued_item_ids[i];
+        }
+
+        return values;
+    }
+
+    private string[] build_queue_duration_settings_values () {
+        var values = new Gee.ArrayList<string> ();
+
+        foreach (var item_id in queued_item_ids) {
+            if (!queued_item_durations.has_key (item_id)) {
+                continue;
+            }
+
+            int duration_seconds = queued_item_durations[item_id];
+            if (duration_seconds <= 0) {
+                continue;
+            }
+
+            values.add ("%s=%d".printf (item_id, duration_seconds));
+        }
+
+        var result = new string[values.size];
+        for (int i = 0; i < values.size; i++) {
+            result[i] = values[i];
+        }
+
+        return result;
+    }
+
     private void sync_queue_settings () {
-        Services.Settings.get_default ().settings.set_strv ("focus-queue-item-ids", queued_item_ids.to_array ());
+        var settings = Services.Settings.get_default ().settings;
+        settings.set_strv ("focus-queue-item-ids", build_queue_id_settings_values ());
+        settings.set_strv ("focus-queue-item-durations", build_queue_duration_settings_values ());
     }
 
     private void sync_session_settings () {
@@ -220,6 +279,7 @@ public class Services.FocusManager : GLib.Object {
         }
 
         queued_item_ids.remove (item.id);
+        queued_item_durations.unset (item.id);
         sync_queue_settings ();
         queue_changed ();
         return true;
@@ -249,6 +309,7 @@ public class Services.FocusManager : GLib.Object {
         }
 
         queued_item_ids.clear ();
+        queued_item_durations.clear ();
         sync_queue_settings ();
         queue_changed ();
     }
@@ -306,30 +367,41 @@ public class Services.FocusManager : GLib.Object {
         var base_anchor = get_queue_anchor_time ();
         var cursor = base_anchor;
         int simulated_round = current_round;
+        int simulated_work_progress_seconds = 0;
 
         for (int index = 0; index < queued_items.size; index++) {
             var item = queued_items[index];
             bool uses_existing_duration = false;
             int duration_seconds = get_item_duration_seconds (item, out uses_existing_duration);
-            var proposed_end = calculate_proposed_end (cursor, duration_seconds, ref simulated_round);
+            int proposal_starting_round = simulated_round;
+            int proposal_starting_work_progress_seconds = simulated_work_progress_seconds;
+            var proposed_end = calculate_proposed_end (cursor, duration_seconds, ref simulated_round,
+                                                       ref simulated_work_progress_seconds);
             bool rolls_to_tomorrow = !Utils.Datetime.is_same_day (cursor, proposed_end);
 
             if (rolls_to_tomorrow) {
                 cursor = get_next_queue_anchor_time (base_anchor, cursor.add_days (1));
-                proposed_end = calculate_proposed_end (cursor, duration_seconds, ref simulated_round);
+                proposal_starting_round = simulated_round;
+                proposal_starting_work_progress_seconds = simulated_work_progress_seconds;
+                proposed_end = calculate_proposed_end (cursor, duration_seconds, ref simulated_round,
+                                                       ref simulated_work_progress_seconds);
             }
 
             proposals.add (new Services.FocusQueueProposal (
                 item,
                 cursor,
                 proposed_end,
+                duration_seconds,
+                proposal_starting_round,
+                proposal_starting_work_progress_seconds,
                 proposal_conflicts_with_existing_schedule (item, cursor, proposed_end),
                 rolls_to_tomorrow,
                 uses_existing_duration
             ));
 
             if (index < queued_items.size - 1) {
-                cursor = get_next_queue_cursor (base_anchor, proposed_end, ref simulated_round);
+                cursor = get_next_queue_cursor (base_anchor, proposed_end, ref simulated_round,
+                                                ref simulated_work_progress_seconds);
             }
         }
 
@@ -385,7 +457,9 @@ public class Services.FocusManager : GLib.Object {
         due.date = Utils.Datetime.get_todoist_datetime_format (proposal.proposed_start);
         due.end_date = Utils.Datetime.get_todoist_datetime_format (proposal.proposed_end);
 
+        queued_item_durations[proposal.item.id] = proposal.duration_seconds;
         proposal.item.update_due (due);
+        sync_queue_settings ();
         queue_changed ();
         return true;
     }
@@ -395,13 +469,27 @@ public class Services.FocusManager : GLib.Object {
             return false;
         }
 
+        var scheduled_end = get_queue_scheduled_end_for_duration (proposal, duration_seconds);
         var due = proposal.item.due != null ? proposal.item.due.duplicate () : new Objects.DueDate ();
         due.date = Utils.Datetime.get_todoist_datetime_format (proposal.proposed_start);
-        due.end_date = Utils.Datetime.get_todoist_datetime_format (proposal.proposed_start.add_seconds (duration_seconds));
+        due.end_date = Utils.Datetime.get_todoist_datetime_format (scheduled_end);
 
+        queued_item_durations[proposal.item.id] = duration_seconds;
         proposal.item.update_due (due);
+        sync_queue_settings ();
         queue_changed ();
         return true;
+    }
+
+    public GLib.DateTime get_queue_scheduled_end_for_duration (Services.FocusQueueProposal ? proposal, int duration_seconds) {
+        if (proposal == null || duration_seconds <= 0) {
+            return new GLib.DateTime.now_local ();
+        }
+
+        int simulated_round = proposal.starting_round;
+        int simulated_work_progress_seconds = proposal.starting_work_progress_seconds;
+        return calculate_proposed_end (proposal.proposed_start, duration_seconds, ref simulated_round,
+                                       ref simulated_work_progress_seconds);
     }
 
     public Objects.Item ? promote_next_focus_item () {
@@ -537,18 +625,24 @@ public class Services.FocusManager : GLib.Object {
     }
 
     private GLib.DateTime get_next_queue_cursor (GLib.DateTime base_anchor, GLib.DateTime current_end,
-                                                 ref int simulated_round) {
-        int break_seconds = simulated_round >= get_rounds_before_long_break ()
-            ? get_long_break_duration_seconds ()
-            : get_short_break_duration_seconds ();
+                                                 ref int simulated_round,
+                                                 ref int simulated_work_progress_seconds) {
+        int break_seconds = 0;
+
+        if (queue_uses_pomodoro_session_breaks ()) {
+            if (simulated_work_progress_seconds < get_work_duration_seconds ()) {
+                return current_end;
+            }
+
+            break_seconds = get_break_duration_seconds_for_round (simulated_round);
+            advance_round_after_break (ref simulated_round);
+            simulated_work_progress_seconds = 0;
+        } else {
+            break_seconds = get_between_task_break_seconds ();
+            simulated_work_progress_seconds = 0;
+        }
 
         var next_cursor = current_end.add_seconds (break_seconds);
-
-        if (simulated_round >= get_rounds_before_long_break ()) {
-            simulated_round = 1;
-        } else {
-            simulated_round++;
-        }
 
         if (!Utils.Datetime.is_same_day (current_end, next_cursor)) {
             return get_next_queue_anchor_time (base_anchor, next_cursor);
@@ -559,6 +653,14 @@ public class Services.FocusManager : GLib.Object {
 
     private int get_item_duration_seconds (Objects.Item item, out bool uses_existing_duration) {
         uses_existing_duration = false;
+
+        if (item != null && queued_item_durations.has_key (item.id)) {
+            int queued_duration = queued_item_durations[item.id];
+            if (queued_duration > 0) {
+                uses_existing_duration = true;
+                return queued_duration;
+            }
+        }
 
         if (item != null && item.has_due && item.due != null && item.due.datetime != null && item.due.has_end_date) {
             var end_dt = Utils.Datetime.get_todoist_datetime (item.due.end_date);
@@ -574,27 +676,45 @@ public class Services.FocusManager : GLib.Object {
         return get_work_duration_seconds ();
     }
 
-    private GLib.DateTime calculate_proposed_end (GLib.DateTime start, int duration_seconds, ref int simulated_round) {
+    private int get_break_duration_seconds_for_round (int simulated_round) {
+        return simulated_round >= get_rounds_before_long_break ()
+            ? get_long_break_duration_seconds ()
+            : get_short_break_duration_seconds ();
+    }
+
+    private void advance_round_after_break (ref int simulated_round) {
+        if (simulated_round >= get_rounds_before_long_break ()) {
+            simulated_round = 1;
+        } else {
+            simulated_round++;
+        }
+    }
+
+    private GLib.DateTime calculate_proposed_end (GLib.DateTime start, int duration_seconds, ref int simulated_round,
+                                                  ref int simulated_work_progress_seconds) {
+        if (!queue_uses_pomodoro_session_breaks ()) {
+            simulated_work_progress_seconds = 0;
+            return start.add_seconds (duration_seconds);
+        }
+
         var cursor = start;
         int remaining_seconds = duration_seconds;
         int work_duration_seconds = get_work_duration_seconds ();
 
         while (remaining_seconds > 0) {
-            int chunk = int.min (remaining_seconds, work_duration_seconds);
+            int available_work_seconds = work_duration_seconds - simulated_work_progress_seconds;
+
+            if (available_work_seconds <= 0) {
+                cursor = cursor.add_seconds (get_break_duration_seconds_for_round (simulated_round));
+                advance_round_after_break (ref simulated_round);
+                simulated_work_progress_seconds = 0;
+                continue;
+            }
+
+            int chunk = int.min (remaining_seconds, available_work_seconds);
             cursor = cursor.add_seconds (chunk);
             remaining_seconds -= chunk;
-
-            if (remaining_seconds > 0) {
-                int break_seconds = simulated_round >= get_rounds_before_long_break () ?
-                    get_long_break_duration_seconds () : get_short_break_duration_seconds ();
-                cursor = cursor.add_seconds (break_seconds);
-
-                if (simulated_round >= get_rounds_before_long_break ()) {
-                    simulated_round = 1;
-                } else {
-                    simulated_round++;
-                }
-            }
+            simulated_work_progress_seconds += chunk;
         }
 
         return cursor;
@@ -847,8 +967,29 @@ public class Services.FocusManager : GLib.Object {
     }
 
     private void restore_queue () {
-        var stored_ids = Services.Settings.get_default ().settings.get_strv ("focus-queue-item-ids");
+        var settings = Services.Settings.get_default ().settings;
+        var stored_ids = settings.get_strv ("focus-queue-item-ids");
+        var stored_durations = settings.get_strv ("focus-queue-item-durations");
         queued_item_ids.clear ();
+        queued_item_durations.clear ();
+
+        foreach (var entry in stored_durations) {
+            if (entry == null || entry == "") {
+                continue;
+            }
+
+            int separator_index = entry.last_index_of_char ('=');
+            if (separator_index <= 0 || separator_index >= entry.length - 1) {
+                continue;
+            }
+
+            string item_id = entry.substring (0, separator_index);
+            int duration_seconds = int.parse (entry.substring (separator_index + 1));
+
+            if (duration_seconds > 0) {
+                queued_item_durations[item_id] = duration_seconds;
+            }
+        }
 
         foreach (var item_id in stored_ids) {
             if (item_id == null || item_id == "") {
@@ -861,10 +1002,22 @@ public class Services.FocusManager : GLib.Object {
             }
 
             if (focus_item != null && focus_item.id == item.id) {
+                queued_item_durations.unset (item_id);
                 continue;
             }
 
             queued_item_ids.add (item_id);
+        }
+
+        var stale_duration_ids = new Gee.ArrayList<string> ();
+        foreach (var item_id in queued_item_durations.keys) {
+            if (!queued_item_ids.contains (item_id)) {
+                stale_duration_ids.add (item_id);
+            }
+        }
+
+        foreach (var item_id in stale_duration_ids) {
+            queued_item_durations.unset (item_id);
         }
 
         sync_queue_settings ();

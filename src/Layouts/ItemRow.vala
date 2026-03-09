@@ -1583,7 +1583,7 @@ public class Layouts.ItemRow : Layouts.ItemBase {
 
             if (response == "assign-duration") {
                 if (Services.FocusManager.get_default ().apply_queue_schedule_duration (proposal, duration_seconds)) {
-                    var end_time = proposal.proposed_start.add_seconds (duration_seconds);
+                    var end_time = Services.FocusManager.get_default ().get_queue_scheduled_end_for_duration (proposal, duration_seconds);
                     Services.EventBus.get_default ().send_toast (
                         Util.get_default ().create_toast (
                             _ ("Scheduled for %s").printf (get_queue_schedule_range_label (proposal.proposed_start, end_time))
@@ -1629,7 +1629,9 @@ public class Layouts.ItemRow : Layouts.ItemBase {
     private int get_default_queue_duration_index (Services.FocusQueueProposal proposal, int[] duration_options) {
         int target_duration = Services.Settings.get_default ().settings.get_int ("focus-work-duration") * 60;
 
-        if (item != null && item.has_due && item.due != null && item.due.datetime != null && item.due.has_end_date) {
+        if (proposal != null && proposal.duration_seconds > 0) {
+            target_duration = proposal.duration_seconds;
+        } else if (item != null && item.has_due && item.due != null && item.due.datetime != null && item.due.has_end_date) {
             var existing_end = Utils.Datetime.get_todoist_datetime (item.due.end_date);
             if (existing_end != null) {
                 int existing_duration = (int) (existing_end.difference (item.due.datetime) / TimeSpan.SECOND);
@@ -1637,10 +1639,11 @@ public class Layouts.ItemRow : Layouts.ItemBase {
                     target_duration = existing_duration;
                 }
             }
-        } else if (proposal != null) {
-            int proposal_duration = (int) (proposal.proposed_end.difference (proposal.proposed_start) / TimeSpan.SECOND);
-            if (proposal_duration > 0) {
-                target_duration = proposal_duration;
+        }
+
+        for (int i = 0; i < duration_options.length; i++) {
+            if (duration_options[i] == target_duration) {
+                return i;
             }
         }
 
@@ -1661,46 +1664,18 @@ public class Layouts.ItemRow : Layouts.ItemBase {
     }
 
     private string get_queue_schedule_confirmation_message (Services.FocusQueueProposal proposal, int duration_seconds) {
-        var proposed_end = proposal.proposed_start.add_seconds (duration_seconds);
-        string duration_source = proposal.uses_existing_duration && duration_seconds == get_item_duration_seconds ()
+        var proposed_end = Services.FocusManager.get_default ().get_queue_scheduled_end_for_duration (proposal, duration_seconds);
+        int occupied_seconds = (int) (proposed_end.difference (proposal.proposed_start) / TimeSpan.SECOND);
+        string duration_source = proposal.uses_existing_duration && duration_seconds == proposal.duration_seconds
             ? _ ("task duration")
             : _ ("selected duration");
 
-        return _ ("Queueing this task will assign %s based on its %s. Pomodoro timing: %s.")
+        return _ ("This will schedule %s using the %s and block %s on your calendar.")
             .printf (
                 get_queue_schedule_range_label (proposal.proposed_start, proposed_end),
                 duration_source,
-                get_queue_pomodoro_summary ()
+                get_queue_duration_label (occupied_seconds)
             );
-    }
-
-    private string get_queue_pomodoro_summary () {
-        var settings = Services.Settings.get_default ().settings;
-        int work_minutes = settings.get_int ("focus-work-duration");
-        int short_break_minutes = settings.get_int ("focus-short-break");
-        int long_break_minutes = settings.get_int ("focus-long-break");
-        int rounds_before_long = settings.get_int ("focus-rounds-before-long-break");
-
-        if (rounds_before_long <= 0) {
-            rounds_before_long = 4;
-        }
-
-        return _ ("%d min focus, %d min short break, %d min long break every %d rounds")
-            .printf (work_minutes, short_break_minutes, long_break_minutes, rounds_before_long);
-    }
-
-    private int get_item_duration_seconds () {
-        if (item != null && item.has_due && item.due != null && item.due.datetime != null && item.due.has_end_date) {
-            var existing_end = Utils.Datetime.get_todoist_datetime (item.due.end_date);
-            if (existing_end != null) {
-                int existing_duration = (int) (existing_end.difference (item.due.datetime) / TimeSpan.SECOND);
-                if (existing_duration > 0) {
-                    return existing_duration;
-                }
-            }
-        }
-
-        return Services.Settings.get_default ().settings.get_int ("focus-work-duration") * 60;
     }
 
     private string get_queue_schedule_range_label (GLib.DateTime start, GLib.DateTime end) {

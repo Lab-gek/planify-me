@@ -67,10 +67,22 @@ public class Dialogs.Preferences.Pages.FocusSetting : Dialogs.Preferences.Pages.
             value = Services.Settings.get_default ().settings.get_int ("focus-rounds-before-long-break")
         };
 
+        var queue_break_behavior_model = new Gtk.StringList (null);
+        queue_break_behavior_model.append (_("Pomodoro session"));
+        queue_break_behavior_model.append (_("Between tasks"));
+
+        var queue_break_behavior_row = new Adw.ComboRow () {
+            title = _("Queue Break Handling"),
+            subtitle = _("Either carry one Pomodoro session across queued tasks or add a fixed 5-minute pause between them"),
+            model = queue_break_behavior_model,
+            selected = Services.Settings.get_default ().settings.get_enum ("focus-queue-break-behavior")
+        };
+
         timer_group.add (work_row);
         timer_group.add (short_break_row);
         timer_group.add (long_break_row);
         timer_group.add (rounds_row);
+        timer_group.add (queue_break_behavior_row);
 
         var behavior_group = new Adw.PreferencesGroup () {
             title = _("Behavior"),
@@ -151,6 +163,11 @@ public class Dialogs.Preferences.Pages.FocusSetting : Dialogs.Preferences.Pages.
         signal_map[rounds_row.output.connect (() => {
             Services.Settings.get_default ().settings.set_int ("focus-rounds-before-long-break", (int) rounds_row.value);
         })] = rounds_row;
+
+        signal_map[queue_break_behavior_row.notify["selected"].connect (() => {
+            Services.Settings.get_default ().settings.set_enum ("focus-queue-break-behavior",
+                                                                (int) queue_break_behavior_row.selected);
+        })] = queue_break_behavior_row;
 
         signal_map[bonus_points_row.output.connect (() => {
             Services.Settings.get_default ().settings.set_int ("focus-bonus-points", (int) bonus_points_row.value);
