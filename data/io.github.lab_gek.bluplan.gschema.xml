@@ -419,6 +419,12 @@
             <description>Stores the currently focused task across sessions.</description>
         </key>
 
+        <key name="focus-queue-item-ids" type="as">
+            <default>[]</default>
+            <summary>Queued focus task IDs</summary>
+            <description>Stores the manual Focus Queue across sessions.</description>
+        </key>
+
         <key name="focus-session-active" type="b">
             <default>false</default>
             <summary>Focus session active</summary>

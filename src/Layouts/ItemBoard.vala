@@ -779,6 +779,8 @@ public class Layouts.ItemBoard : Layouts.ItemBase {
         var tomorrow_item = new Widgets.ContextMenu.MenuItem (_ ("Tomorrow"), "today-calendar-symbolic");
         tomorrow_item.secondary_text = new GLib.DateTime.now_local ().add_days (1).format ("%a");
 
+        var plan_today_item = new Widgets.ContextMenu.MenuItem (_ ("Plan Today"), "today-calendar-symbolic");
+
         pinboard_item = new Widgets.ContextMenu.MenuItem (item.pinned ? _ ("Unpin") : _ ("Pin"), "pin-symbolic");
 
         no_date_item = new Widgets.ContextMenu.MenuItem (_ ("No Date"), "cross-large-circle-filled-symbolic");
@@ -802,6 +804,7 @@ public class Layouts.ItemBoard : Layouts.ItemBase {
         menu_box.append (new Widgets.ContextMenu.MenuSeparator ());
         menu_box.append (today_item);
         menu_box.append (tomorrow_item);
+        menu_box.append (plan_today_item);
         menu_box.append (no_date_item);
         menu_box.append (new Widgets.ContextMenu.MenuSeparator ());
         menu_box.append (pinboard_item);
@@ -867,6 +870,10 @@ public class Layouts.ItemBoard : Layouts.ItemBase {
             update_date (Utils.Datetime.get_date_only (new DateTime.now_local ().add_days (1)));
         });
 
+        plan_today_item.activate_item.connect (() => {
+            plan_today ();
+        });
+
         pinboard_item.activate_item.connect (() => {
             item.update_pin (!item.pinned);
         });
@@ -897,6 +904,14 @@ public class Layouts.ItemBoard : Layouts.ItemBase {
         duplicate_item.clicked.connect (() => {
             Util.get_default ().duplicate_item.begin (item, item.project_id, item.section_id, item.parent_id);
         });
+    }
+
+    private void plan_today () {
+        update_date (Utils.Datetime.get_date_only (new DateTime.now_local ()));
+        Services.EventBus.get_default ().pane_selected (PaneType.FILTER, Objects.Filters.Today.get_default ().view_id);
+        Services.EventBus.get_default ().send_toast (
+            Util.get_default ().create_toast (_ ("Added to Today"))
+        );
     }
 
     private void build_drag_and_drop () {

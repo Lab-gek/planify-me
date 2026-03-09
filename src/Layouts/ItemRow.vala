@@ -95,6 +95,8 @@ public class Layouts.ItemRow : Layouts.ItemBase {
     private Gtk.Revealer hide_subtask_revealer;
     private Widgets.ContextMenu.MenuItem no_date_item;
     private Widgets.ContextMenu.MenuItem pinboard_item;
+    private Widgets.ContextMenu.MenuItem focus_queue_handle_item;
+    private Widgets.ContextMenu.MenuItem focus_queue_button_item;
 
     private Gtk.DropControllerMotion drop_motion_ctrl;
     private Gtk.DragSource drag_source;
@@ -799,6 +801,12 @@ public class Layouts.ItemRow : Layouts.ItemBase {
             }
         })] = menu_handle_gesture;
 
+        signals_map[menu_button.notify["active"].connect (() => {
+            if (focus_queue_button_item != null && menu_button.active) {
+                focus_queue_button_item.title = get_focus_queue_menu_title ();
+            }
+        })] = menu_button;
+
         var multiselect_gesture = new Gtk.GestureClick ();
         select_checkbutton.add_controller (multiselect_gesture);
         signals_map[multiselect_gesture.pressed.connect (() => {
@@ -1211,6 +1219,9 @@ public class Layouts.ItemRow : Layouts.ItemBase {
             }
 
             pinboard_item.title = item.pinned ? _ ("Unpin") : _ ("Pin");
+            if (focus_queue_handle_item != null) {
+                focus_queue_handle_item.title = get_focus_queue_menu_title ();
+            }
 
             menu_handle_popover.pointing_to = { ((int) x), (int) y, 1, 1 };
             menu_handle_popover.popup ();
@@ -1223,6 +1234,8 @@ public class Layouts.ItemRow : Layouts.ItemBase {
         var tomorrow_item = new Widgets.ContextMenu.MenuItem (_ ("Tomorrow"), "month-symbolic");
         tomorrow_item.secondary_text = new GLib.DateTime.now_local ().add_days (1).format ("%a");
 
+        var plan_today_item = new Widgets.ContextMenu.MenuItem (_ ("Plan Today"), "today-calendar-symbolic");
+
         pinboard_item = new Widgets.ContextMenu.MenuItem (item.pinned ? _ ("Unpin") : _ ("Pin"), "pin-symbolic");
 
         no_date_item = new Widgets.ContextMenu.MenuItem (_ ("No Date"), "cross-large-circle-filled-symbolic");
@@ -1231,6 +1244,7 @@ public class Layouts.ItemRow : Layouts.ItemBase {
         var move_item = new Widgets.ContextMenu.MenuItem (_ ("Move"), "arrow3-right-symbolic");
         var labels_item = new Widgets.ContextMenu.MenuItem (_ ("Labels"), "tag-outline-symbolic");
         var focus_item = new Widgets.ContextMenu.MenuItem (_ ("Focus on this task"), "timer-symbolic");
+        focus_queue_handle_item = new Widgets.ContextMenu.MenuItem (get_focus_queue_menu_title (), "list-add-symbolic");
 
         var add_item = new Widgets.ContextMenu.MenuItem (_ ("Add Subtask"), "plus-large-symbolic");
         var complete_item = new Widgets.ContextMenu.MenuItem (_ ("Complete"), "check-round-outline-symbolic");
@@ -1249,12 +1263,14 @@ public class Layouts.ItemRow : Layouts.ItemBase {
             menu_box.append (new Widgets.ContextMenu.MenuSeparator ());
             menu_box.append (today_item);
             menu_box.append (tomorrow_item);
+            menu_box.append (plan_today_item);
             menu_box.append (no_date_item);
             menu_box.append (new Widgets.ContextMenu.MenuSeparator ());
             menu_box.append (pinboard_item);
             menu_box.append (move_item);
             menu_box.append (labels_item);
             menu_box.append (focus_item);
+            menu_box.append (focus_queue_handle_item);
             menu_box.append (new Widgets.ContextMenu.MenuSeparator ());
             menu_box.append (add_item);
             menu_box.append (duplicate_item);
@@ -1267,6 +1283,10 @@ public class Layouts.ItemRow : Layouts.ItemBase {
             signals_map[tomorrow_item.activate_item.connect (() => {
                 update_date (Utils.Datetime.get_date_only (new DateTime.now_local ().add_days (1)));
             })] = tomorrow_item;
+
+            signals_map[plan_today_item.activate_item.connect (() => {
+                plan_today ();
+            })] = plan_today_item;
 
             signals_map[pinboard_item.activate_item.connect (() => {
                 item.update_pin (!item.pinned);
@@ -1317,6 +1337,12 @@ public class Layouts.ItemRow : Layouts.ItemBase {
                 Services.EventBus.get_default ().pane_selected (PaneType.FILTER, Objects.Filters.Focus.get_default ().view_id);
             })] = focus_item;
 
+            signals_map[focus_queue_handle_item.activate_item.connect (() => {
+                if (toggle_focus_queue ()) {
+                    Services.EventBus.get_default ().pane_selected (PaneType.FILTER, Objects.Filters.Focus.get_default ().view_id);
+                }
+            })] = focus_queue_handle_item;
+
             signals_map[complete_item.activate_item.connect (() => {
                 checked_button.active = !checked_button.active;
                 checked_toggled (checked_button.active);
@@ -1361,10 +1387,12 @@ public class Layouts.ItemRow : Layouts.ItemBase {
         var use_note_item = new Widgets.ContextMenu.MenuSwitch (_ ("Use as a Note"), "paper-symbolic");
         use_note_item.active = item.item_type == ItemType.NOTE;
 
+        var plan_today_item = new Widgets.ContextMenu.MenuItem (_ ("Plan Today"), "today-calendar-symbolic");
         var copy_clipboard_item = new Widgets.ContextMenu.MenuItem (_ ("Copy to Clipboard"), "clipboard-symbolic");
         var duplicate_item = new Widgets.ContextMenu.MenuItem (_ ("Duplicate"), "tabs-stack-symbolic");
         var move_item = new Widgets.ContextMenu.MenuItem (_ ("Move"), "arrow3-right-symbolic");
         var focus_item = new Widgets.ContextMenu.MenuItem (_ ("Focus on this task"), "timer-symbolic");
+        focus_queue_button_item = new Widgets.ContextMenu.MenuItem (_ ("Add to Focus Queue"), "list-add-symbolic");
 
         var delete_item = new Widgets.ContextMenu.MenuItem (_ ("Delete Task"), "user-trash-symbolic");
         delete_item.add_css_class ("menu-item-danger");
@@ -1383,10 +1411,16 @@ public class Layouts.ItemRow : Layouts.ItemBase {
         if (!item.completed) {
             menu_box.append (use_note_item);
             menu_box.append (new Widgets.ContextMenu.MenuSeparator ());
+            menu_box.append (plan_today_item);
             menu_box.append (copy_clipboard_item);
             menu_box.append (duplicate_item);
             menu_box.append (move_item);
             menu_box.append (focus_item);
+            menu_box.append (focus_queue_button_item);
+
+            signals_map[plan_today_item.activate_item.connect (() => {
+                plan_today ();
+            })] = plan_today_item;
 
             signals_map[use_note_item.activate_item.connect (() => {
                 item.item_type = use_note_item.active ? ItemType.NOTE : ItemType.TASK;
@@ -1426,6 +1460,12 @@ public class Layouts.ItemRow : Layouts.ItemBase {
                 Services.FocusManager.get_default ().change_focus_item (item);
                 Services.EventBus.get_default ().pane_selected (PaneType.FILTER, Objects.Filters.Focus.get_default ().view_id);
             })] = focus_item;
+
+            signals_map[focus_queue_button_item.activate_item.connect (() => {
+                if (toggle_focus_queue ()) {
+                    Services.EventBus.get_default ().pane_selected (PaneType.FILTER, Objects.Filters.Focus.get_default ().view_id);
+                }
+            })] = focus_queue_button_item;
         }
 
         menu_box.append (delete_item);
@@ -1444,6 +1484,241 @@ public class Layouts.ItemRow : Layouts.ItemBase {
         })] = more_information_item;
 
         return popover;
+    }
+
+    private string get_focus_queue_menu_title () {
+        return Services.FocusManager.get_default ().queue_contains (item)
+            ? _ ("Remove from Focus Queue")
+            : _ ("Add to Focus Queue");
+    }
+
+    private bool toggle_focus_queue () {
+        var focus_manager = Services.FocusManager.get_default ();
+
+        if (focus_manager.queue_contains (item)) {
+            focus_manager.remove_from_queue (item);
+            Services.EventBus.get_default ().send_toast (
+                Util.get_default ().create_toast (_ ("Removed from Focus Queue"))
+            );
+            return true;
+        }
+
+        if (!focus_manager.add_to_queue (item)) {
+            return false;
+        }
+
+        var proposal = focus_manager.get_queue_schedule_proposal_for_item (item);
+        if (proposal == null) {
+            Services.EventBus.get_default ().send_toast (
+                Util.get_default ().create_toast (_ ("Added to Focus Queue"))
+            );
+            return true;
+        }
+
+        if (!focus_manager.proposal_requires_schedule_update (proposal)) {
+            Services.EventBus.get_default ().send_toast (
+                Util.get_default ().create_toast (_ ("Added to Focus Queue"))
+            );
+            return true;
+        }
+
+        confirm_queue_schedule (proposal);
+        return false;
+    }
+
+    private void confirm_queue_schedule (Services.FocusQueueProposal proposal) {
+        int[] duration_options = get_queue_duration_options ();
+
+        var duration_model = new Gtk.StringList (null);
+        foreach (int duration_seconds in duration_options) {
+            duration_model.append (get_queue_duration_label (duration_seconds));
+        }
+
+        var duration_row = new Adw.ComboRow () {
+            title = _ ("Assign Duration"),
+            model = duration_model,
+            selected = get_default_queue_duration_index (proposal, duration_options)
+        };
+        var duration_group = new Adw.PreferencesGroup (); 
+        duration_group.add (duration_row);
+
+        var extra_child = new Gtk.Box (Gtk.Orientation.VERTICAL, 0) {
+            margin_top = 6,
+            margin_bottom = 6
+        };
+        extra_child.append (duration_group);
+
+        var dialog = new Adw.AlertDialog (
+            _ ("Assign a Focus time?"),
+            get_queue_schedule_confirmation_message (proposal, duration_options[(int) duration_row.selected])
+        );
+
+        dialog.extra_child = extra_child;
+        dialog.add_response ("queue-only", _ ("Keep Queue Only"));
+        dialog.add_response ("adjust-duration", _ ("Adjust Duration"));
+        dialog.add_response ("assign-duration", _ ("Assign Selected Duration"));
+        dialog.set_response_appearance ("assign-duration", Adw.ResponseAppearance.SUGGESTED);
+        dialog.set_default_response ("assign-duration");
+        dialog.set_close_response ("queue-only");
+
+        Gtk.Widget? parent = get_root ();
+        if (parent == null) {
+            parent = BluPlan._instance.main_window;
+        }
+
+        if (parent == null) {
+            Services.EventBus.get_default ().send_toast (
+                Util.get_default ().create_toast (_ ("Added to Focus Queue"))
+            );
+            return;
+        }
+
+        duration_row.notify["selected"].connect (() => {
+            int duration_seconds = duration_options[(int) duration_row.selected];
+            dialog.body = get_queue_schedule_confirmation_message (proposal, duration_seconds);
+        });
+
+        dialog.response.connect ((response) => {
+            int duration_seconds = duration_options[(int) duration_row.selected];
+
+            if (response == "assign-duration") {
+                if (Services.FocusManager.get_default ().apply_queue_schedule_duration (proposal, duration_seconds)) {
+                    var end_time = proposal.proposed_start.add_seconds (duration_seconds);
+                    Services.EventBus.get_default ().send_toast (
+                        Util.get_default ().create_toast (
+                            _ ("Scheduled for %s").printf (get_queue_schedule_range_label (proposal.proposed_start, end_time))
+                        )
+                    );
+                }
+            } else if (response == "adjust-duration") {
+                Services.FocusManager.get_default ().apply_queue_schedule_duration (proposal, duration_seconds);
+                Services.EventBus.get_default ().open_item (item);
+            } else {
+                Services.EventBus.get_default ().send_toast (
+                    Util.get_default ().create_toast (_ ("Added to Focus Queue"))
+                );
+            }
+
+            Services.EventBus.get_default ().pane_selected (PaneType.FILTER, Objects.Filters.Focus.get_default ().view_id);
+        });
+
+        dialog.present (parent);
+    }
+
+    private int[] get_queue_duration_options () {
+        return { 5 * 60, 10 * 60, 15 * 60, 20 * 60, 25 * 60, 30 * 60, 45 * 60, 60 * 60, 90 * 60, 120 * 60 };
+    }
+
+    private string get_queue_duration_label (int duration_seconds) {
+        int duration_minutes = duration_seconds / 60;
+
+        if (duration_minutes < 60) {
+            return _ ("%d min").printf (duration_minutes);
+        }
+
+        if (duration_minutes % 60 == 0) {
+            int hours = duration_minutes / 60;
+            return hours == 1 ? _ ("1 hour") : _ ("%d hours").printf (hours);
+        }
+
+        int hours = duration_minutes / 60;
+        int minutes = duration_minutes % 60;
+        return _ ("%d h %d min").printf (hours, minutes);
+    }
+
+    private int get_default_queue_duration_index (Services.FocusQueueProposal proposal, int[] duration_options) {
+        int target_duration = Services.Settings.get_default ().settings.get_int ("focus-work-duration") * 60;
+
+        if (item != null && item.has_due && item.due != null && item.due.datetime != null && item.due.has_end_date) {
+            var existing_end = Utils.Datetime.get_todoist_datetime (item.due.end_date);
+            if (existing_end != null) {
+                int existing_duration = (int) (existing_end.difference (item.due.datetime) / TimeSpan.SECOND);
+                if (existing_duration > 0) {
+                    target_duration = existing_duration;
+                }
+            }
+        } else if (proposal != null) {
+            int proposal_duration = (int) (proposal.proposed_end.difference (proposal.proposed_start) / TimeSpan.SECOND);
+            if (proposal_duration > 0) {
+                target_duration = proposal_duration;
+            }
+        }
+
+        int best_index = 0;
+        int best_distance = int.MAX;
+
+        for (int i = 0; i < duration_options.length; i++) {
+            int option_duration = duration_options[i];
+            int distance = option_duration >= target_duration ? option_duration - target_duration : target_duration - option_duration;
+
+            if (distance < best_distance) {
+                best_distance = distance;
+                best_index = i;
+            }
+        }
+
+        return best_index;
+    }
+
+    private string get_queue_schedule_confirmation_message (Services.FocusQueueProposal proposal, int duration_seconds) {
+        var proposed_end = proposal.proposed_start.add_seconds (duration_seconds);
+        string duration_source = proposal.uses_existing_duration && duration_seconds == get_item_duration_seconds ()
+            ? _ ("task duration")
+            : _ ("selected duration");
+
+        return _ ("Queueing this task will assign %s based on its %s. Pomodoro timing: %s.")
+            .printf (
+                get_queue_schedule_range_label (proposal.proposed_start, proposed_end),
+                duration_source,
+                get_queue_pomodoro_summary ()
+            );
+    }
+
+    private string get_queue_pomodoro_summary () {
+        var settings = Services.Settings.get_default ().settings;
+        int work_minutes = settings.get_int ("focus-work-duration");
+        int short_break_minutes = settings.get_int ("focus-short-break");
+        int long_break_minutes = settings.get_int ("focus-long-break");
+        int rounds_before_long = settings.get_int ("focus-rounds-before-long-break");
+
+        if (rounds_before_long <= 0) {
+            rounds_before_long = 4;
+        }
+
+        return _ ("%d min focus, %d min short break, %d min long break every %d rounds")
+            .printf (work_minutes, short_break_minutes, long_break_minutes, rounds_before_long);
+    }
+
+    private int get_item_duration_seconds () {
+        if (item != null && item.has_due && item.due != null && item.due.datetime != null && item.due.has_end_date) {
+            var existing_end = Utils.Datetime.get_todoist_datetime (item.due.end_date);
+            if (existing_end != null) {
+                int existing_duration = (int) (existing_end.difference (item.due.datetime) / TimeSpan.SECOND);
+                if (existing_duration > 0) {
+                    return existing_duration;
+                }
+            }
+        }
+
+        return Services.Settings.get_default ().settings.get_int ("focus-work-duration") * 60;
+    }
+
+    private string get_queue_schedule_range_label (GLib.DateTime start, GLib.DateTime end) {
+        string start_label = Utils.Datetime.get_relative_date_from_date (start);
+
+        if (Utils.Datetime.is_same_day (start, end)) {
+            return _ ("%s to %s").printf (start_label, end.format (Utils.Datetime.get_default_time_format ())); 
+        }
+
+        return _ ("%s to %s").printf (start_label, Utils.Datetime.get_relative_date_from_date (end));
+    }
+
+    private void plan_today () {
+        update_date (Utils.Datetime.get_date_only (new DateTime.now_local ()));
+        Services.EventBus.get_default ().pane_selected (PaneType.FILTER, Objects.Filters.Today.get_default ().view_id);
+        Services.EventBus.get_default ().send_toast (
+            Util.get_default ().create_toast (_ ("Added to Today"))
+        );
     }
 
     public override void checked_toggled (bool active, uint ? time = null) {

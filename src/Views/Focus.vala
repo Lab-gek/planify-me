@@ -18,12 +18,16 @@ public class Views.Focus : Adw.Bin {
     private Gtk.LevelBar progress_bar;
 
     private Gtk.Stack task_stack;
+    private Gtk.Stack current_task_stack;
     private Gtk.ListBox task_listbox;
-    private Gtk.ListBox upcoming_listbox;
+    private Gtk.ListBox queue_listbox;
+    private Gtk.ListBox suggestion_listbox;
 
     private Gtk.Button start_pause_button;
     private Gtk.Button stop_button;
     private Gtk.Button skip_break_button;
+    private Gtk.Button start_next_button;
+    private Gtk.Button clear_queue_button;
     private Gtk.Button use_opened_task_button;
     private Gtk.Button use_suggested_task_button;
 
@@ -123,8 +127,29 @@ public class Views.Focus : Adw.Bin {
         task_listbox = new Gtk.ListBox () {
             css_classes = { "boxed-list" },
             selection_mode = Gtk.SelectionMode.NONE,
-            margin_bottom = 18
+            margin_bottom = 12
         };
+
+        start_next_button = new Gtk.Button.with_label (_("Start Next Queued Task")) {
+            halign = Gtk.Align.START,
+            css_classes = { "pill" }
+        };
+
+        var current_task_empty_page = new Adw.StatusPage () {
+            icon_name = "timer-symbolic",
+            title = _("No current task"),
+            description = _("Pick a task, use a suggestion, or start the next task from your queue.")
+        };
+
+        var current_task_empty_box = new Gtk.Box (Gtk.Orientation.VERTICAL, 6);
+        current_task_empty_box.append (current_task_empty_page);
+        current_task_empty_box.append (start_next_button);
+
+        current_task_stack = new Gtk.Stack () {
+            transition_type = Gtk.StackTransitionType.CROSSFADE
+        };
+        current_task_stack.add_named (current_task_empty_box, "empty");
+        current_task_stack.add_named (task_listbox, "task");
 
         var detail_box = new Gtk.Box (Gtk.Orientation.VERTICAL, 6) {
             margin_start = 12,
@@ -137,26 +162,50 @@ public class Views.Focus : Adw.Bin {
             xalign = 0,
             margin_bottom = 6
         });
-        detail_box.append (task_listbox);
+        detail_box.append (current_task_stack);
 
-        // Add upcoming tasks section
-        upcoming_listbox = new Gtk.ListBox () {
+        clear_queue_button = new Gtk.Button.with_label (_("Clear Queue")) {
+            css_classes = { "flat" },
+            halign = Gtk.Align.END
+        };
+
+        queue_listbox = new Gtk.ListBox () {
             css_classes = { "boxed-list" },
             selection_mode = Gtk.SelectionMode.NONE,
             margin_bottom = 12
         };
-        // Add CSS class to make rows more compact
-        upcoming_listbox.add_css_class ("compact-rows");
+        queue_listbox.add_css_class ("compact-rows");
 
-        var upcoming_label = new Gtk.Label (_("Upcoming Tasks")) {
+        var queue_label = new Gtk.Label (_("Focus Queue")) {
             css_classes = { "caption-heading", "dim-label" },
             xalign = 0,
             margin_top = 12,
             margin_bottom = 6
         };
 
-        detail_box.append (upcoming_label);
-        detail_box.append (upcoming_listbox);
+        var queue_header = new Gtk.Box (Gtk.Orientation.HORIZONTAL, 6);
+        queue_header.append (queue_label);
+        queue_header.append (clear_queue_button);
+
+        detail_box.append (queue_header);
+        detail_box.append (queue_listbox);
+
+        suggestion_listbox = new Gtk.ListBox () {
+            css_classes = { "boxed-list" },
+            selection_mode = Gtk.SelectionMode.NONE,
+            margin_bottom = 12
+        };
+        suggestion_listbox.add_css_class ("compact-rows");
+
+        var suggestion_label = new Gtk.Label (_("Suggested Tasks")) {
+            css_classes = { "caption-heading", "dim-label" },
+            xalign = 0,
+            margin_top = 12,
+            margin_bottom = 6
+        };
+
+        detail_box.append (suggestion_label);
+        detail_box.append (suggestion_listbox);
 
         task_stack = new Gtk.Stack () {
             transition_type = Gtk.StackTransitionType.CROSSFADE
@@ -233,8 +282,20 @@ public class Views.Focus : Adw.Bin {
             update_control_buttons ();
         })] = skip_break_button;
 
+        signal_map[start_next_button.clicked.connect (() => {
+            Services.FocusManager.get_default ().promote_next_focus_item ();
+            update_task_ui ();
+            update_control_buttons ();
+        })] = start_next_button;
+
+        signal_map[clear_queue_button.clicked.connect (() => {
+            Services.FocusManager.get_default ().clear_queue ();
+            update_task_ui ();
+            update_control_buttons ();
+        })] = clear_queue_button;
+
         signal_map[use_suggested_task_button.clicked.connect (() => {
-            Services.FocusManager.get_default ().change_focus_item (Services.FocusManager.get_default ().suggest_focus_item ());
+            Services.FocusManager.get_default ().promote_next_focus_item ();
             update_task_ui ();
         })] = use_suggested_task_button;
 
@@ -255,6 +316,11 @@ public class Views.Focus : Adw.Bin {
 
         signal_map[Services.FocusManager.get_default ().focus_item_changed.connect (() => {
             handle_focus_item_change ();
+        })] = Services.FocusManager.get_default ();
+
+        signal_map[Services.FocusManager.get_default ().queue_changed.connect (() => {
+            update_task_ui ();
+            update_control_buttons ();
         })] = Services.FocusManager.get_default ();
 
         clock_timeout_id = Timeout.add_seconds (1, () => {
@@ -292,20 +358,21 @@ public class Views.Focus : Adw.Bin {
 
     private void animate_task_promotion () {
         is_animating = true;
-        
-        // Get the first upcoming task widget before update
-        var first_upcoming = upcoming_listbox.get_first_child ();
+
+        var first_upcoming = queue_listbox.get_first_child ();
+        if (first_upcoming == null) {
+            first_upcoming = suggestion_listbox.get_first_child ();
+        }
+
         if (first_upcoming == null) {
             is_animating = false;
             update_task_ui ();
             update_control_buttons ();
             return;
         }
-        
-        // Add animation class to trigger CSS animation
+
         first_upcoming.add_css_class ("task-promote-animation");
-        
-        // Wait for animation to complete (300ms)
+
         Timeout.add (300, () => {
             is_animating = false;
             update_task_ui ();
@@ -315,73 +382,145 @@ public class Views.Focus : Adw.Bin {
     }
 
     private void update_task_ui () {
-        var item = Services.FocusManager.get_default ().focus_item;
-        if (item == null) {
+        var manager = Services.FocusManager.get_default ();
+        var item = manager.focus_item;
+        var queued_proposals = manager.get_queue_schedule_proposals (5);
+        var suggested_items = manager.get_suggested_focus_items (5);
+
+        if (item == null && queued_proposals.size == 0 && suggested_items.size == 0) {
             task_stack.visible_child_name = "empty";
             return;
         }
 
         task_stack.visible_child_name = "detail";
-        
-        var child = task_listbox.get_first_child ();
-        if (child != null) {
+
+        Gtk.Widget? child = task_listbox.get_first_child ();
+        while (child != null) {
             task_listbox.remove (child);
+            child = task_listbox.get_first_child ();
         }
 
-        var row = new Layouts.ItemRow (item);
-        row.edit = true;
-        task_listbox.append (row);
+        if (item == null) {
+            current_task_stack.visible_child_name = "empty";
+        } else {
+            current_task_stack.visible_child_name = "task";
 
-        // Update upcoming tasks list
-        update_upcoming_tasks ();
+            var row = new Layouts.ItemRow (item);
+            row.edit = true;
+            task_listbox.append (row);
+        }
+
+        update_upcoming_tasks (queued_proposals, suggested_items);
+        start_next_button.visible = queued_proposals.size > 0;
+        clear_queue_button.visible = queued_proposals.size > 0;
     }
 
-    private void update_upcoming_tasks () {
-        // Clear existing upcoming tasks
-        Gtk.Widget? child = upcoming_listbox.get_first_child ();
+    private void update_upcoming_tasks (Gee.ArrayList<Services.FocusQueueProposal> queued_proposals, Gee.ArrayList<Objects.Item> suggested_items) {
+        Gtk.Widget? child = queue_listbox.get_first_child ();
         while (child != null) {
-            upcoming_listbox.remove (child);
-            child = upcoming_listbox.get_first_child ();
+            queue_listbox.remove (child);
+            child = queue_listbox.get_first_child ();
         }
 
-        // Get and display upcoming tasks
-        var upcoming_items = Services.FocusManager.get_default ().get_suggested_focus_items (5);
-        
-        // Cache the IDs for animation detection
+        child = suggestion_listbox.get_first_child ();
+        while (child != null) {
+            suggestion_listbox.remove (child);
+            child = suggestion_listbox.get_first_child ();
+        }
+
         cached_upcoming_ids.clear ();
-        foreach (var item in upcoming_items) {
+        foreach (var proposal in queued_proposals) {
+            cached_upcoming_ids.add (proposal.item.id);
+        }
+
+        foreach (var item in suggested_items) {
             cached_upcoming_ids.add (item.id);
         }
-        
-        if (upcoming_items.size == 0) {
-            var no_tasks_box = new Gtk.Box (Gtk.Orientation.VERTICAL, 0) {
-                height_request = 48,
-                valign = Gtk.Align.CENTER
-            };
-            var no_tasks_label = new Gtk.Label (_("No upcoming tasks")) {
-                css_classes = { "dim-label", "caption" },
-                margin_top = 12,
-                margin_bottom = 12
-            };
-            no_tasks_box.append (no_tasks_label);
-            upcoming_listbox.append (no_tasks_box);
+
+        if (queued_proposals.size == 0) {
+            queue_listbox.append (build_placeholder_row (_("Queue tasks from any list to line up your next focus sessions.")));
         } else {
-            foreach (var upcoming_item in upcoming_items) {
-                var row = new Layouts.ItemRow (upcoming_item);
-                row.edit = false;
-                // Add CSS class for compact display
-                row.add_css_class ("compact-task-row");
-                
-                // Make it clickable to set as focus item
-                var gesture = new Gtk.GestureClick ();
-                gesture.released.connect (() => {
-                    Services.FocusManager.get_default ().change_focus_item (upcoming_item);
-                });
-                row.add_controller (gesture);
-                
-                upcoming_listbox.append (row);
+            for (int i = 0; i < queued_proposals.size; i++) {
+                var queued_proposal = queued_proposals[i];
+                queue_listbox.append (build_task_row (queued_proposal.item, true, queued_proposal, i > 0));
             }
         }
+
+        if (suggested_items.size == 0) {
+            suggestion_listbox.append (build_placeholder_row (_("No suggested tasks right now.")));
+        } else {
+            foreach (var suggested_item in suggested_items) {
+                suggestion_listbox.append (build_task_row (suggested_item, false, null, false));
+            }
+        }
+    }
+
+    private Gtk.Widget build_placeholder_row (string text) {
+        var box = new Gtk.Box (Gtk.Orientation.VERTICAL, 0) {
+            height_request = 48,
+            valign = Gtk.Align.CENTER
+        };
+
+        var label = new Gtk.Label (text) {
+            css_classes = { "dim-label", "caption" },
+            wrap = true,
+            margin_top = 12,
+            margin_bottom = 12,
+            margin_start = 12,
+            margin_end = 12
+        };
+
+        box.append (label);
+        return box;
+    }
+
+    private Layouts.ItemRow build_task_row (Objects.Item item, bool queued, Services.FocusQueueProposal? proposal = null, bool can_move_up = false) {
+        var row = new Layouts.ItemRow (item);
+        row.disable_drag_and_drop ();
+        row.tooltip_text = get_item_subtitle (item, queued, proposal, can_move_up);
+
+        return row;
+    }
+
+    private string get_item_subtitle (Objects.Item item, bool queued, Services.FocusQueueProposal? proposal = null,
+                                      bool can_move_up = false) {
+        var subtitle_parts = new Gee.ArrayList<string> ();
+        subtitle_parts.add (queued ? _("Queued") : _("Suggested"));
+
+        if (item.project != null) {
+            subtitle_parts.add (item.project.name);
+        }
+
+        if (queued && proposal != null) {
+            subtitle_parts.add (_("Planned %s - %s").printf (
+                proposal.proposed_start.format (Utils.Datetime.get_default_time_format ()),
+                proposal.proposed_end.format (Utils.Datetime.get_default_time_format ())
+            ));
+
+            if (proposal.rolls_to_tomorrow) {
+                subtitle_parts.add (_("Tomorrow"));
+            }
+
+            if (proposal.uses_existing_duration) {
+                subtitle_parts.add (_("Using task duration"));
+            }
+
+            if (proposal.has_conflict) {
+                subtitle_parts.add (_("Needs confirmation"));
+            }
+
+            if (can_move_up) {
+                subtitle_parts.add (_("Right-click for queue actions"));
+            }
+        } else if (item.has_due && item.due != null && item.due.datetime != null) {
+            subtitle_parts.add (Utils.Datetime.get_relative_date_from_date (item.due.datetime));
+
+            if (!Services.FocusManager.get_default ().queue_contains (item)) {
+                subtitle_parts.add (_("Right-click to queue"));
+            }
+        }
+
+        return string.joinv (" • ", subtitle_parts.to_array ());
     }
 
     private void update_timer_ui () {
